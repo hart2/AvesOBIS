@@ -1,2 +1,4 @@
 # If 'scientificName' are equal & 'decimalLongitude' are equal & 'decimalLatitude' are equal & 'eventDate' are equal, remove one of the observations
   # words in ' ' are column title/variables
+Aves_noduplic <- Aves_EEZ %>%
+  
