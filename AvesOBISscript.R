@@ -28,7 +28,7 @@ library(rnaturalearth)
 Aves_EEZ <- read_csv("Aves_EEZ.csv")
 Aves_EEZ <- Aves_EEZ %>% 
   select(scientificName,eventDate,decimalLongitude,decimalLatitude,basisOfRecord,date_year,  
-         individualCount) %>%  
+         individualCount, identifiedBy, occurrenceStatus, samplingEffort) %>%  
   filter(basisOfRecord == "HumanObservation", date_year >= 1960, decimalLatitude > -55)        #filtering for only human observations and data collection post 1960
   
 gensp <- Aves_EEZ %>% 
