@@ -21,28 +21,75 @@ for(year in 1962:2018){
 }
 
 
-# data frame with "missing" values in the joins above, "missing" won't join with "Avesperyr"
-# Apy1 <- full_join(cnt_1986, cnt_1989, by='n') 
-# Apy1 <- Apy1 %>% 
-#   full_join(cnt_1990, by='n') %>%             
-#   full_join(cnt_1997, by='n') %>%             
-#   full_join(cnt_2002, by='n') %>%             
-#   full_join(cnt_2012, by='n') %>%             
-#   full_join(cnt_2013, by='n') %>%            
-#   full_join(cnt_2017, by='n')  
+# Years are missing, add them by hand (Years: 1985,1990,1991,1999,2000,2013,2016,2018)
 
-# colnames(Apy1) <-("species")
-colnames(Avesperyr) <- c("species","year")
-# avespy         <- full_join(Apy1,Avesperyr,by='species')
+cnt_1985 <- Aves_EEZnd %>%
+  select(date_year,scientificName) %>%
+  filter(date_year == 1985)
+cnt_1985 <- unique(cnt_1985)
+cnt_1985 <- count(cnt_1985)
+ 
+cnt_1990 <- Aves_EEZnd %>%
+  select(date_year,scientificName) %>%
+  filter(date_year == 1990)
+cnt_1990 <- unique(cnt_1990)
+cnt_1990 <- count(cnt_1990)
 
-# When I try to merge "Avesperyr" and "Apy1", data from "Apy1" does not appear...
+cnt_1991 <- Aves_EEZnd %>%
+  select(date_year,scientificName) %>%
+  filter(date_year == 1991)
+cnt_1991 <- unique(cnt_1991)
+cnt_1991 <- count(cnt_1991)
+
+cnt_1999 <- Aves_EEZnd %>%
+  select(date_year,scientificName) %>%
+  filter(date_year == 1999)
+cnt_1999 <- unique(cnt_1999)
+cnt_1999 <- count(cnt_1999)
+
+cnt_2000 <- Aves_EEZnd %>%
+  select(date_year,scientificName) %>%
+  filter(date_year == 2000)
+cnt_2000 <- unique(cnt_2000)
+cnt_2000 <- count(cnt_2000)
+
+cnt_2013 <- Aves_EEZnd %>%
+  select(date_year,scientificName) %>%
+  filter(date_year == 2013)
+cnt_2013 <- unique(cnt_2013)
+cnt_2013 <- count(cnt_2013)
+
+cnt_2016 <- Aves_EEZnd %>%
+  select(date_year,scientificName) %>%
+  filter(date_year == 2016)
+cnt_2016 <- unique(cnt_2016)
+cnt_2016 <- count(cnt_2016)
+
+cnt_2018 <- Aves_EEZnd %>%
+  select(date_year,scientificName) %>%
+  filter(date_year == 2018)
+cnt_2018 <- unique(cnt_2018)
+cnt_2018 <- count(cnt_2018)
+
+# Join matrices ("full_join" does not work)
+a1 <- rbind(cnt_1985,Avesperyr) %>% 
+  rbind(cnt_1990) %>% 
+  rbind(cnt_1991) %>% 
+  rbind(cnt_1999) %>% 
+  rbind(cnt_2000) %>% 
+  rbind(cnt_2013) %>% 
+  rbind(cnt_2016) %>% 
+  rbind(cnt_2018)
+
+colnames(a1) <- c("species","year")
+a1$year=c(1985,1961:1984,1986:1989,1992:1998,2001:2012,2014,2015,2017,1990,1991,
+          1999,2000,2013,2016,2018)
 
 # Creating a barplot with the available years
-Avesperyr$year=c(1961:1985,1987,1988,1991:1996,1998:2001,2003:2011,2014:2016,2018)
+Avesperyr$year=c(1961:2018)
 
 my_title <- expression(paste("Alpha Diversity of the Americas per Year"))
 ggplot(data=Avesperyr, aes(x=year, y=species)) +
         geom_bar(stat="identity", fill="steelblue")+
-        labs(x = "Year", y = "Number of Species", title = my_title,
-             caption = "* Missing Years 1986, 1989, 1990, 1997, 2002, 2012, 2013, 2017")+
+        labs(x = "Year", y = "Number of Species", title = my_title)+
         theme(plot.title = element_text(h=0.5))
