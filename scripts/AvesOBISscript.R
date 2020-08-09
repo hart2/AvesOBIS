@@ -191,7 +191,7 @@ land_ba <- Aves_EEZnd %>%
 land_babuffer <- check_onland(land_ba, buffer = 1000)
 
 
-# Table: Number of datasets,Records from OBIS -----------------------------
+# Table: Number of datasets, Records from OBIS -----------------------------
 library("readxl")
 # install.packages("formattable")
 library(formattable)
@@ -203,6 +203,18 @@ formattable(tbl,
             list(`Dataset Name` = formatter(
               "span", style = ~ style(color = "grey",font.weight = "bold")) 
             ))
+
+# Needs a scroll bar, will this work? 
+
+# shinyDashboard(
+#   tags$head(
+#     tags$style(HTML(".sidebar {
+#                       height: 90vh; overflow-y: auto;
+#                     }"
+#     ) # close HTML       
+#     )            # close tags$style
+#   ),             # close tags#Head
+
 library("htmltools")
 library("webshot") 
 # webshot::install_phantomjs()
