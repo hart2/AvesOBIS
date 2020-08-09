@@ -1,5 +1,6 @@
 library(tidyverse)
 
+# upload seabird_data.csv and usgs_eaec.csv into R (done previously)
 x1 <- read_csv('seabird_data_archive_2.csv')
 x2 <- read_csv('usgs_eaec7873-a1d8-43cf-baa2-27b2772a8d1f.csv')
 
