@@ -6,7 +6,6 @@
 
 # Introduction, Install Packages and Data ------------------------------------------
 install.packages("tidyverse")
-Aves_EEZ <- read_csv("data/Aves_EEZ.csv") # upload AvesEEZ excel into R
 # library(tidyverse), package that provides a bunch of tools to help tidy up your messy datasets
 install.packages("devtools")
 install_github("iobis/robis") # install obis packages 
@@ -19,13 +18,13 @@ library(dplyr)
 library(readr)
 library(devtools)
 library(robis)
-# library(obistools) --> can't get it to work for R anymore
+library(obistools)
 library(ggplot2)
 library(sf)
 library(rnaturalearth)
 
 # data downloaded from OBIS already within lat long limits of the study
-Aves_EEZ <- read_csv("data/Aves_EEZ.csv")
+# upload AvesEEZ.csv into R (done previously)
 Aves_EEZ <- Aves_EEZ %>% 
   select(scientificName,eventDate,decimalLongitude,decimalLatitude,basisOfRecord,date_year,  
          individualCount, identifiedBy, datasetID, datasetName, dataset_id, institutionCode, 
@@ -82,10 +81,10 @@ alphadiv <- count(numSpeciesFreq)  # Number of species found in Aves dataset wit
 # one of the observations
 # NOTE: This step will take some time
 Aves_EEZnd <- invisible(unique(Aves_EEZ))         # "invisible()" suppresses output
+rm(Aves_EEZ,num,v1,species,num_gs,gensp,fre1,df1,df2)
 
 # Important!!!
-# Aves_EEZnd (aves data without duplicates), freq (frequency of appearance in dataset of each genus and genus species), 
-# alphadiv (alpha diversity from 1960 - present), num_gs (number of genus and genus species), 
+# Aves_EEZnd (aves data without duplicates), alphadiv (alpha diversity from 1960 - present), 
 # numSpeciesFreq (frequency of appearance in dataset of genus species )
 
 # Finding alpha diversity per year (Americas) -----------------------------
@@ -184,6 +183,13 @@ ggplot() +
   labs(title = my_title, color = 'Records')+           #title for for graph and legend
   scale_color_manual(values=c("#cc3300", "#ff9900"))+  #specific colors for map
   theme(plot.title = element_text(face="italic"))      #creating a italicized, centered title
+
+
+#-------Should remove all suspicious buffered records from original data ------------
+land_ba <- Aves_EEZnd %>% 
+  filter(scientificName == "Bucephala albeola")
+land_babuffer <- check_onland(land_ba, buffer = 1000)
+
 
 # Table: Number of datasets,Records from OBIS -----------------------------
 library("readxl")
