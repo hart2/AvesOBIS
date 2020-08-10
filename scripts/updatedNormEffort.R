@@ -13,7 +13,7 @@
 
 library(tidyverse)
 
-usgs <- usgs_eaec7873_a1d8_43cf_baa2_27b2772a8d1f %>%  
+usgs <- usgs_eaec7873_a1d8_43cf_baa2_27b2772a8d1f %>%  # NEED TO INCLUDE EFFORT AFTER SEABIRD AND USGS MERGED
   filter(!(scientificName == "")) %>% 
   select(scientificName,eventDate,decimalLongitude,decimalLatitude,basisOfRecord,date_year,  
          individualCount, identifiedBy, institutionCode, ownerInstitutionCode, collectionCode, catalogNumber, 
@@ -28,14 +28,14 @@ freqUSGS <- as.data.frame(table(genspUSGS)) # Create a data frame with species n
 num_gsUSGS <- count(freqUSGS)               # Counts the number of genus/genus species found in dataset "freq"
 
 # Finding species present: 1960-2020-------------------------------------------------
-# (n = # of species), using a splitstring function
+# (n = # of species), using a splitstring function (originally wrote in AvesOBISscript.R)
 
 v1 <- genspUSGS                      # vector with scientificNames
-v2 <- 1:nrow(genspUSGS)              # num of cells in scientificName and creating vector with the number of cells necessary for running splitstring fxn
+v2 <- 1:nrow(genspUSGS)              # number of cells in scientificName and creating vector with the number of cells necessary for running splitstring fxn
 species <- data.frame(v1,v2)
 colnames(species) <- c("scientificName", "v2")
 
-alpha <- function(species){        # Fxn to filter dataframe to include only rows with a space between two character strings (aka genus and species)
+alpha <- function(species){          # Fxn to filter data frame to include only rows with a space between two character strings (aka genus and species)
   booleans <- vector()
   i <- 1
   while (i <= nrow(species)){
@@ -56,6 +56,28 @@ df2 <- as.data.frame(df1) %>%
 
 usgs <- df2 %>% 
   select(-species)
+
+library(tidyverse)
+
+# upload seabird_data.csv and usgs_eaec.csv into R (done previously)
+x2 <- seabird_data_archive_2 %>% 
+  select(year,scientific_nm,observation_longitude,observation_latitude,effort) 
+colnames(x2) <- c("date_year","scientificName","decimalLongitude","decimalLatitude","effort")
+x1 <- usgs_eaec7873_a1d8_43cf_baa2_27b2772a8d1f %>% 
+  select(date_year,scientificName,decimalLongitude,decimalLatitude)
+
+
+library(dplyr)
+df <- left_join(x1, x2) %>%
+  # mutate(sampEffort = ifelse(gdp < break.1, "lo", 
+  #                            ifelse(gdp >= break.1 & gdp < break.2, "mid.lo",
+  #                                   ifelse(gdp >= break.2 & gdp < break.3, "mid.hi", 
+  #                                          ifelse(gdp >= break.3, "hi", NA))))) %>%
+  # arrange(country, year) %>%
+  # select(-break.1, -break.2, -break.3)
+
+
+# Find species per year (from seabird_data_archive_2 put it into usgs data frame)
 
 usgsNorm <- usgs %>% 
   filter(year == "1978") %>% 
