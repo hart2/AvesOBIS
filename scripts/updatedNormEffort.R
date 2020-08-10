@@ -91,7 +91,6 @@ usgsNorm <- df %>%
  
 # add a column of averaged effort for a species for a year
 usgsNorm <- aggregate(.~scientificName, FUN=mean, data=usgsNorm[, -3])
-usgsNorm$year <- 1978
 
 # join all following years
 
@@ -104,3 +103,10 @@ for (year in 1979:1981){
   
   usgsNorm <- full_join(usgsNorm,x,by ='n')
 }
+
+# Gives total effort for each species from 1978-2013 (want it separated by year)
+# splitmean <- function(df) {
+#   s <- split(df, df$scientificName)
+#   sapply(s, function(x) mean(x$effort) )
+# }
+# z <- splitmean(df)
