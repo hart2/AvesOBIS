@@ -2,7 +2,7 @@
 # Creating figures which will compare average species richness (aka alpha diversity), # of records
 # and latitude 
 
-# ctrlL will clear the console window, ctrlshiftR will create collapsable tab
+# ctrlL will clear the console window, ctrlshiftR will create collapsible tab
 
 # Introduction, Install Packages and Data ------------------------------------------
 install.packages("tidyverse")
