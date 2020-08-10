@@ -94,7 +94,7 @@ usgsNorm <- aggregate(.~scientificName, FUN=mean, data=usgsNorm[, -3])
 
 # join all following years
 
-for (year in 1979:1981){
+for (year in 1979:2013){
   x <- df %>% 
     filter(date_year == year) %>% 
     select(scientificName,effort) %>% 
