@@ -81,7 +81,7 @@ alphadiv <- count(numSpeciesFreq)  # Number of species found in Aves dataset wit
 # one of the observations
 # NOTE: This step will take some time
 Aves_EEZnd <- invisible(unique(Aves_EEZ))         # "invisible()" suppresses output
-rm(Aves_EEZ,num,v1,species,num_gs,gensp,fre1,df1,df2)
+rm(Aves_EEZ,num,v1,species,num_gs,gensp,freq,freq1,df1,df2)
 
 # Important!!!
 # Aves_EEZnd (aves data without duplicates), alphadiv (alpha diversity from 1960 - present), 

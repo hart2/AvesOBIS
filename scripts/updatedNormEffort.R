@@ -74,16 +74,33 @@ seabird <- seabird %>%
   filter(date_year >= 1960 & date_year < 2019, decimalLatitude > -55)
 
 
-df <- left_join(usgs, seabird)
-df <- invisible(unique(df))
+df <- full_join(usgs, seabird) %>% 
+  # remove scientificName not found in usgs
+  filter(!(scientificName == "Ardea alba" | scientificName == "Actitis macularius" | 
+             scientificName == "Calonectris borealis")) %>% 
+  filter(!(effort == "NA"))
+
 
 rm(df1,df2,freqUSGS,genspUSGS,num_gsUSGS,v1,species)
 # Find species per year (from seabird_data_archive_2 put it into usgs data frame)
 
-# usgsNorm <- usgs %>% 
-#   filter(year == "1978") %>% 
-#   select(scientificName,effort) %>% 
-#   arrange(`scientific_nm`)
-# 
+usgsNorm <- df %>% 
+   filter(date_year == "1978") %>% 
+   select(scientificName,effort) %>% 
+   arrange(`scientificName`)
+ 
 # add a column of averaged effort for a species for a year
-# usgsNorm <- aggregate(.~scientific_nm, FUN=mean, data=usgsNorm[, -3])
+usgsNorm <- aggregate(.~scientificName, FUN=mean, data=usgsNorm[, -3])
+usgsNorm$year <- 1978
+
+# join all following years
+
+for (year in 1979:1981){
+  x <- df %>% 
+    filter(date_year == year) %>% 
+    select(scientificName,effort) %>% 
+    arrange(`scientificName`)
+  x <- aggregate(.~n,FUN=mean,data = df[,-3])  #THIS IS THE PROBLEM
+  
+  usgsNorm <- full_join(usgsNorm,x,by ='n')
+}
