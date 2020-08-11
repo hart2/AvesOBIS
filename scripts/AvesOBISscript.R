@@ -80,7 +80,8 @@ alphadiv <- count(numSpeciesFreq)  # Number of species found in Aves dataset wit
 # If scientificName are equal & decimalLongitude are equal & decimalLatitude are equal & eventDate are equal, remove
 # one of the observations
 # NOTE: This step will take some time
-Aves_EEZnd <- invisible(unique(Aves_EEZ))         # "invisible()" suppresses output
+Aves_EEZnd <- invisible(unique(Aves_EEZ)) %>%         # "invisible()" suppresses output
+  arrange('scientificName')
 rm(Aves_EEZ,num,v1,species,num_gs,gensp,freq,freq1,df1,df2)
 
 # Important!!!
@@ -186,10 +187,18 @@ ggplot() +
 
 
 #-------Should remove all suspicious buffered records from original data ------------
-land_ba <- Aves_EEZnd %>% 
-  filter(scientificName == "Bucephala albeola")
-land_babuffer <- check_onland(land_ba, buffer = 1000)
+land_buffer <- Aves_EEZnd %>% 
+  filter(scientificName == "Actitis macularius")
+land_buffer <- check_onland(land_buffer, buffer = 1000)
 
+# Not working right
+for (i in nrow(Aves_EEZnd)){
+  x <- Aves_EEZnd %>% 
+     filter(scientificName == i)
+  x <- check_onland(x, buffer = 1000)
+  
+  land_buffer <- full_join(land_buffer,x,by ='scientificName')
+}
 
 # Table: Number of datasets, Records from OBIS -----------------------------
 library("readxl")
