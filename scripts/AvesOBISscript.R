@@ -317,6 +317,7 @@ rm(Aves_EEZnd)
 
 # Aves does not have duplicates or iffy land data
 # Table: Number of data sets, Records from OBIS -----------------------------
+# before removing duplicates, land_buffer, and data without sampling effort
 library("readxl")
 # install.packages("formattable")
 library(formattable)
