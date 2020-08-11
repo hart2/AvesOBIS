@@ -187,20 +187,136 @@ ggplot() +
 
 
 #-------Should remove all suspicious buffered records from original data ------------
-land_buffer <- Aves_EEZnd %>% 
-  filter(scientificName == "Actitis macularius")
-land_buffer <- check_onland(land_buffer, buffer = 1000)
+# buffers commented out had a zero value, buffer of 1000 m
 
-# Not working right
-for (i in nrow(Aves_EEZnd)){
-  x <- Aves_EEZnd %>% 
-     filter(scientificName == i)
-  x <- check_onland(x, buffer = 1000)
-  
-  land_buffer <- full_join(land_buffer,x,by ='scientificName')
-}
+bufferA <- Aves_EEZnd %>% 
+  filter(str_detect(scientificName, "^A")) # looking at all scientificNames starting with "a"
+bufferA <- check_onland(bufferA, buffer = 1000)
 
-# Table: Number of datasets, Records from OBIS -----------------------------
+bufferB <- Aves_EEZnd %>% 
+  filter(str_detect(scientificName, "^B"))
+bufferB <- check_onland(bufferB, buffer = 1000)
+
+bufferC <- Aves_EEZnd %>% 
+  filter(str_detect(scientificName, "^C"))
+bufferC <- check_onland(bufferC, buffer = 1000)
+
+bufferD <- Aves_EEZnd %>% 
+  filter(str_detect(scientificName, "^D"))
+bufferD <- check_onland(bufferD, buffer = 1000)
+
+bufferE <- Aves_EEZnd %>% 
+  filter(str_detect(scientificName, "^E"))
+bufferE <- check_onland(bufferE, buffer = 1000)
+
+bufferF <- Aves_EEZnd %>% 
+  filter(str_detect(scientificName, "^F"))
+bufferF <- check_onland(bufferF, buffer = 1000)
+
+bufferG <- Aves_EEZnd %>% 
+  filter(str_detect(scientificName, "^G"))
+bufferG <- check_onland(bufferG, buffer = 1000)
+
+bufferH <- Aves_EEZnd %>% 
+  filter(str_detect(scientificName, "^H"))
+bufferH <- check_onland(bufferH, buffer = 1000)
+
+# bufferI <- Aves_EEZnd %>% 
+#   filter(str_detect(scientificName, "^I"))
+# bufferI <- check_onland(bufferI, buffer = 1000)
+# 
+# bufferJ <- Aves_EEZnd %>% 
+#   filter(str_detect(scientificName, "^J"))
+# bufferJ <- check_onland(bufferJ, buffer = 1000)
+# 
+# bufferK <- Aves_EEZnd %>% 
+#   filter(str_detect(scientificName, "^K"))
+# bufferK <- check_onland(bufferK, buffer = 1000)
+
+bufferL <- Aves_EEZnd %>% 
+  filter(str_detect(scientificName, "^L"))
+bufferL <- check_onland(bufferL, buffer = 1000)
+
+bufferM <- Aves_EEZnd %>% 
+  filter(str_detect(scientificName, "^M"))
+bufferM <- check_onland(bufferM, buffer = 1000)
+
+# bufferN <- Aves_EEZnd %>% 
+#   filter(str_detect(scientificName, "^N"))
+# bufferN <- check_onland(bufferN, buffer = 1000)
+
+bufferO <- Aves_EEZnd %>% 
+  filter(str_detect(scientificName, "^O"))
+bufferO <- check_onland(bufferO, buffer = 1000)
+
+bufferP <- Aves_EEZnd %>% 
+  filter(str_detect(scientificName, "^P"))
+bufferP <- check_onland(bufferP, buffer = 1000)
+
+# bufferQ <- Aves_EEZnd %>% 
+#   filter(str_detect(scientificName, "^Q"))
+# bufferQ <- check_onland(bufferQ, buffer = 1000)
+
+bufferR <- Aves_EEZnd %>% 
+  filter(str_detect(scientificName, "^R"))
+bufferR <- check_onland(bufferR, buffer = 1000)
+
+bufferS <- Aves_EEZnd %>% 
+  filter(str_detect(scientificName, "^S"))
+bufferS <- check_onland(bufferS, buffer = 1000)
+
+bufferT <- Aves_EEZnd %>% 
+  filter(str_detect(scientificName, "^T"))
+bufferT <- check_onland(bufferT, buffer = 1000)
+
+bufferU <- Aves_EEZnd %>% 
+  filter(str_detect(scientificName, "^U"))
+bufferU <- check_onland(bufferU, buffer = 1000)
+
+# bufferV <- Aves_EEZnd %>% 
+#   filter(str_detect(scientificName, "^V"))
+# bufferV <- check_onland(bufferV, buffer = 1000)
+# 
+# bufferW <- Aves_EEZnd %>% 
+#   filter(str_detect(scientificName, "^W"))
+# bufferW <- check_onland(bufferW, buffer = 1000)
+# 
+# bufferX <- Aves_EEZnd %>% 
+#   filter(str_detect(scientificName, "^X"))
+# bufferX <- check_onland(bufferX, buffer = 1000)
+
+land_buffer <- rbind(bufferA,bufferB) %>% 
+  rbind(bufferC) %>% 
+  rbind(bufferD) %>% 
+  rbind(bufferE) %>% 
+  rbind(bufferF) %>% 
+  rbind(bufferG) %>% 
+  rbind(bufferH) %>% 
+  rbind(bufferL) %>% 
+  rbind(bufferM) %>% 
+  rbind(bufferO) %>% 
+  rbind(bufferP) %>% 
+  rbind(bufferR) %>% 
+  rbind(bufferS) %>% 
+  rbind(bufferT) %>% 
+  rbind(bufferU)
+
+land_buffer <- land_buffer %>% 
+  arrange(scientificName)
+
+rm(bufferA,bufferB, bufferC, bufferD, bufferE, bufferF, bufferG, bufferH, bufferL,
+   bufferM, bufferO, bufferP, bufferR, bufferS, bufferT, bufferU)
+
+# remove land_buffer from Aves_EEZnd (there are additional 300 records removed 
+# bc they had duplicate catalogNumbers - which isn't supposed to happen, human error putting info into OBIS)
+Aves <- anti_join(Aves_EEZnd,land_buffer, by = "catalogNumber") 
+Aves <- Aves %>% 
+  arrange(scientificName)
+
+rm(Aves_EEZnd)
+
+# Aves does not have duplicates or iffy land data
+# Table: Number of data sets, Records from OBIS -----------------------------
 library("readxl")
 # install.packages("formattable")
 library(formattable)
