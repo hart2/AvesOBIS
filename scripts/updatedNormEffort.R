@@ -7,9 +7,9 @@
 
 
 # USGS Patuxent Wildlife Research Center Seabirds Compendium (coll --------
+# SHIP SURVEYS
 
 # manipulated dataset "seabird_data_archive_2" from "seabird_data_archive_NODC_30Dec2013)
-# by adding back years and scientific names, simplifying long and lat to 4 decimal, adding effort
 
 # upload seabird_data.csv and usgs_eaec.csv into R (done previously)
 
@@ -390,6 +390,7 @@ rm(usgs1,usgs2,usgs3,usgs4,usgs5,usgs6,usgs7,usgs8,usgs9,usgs10,usgs11,usgs12,
 
 rm(usgs_eaec7873_a1d8_43cf_baa2_27b2772a8d1f)
 # Ecological Baseline Studies of the U.S. Outer Continental Shelf  --------
+# AERIAL SURVEYS
 
 eco <- ecologicalBaseline_b26ccb50_aab3_400d_ac62_b2b421a25b6b %>%
   filter(!(scientificName == "")) %>% 
@@ -428,3 +429,13 @@ options(digits = 6)
 eco$effort <- NA
 
 rm(df1,df2,freq,gensp,num_gs,v1,v2,species)
+
+
+# MMS Low Altitude Survey 1980-1983 ---------------------------------------
+# AERIAL SURVEYS
+
+# CalCOFI and NMFS Seabird and Marine Mammal Observation Data, 198 --------
+# SHIP SURVEYS
+
+# PIROP Northwest Atlantic 1965-1992 --------------------------------------
+# sHIP SURVEYS
