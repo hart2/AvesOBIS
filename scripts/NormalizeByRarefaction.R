@@ -59,7 +59,7 @@ subset.shape <- function(x, domain){
 # Specify the local directory and name of the shapefile 
 # and read its contents (global coastline data)
 path.lme.coast <- ("data/LME66") #localdirectory
-fnam.lme.coast <- "LMEs66.shp" #shapefile
+fnam.lme.coast <- "LMEs66.shp"   #shapefile
 dat.coast <- readOGR(dsn = path.lme.coast, 
                      layer = file_path_sans_ext(fnam.lme.coast))
 
@@ -146,3 +146,10 @@ aves13 <- Aves %>%
 
 aves14 <- Aves %>% 
   filter() # Newfoundland-Labrador Shelf
+
+
+# Optimization of sampling ------------------------------------------------
+source("scripts/covstop.R")
+
+# generate rarefaction curves by region
+
