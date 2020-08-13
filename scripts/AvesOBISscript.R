@@ -316,48 +316,36 @@ Aves <- Aves %>%
 rm(Aves_EEZnd)
 
 # Aves does not have duplicates or iffy land data
-# Table: Number of data sets, Records from OBIS -----------------------------
+
+# Long Table: Number of data sets, Records from OBIS -----------------------------
 # before removing duplicates, land_buffer, and data without sampling effort
-library("readxl")
+# library("readxl")
 # install.packages("formattable")
-library(formattable)
-tbl <- read_excel("data/datasetsForOBIS.xlsx") %>% 
-  select(hemisphere, name, numberRecords, makeupPerc)
-colnames(tbl) <- c("Hemisphere","Dataset Name","Number of Records","Makeup of Aves OBIS (%)") 
-formattable(tbl, 
-            align =c("l","c","c","c","r"), 
-            list(`Dataset Name` = formatter(
-              "span", style = ~ style(color = "grey",font.weight = "bold")) 
-            ))
+# library(formattable)
+# library("htmltools")
+# library("webshot") 
 
-# Needs a scroll bar, will this work? 
+# formattable(tbl, 
+#             align =c("l","c","c","c","r"), 
+#             list(`Dataset Name` = formatter(
+#               "span", style = ~ style(color = "grey",font.weight = "bold")) 
+#             ))
+# # webshot::install_phantomjs()
+# export_formattable <- function(f, file, width = "100%", height = NULL, 
+#                                background = "white", delay = 0.2)
+# {
+#   w <- as.htmlwidget(f, width = width, height = height)
+#   path <- html_print(w, background = background, viewer = NULL)
+#   url <- paste0("file:///", gsub("\\\\", "/", normalizePath(path)))
+#   webshot(url,
+#           file = file,
+#           selector = ".formattable_widget",
+#           delay = delay)
+# }
+# FT <- formattable(tbl, align =c("l","c","c","c","r"), 
+#                   list(`Dataset Name` = formatter(
+#                     "span", style = ~ style(color = "grey",font.weight = "bold")) 
+#                   )) 
+# 
+# export_formattable(FT,"FT.png")
 
-# shinyDashboard(
-#   tags$head(
-#     tags$style(HTML(".sidebar {
-#                       height: 90vh; overflow-y: auto;
-#                     }"
-#     ) # close HTML       
-#     )            # close tags$style
-#   ),             # close tags#Head
-
-library("htmltools")
-library("webshot") 
-# webshot::install_phantomjs()
-export_formattable <- function(f, file, width = "100%", height = NULL, 
-                               background = "white", delay = 0.2)
-{
-  w <- as.htmlwidget(f, width = width, height = height)
-  path <- html_print(w, background = background, viewer = NULL)
-  url <- paste0("file:///", gsub("\\\\", "/", normalizePath(path)))
-  webshot(url,
-          file = file,
-          selector = ".formattable_widget",
-          delay = delay)
-}
-FT <- formattable(tbl, align =c("l","c","c","c","r"), 
-                  list(`Dataset Name` = formatter(
-                    "span", style = ~ style(color = "grey",font.weight = "bold")) 
-                  )) 
-
-export_formattable(FT,"FT.png")

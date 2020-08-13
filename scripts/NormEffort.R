@@ -428,7 +428,7 @@ options(digits = 6)
 eco$effort <- NA
 
 rm(df1,df2,freq,gensp,num_gs,v1,v2,species)
-
+rm(seabird_data_archive_2,seabird)
 
 # MMS Low Altitude Survey 1980-1983 ---------------------------------------
 # AERIAL SURVEYS
@@ -686,7 +686,7 @@ calcoNorm <- full_join(calco1,calco2) %>%
   full_join(calco20)
 
 rm(calco1,calco2,calco3,calco4,calco5,calco6,calco7,calco8,calco9,calco10,calco11,
-   calco15,calco16,calco17,calco18,calco19,calco20)
+   calco12,calco13,calco14,calco15,calco16,calco17,calco18,calco19,calco20)
 rm(df1,df2,freq,gensp,num_gs,v1,v2,species)
 rm(dt1,dt2,dt3,dt4,dt5,dt6,speciesList,X1488405241_allspecieslist,
    CalCOFI_NMFS_3a9eb868_6924_4776_8040_bd635cbd2bfd)
