@@ -59,7 +59,7 @@ subset.shape <- function(x, domain){
 # Specify the local directory and name of the shapefile 
 # and read its contents (global coastline data)
 path.lme.coast <- ("data/LME66") #localdirectory
-fnam.lme.coast <- "LMEs66.shp" #shapefile
+fnam.lme.coast <- "LMEs66.shp"   #shapefile
 dat.coast <- readOGR(dsn = path.lme.coast, 
                      layer = file_path_sans_ext(fnam.lme.coast))
 
@@ -102,94 +102,54 @@ p0 <- ggplot() + theme(text = element_text(size=15),plot.title = element_text(hj
 
 p0 # view map
 
-# highlight LME of interest
-# p.sel <- p0  + mapWorld +
-# geom_path(data = dat.sel_1,
-#           aes(x = long, y = lat, group = group),
-#           colour = "goldenrod2", size = 0.75) +
-# geom_path(data = dat.sel_2,
-#           aes(x = long, y = lat, group = group),
-#           colour = "coral3", size = 0.75) +
-# geom_path(data = dat.sel_3,
-#           aes(x = long, y = lat, group = group),
-#           colour = "coral", size = 0.75) +
-# geom_path(data = dat.sel_4,
-#           aes(x = long, y = lat, group = group),
-#           colour = "chocolate4", size = 0.75) +
-# geom_path(data = dat.sel_5,
-#           aes(x = long, y = lat, group = group),
-#           colour = "chocolate1", size = 0.75) +
-# geom_path(data = dat.sel_6,
-#           aes(x = long, y = lat, group = group),
-#           colour = "chartreuse4", size = 0.75) +
-# geom_path(data = dat.sel_7,
-#           aes(x = long, y = lat, group = group),
-#           colour = "chartreuse", size = 0.75) +
-# geom_path(data = dat.sel_8,
-#           aes(x = long, y = lat, group = group),
-#           colour = "cadetblue1", size = 0.75) +
-# geom_path(data = dat.sel_9,
-#           aes(x = long, y = lat, group = group),
-#           colour = "cadetblue4", size = 0.75) +
-# geom_path(data = dat.sel_10,
-#           aes(x = long, y = lat, group = group),
-#           colour = "brown3", size = 0.75) +
-# geom_path(data = dat.sel_11,
-#           aes(x = long, y = lat, group = group),
-#           colour = "purple", size = 0.75) +
-#   geom_path(data = dat.sel_12,
-#             aes(x = long, y = lat, group = group),
-#             colour = "blue", size = 0.75) +
-#   geom_path(data = dat.sel_13,
-#             aes(x = long, y = lat, group = group),
-#             colour = "green", size = 0.75) +
-#   geom_path(data = dat.sel_14,
-#             aes(x = long, y = lat, group = group),
-#             colour = "red", size = 0.75)
-# p.sel #view
-
-
 # Separate Data by Subregion ----------------------------------------------
 
 # want to filter out the necessary data from each region using polygons dat.sel_#
-aves1 <- Aves_EEZnd %>% 
+aves1 <- Aves %>% 
   filter() # North Brazil shelf
 
-aves2 <- Aves_EEZnd %>% 
+aves2 <- Aves %>% 
   filter() # California Current
 
-aves3 <- Aves_EEZnd %>% 
+aves3 <- Aves %>% 
   filter() # Gulf of California
 
-aves4 <- Aves_EEZnd %>% 
+aves4 <- Aves %>% 
   filter() # Gulf of Mexico
 
-aves5 <- Aves_EEZnd %>% 
+aves5 <- Aves %>% 
   filter() # Southeast U.S. Continental Shelf
 
-aves6 <- Aves_EEZnd %>% 
+aves6 <- Aves %>% 
   filter() # Northeast U.S. Continental Shelf
 
-aves7 <- Aves_EEZnd %>% 
+aves7 <- Aves %>% 
   filter() # Scotian Shelf
 
-aves8 <- Aves_EEZnd %>% 
+aves8 <- Aves %>% 
   filter() # Pacific Central-American
 
-aves9 <- Aves_EEZnd %>% 
+aves9 <- Aves %>% 
   filter() # Caribbean Sea
 
-aves10 <- Aves_EEZnd %>% 
+aves10 <- Aves %>% 
   filter() # Humboldt Current
 
-aves11 <- Aves_EEZnd %>% 
+aves11 <- Aves %>% 
   filter() # Patagonian Shelf
 
-aves12 <- Aves_EEZnd %>% 
+aves12 <- Aves %>% 
   filter() # South Brazil Shelf
 
-aves13 <- Aves_EEZnd %>% 
+aves13 <- Aves %>% 
   filter() # East Brazil Shelf
 
-aves14 <- Aves_EEZnd %>% 
+aves14 <- Aves %>% 
   filter() # Newfoundland-Labrador Shelf
+
+
+# Optimization of sampling ------------------------------------------------
+source("scripts/covstop.R")
+
+# generate rarefaction curves by region
+

@@ -2,11 +2,10 @@
 # Creating figures which will compare average species richness (aka alpha diversity), # of records
 # and latitude 
 
-# ctrlL will clear the console window, ctrlshiftR will create collapsable tab
+# ctrlL will clear the console window, ctrlshiftR will create collapsible tab
 
 # Introduction, Install Packages and Data ------------------------------------------
 install.packages("tidyverse")
-Aves_EEZ <- read_csv("data/Aves_EEZ.csv") # upload AvesEEZ excel into R
 # library(tidyverse), package that provides a bunch of tools to help tidy up your messy datasets
 install.packages("devtools")
 install_github("iobis/robis") # install obis packages 
@@ -19,13 +18,13 @@ library(dplyr)
 library(readr)
 library(devtools)
 library(robis)
-# library(obistools) --> can't get it to work for R anymore
+library(obistools)
 library(ggplot2)
 library(sf)
 library(rnaturalearth)
 
 # data downloaded from OBIS already within lat long limits of the study
-Aves_EEZ <- read_csv("data/Aves_EEZ.csv")
+# upload AvesEEZ.csv into R (done previously)
 Aves_EEZ <- Aves_EEZ %>% 
   select(scientificName,eventDate,decimalLongitude,decimalLatitude,basisOfRecord,date_year,  
          individualCount, identifiedBy, datasetID, datasetName, dataset_id, institutionCode, 
@@ -81,11 +80,12 @@ alphadiv <- count(numSpeciesFreq)  # Number of species found in Aves dataset wit
 # If scientificName are equal & decimalLongitude are equal & decimalLatitude are equal & eventDate are equal, remove
 # one of the observations
 # NOTE: This step will take some time
-Aves_EEZnd <- invisible(unique(Aves_EEZ))         # "invisible()" suppresses output
+Aves_EEZnd <- invisible(unique(Aves_EEZ)) %>%         # "invisible()" suppresses output
+  arrange('scientificName')
+rm(Aves_EEZ,num,v1,species,num_gs,gensp,freq,freq1,df1,df2)
 
 # Important!!!
-# Aves_EEZnd (aves data without duplicates), freq (frequency of appearance in dataset of each genus and genus species), 
-# alphadiv (alpha diversity from 1960 - present), num_gs (number of genus and genus species), 
+# Aves_EEZnd (aves data without duplicates), alphadiv (alpha diversity from 1960 - present), 
 # numSpeciesFreq (frequency of appearance in dataset of genus species )
 
 # Finding alpha diversity per year (Americas) -----------------------------
@@ -185,35 +185,167 @@ ggplot() +
   scale_color_manual(values=c("#cc3300", "#ff9900"))+  #specific colors for map
   theme(plot.title = element_text(face="italic"))      #creating a italicized, centered title
 
-# Table: Number of datasets,Records from OBIS -----------------------------
-library("readxl")
-# install.packages("formattable")
-library(formattable)
-tbl <- read_excel("data/datasetsForOBIS.xlsx") %>% 
-  select(hemisphere, name, numberRecords, makeupPerc)
-colnames(tbl) <- c("Hemisphere","Dataset Name","Number of Records","Makeup of Aves OBIS (%)") 
-formattable(tbl, 
-            align =c("l","c","c","c","r"), 
-            list(`Dataset Name` = formatter(
-              "span", style = ~ style(color = "grey",font.weight = "bold")) 
-            ))
-library("htmltools")
-library("webshot") 
-# webshot::install_phantomjs()
-export_formattable <- function(f, file, width = "100%", height = NULL, 
-                               background = "white", delay = 0.2)
-{
-  w <- as.htmlwidget(f, width = width, height = height)
-  path <- html_print(w, background = background, viewer = NULL)
-  url <- paste0("file:///", gsub("\\\\", "/", normalizePath(path)))
-  webshot(url,
-          file = file,
-          selector = ".formattable_widget",
-          delay = delay)
-}
-FT <- formattable(tbl, align =c("l","c","c","c","r"), 
-                  list(`Dataset Name` = formatter(
-                    "span", style = ~ style(color = "grey",font.weight = "bold")) 
-                  )) 
 
-export_formattable(FT,"FT.png")
+#-------Should remove all suspicious buffered records from original data ------------
+# buffers commented out had a zero value, buffer of 1000 m
+
+bufferA <- Aves_EEZnd %>% 
+  filter(str_detect(scientificName, "^A")) # looking at all scientificNames starting with "a"
+bufferA <- check_onland(bufferA, buffer = 1000)
+
+bufferB <- Aves_EEZnd %>% 
+  filter(str_detect(scientificName, "^B"))
+bufferB <- check_onland(bufferB, buffer = 1000)
+
+bufferC <- Aves_EEZnd %>% 
+  filter(str_detect(scientificName, "^C"))
+bufferC <- check_onland(bufferC, buffer = 1000)
+
+bufferD <- Aves_EEZnd %>% 
+  filter(str_detect(scientificName, "^D"))
+bufferD <- check_onland(bufferD, buffer = 1000)
+
+bufferE <- Aves_EEZnd %>% 
+  filter(str_detect(scientificName, "^E"))
+bufferE <- check_onland(bufferE, buffer = 1000)
+
+bufferF <- Aves_EEZnd %>% 
+  filter(str_detect(scientificName, "^F"))
+bufferF <- check_onland(bufferF, buffer = 1000)
+
+bufferG <- Aves_EEZnd %>% 
+  filter(str_detect(scientificName, "^G"))
+bufferG <- check_onland(bufferG, buffer = 1000)
+
+bufferH <- Aves_EEZnd %>% 
+  filter(str_detect(scientificName, "^H"))
+bufferH <- check_onland(bufferH, buffer = 1000)
+
+# bufferI <- Aves_EEZnd %>% 
+#   filter(str_detect(scientificName, "^I"))
+# bufferI <- check_onland(bufferI, buffer = 1000)
+# 
+# bufferJ <- Aves_EEZnd %>% 
+#   filter(str_detect(scientificName, "^J"))
+# bufferJ <- check_onland(bufferJ, buffer = 1000)
+# 
+# bufferK <- Aves_EEZnd %>% 
+#   filter(str_detect(scientificName, "^K"))
+# bufferK <- check_onland(bufferK, buffer = 1000)
+
+bufferL <- Aves_EEZnd %>% 
+  filter(str_detect(scientificName, "^L"))
+bufferL <- check_onland(bufferL, buffer = 1000)
+
+bufferM <- Aves_EEZnd %>% 
+  filter(str_detect(scientificName, "^M"))
+bufferM <- check_onland(bufferM, buffer = 1000)
+
+# bufferN <- Aves_EEZnd %>% 
+#   filter(str_detect(scientificName, "^N"))
+# bufferN <- check_onland(bufferN, buffer = 1000)
+
+bufferO <- Aves_EEZnd %>% 
+  filter(str_detect(scientificName, "^O"))
+bufferO <- check_onland(bufferO, buffer = 1000)
+
+bufferP <- Aves_EEZnd %>% 
+  filter(str_detect(scientificName, "^P"))
+bufferP <- check_onland(bufferP, buffer = 1000)
+
+# bufferQ <- Aves_EEZnd %>% 
+#   filter(str_detect(scientificName, "^Q"))
+# bufferQ <- check_onland(bufferQ, buffer = 1000)
+
+bufferR <- Aves_EEZnd %>% 
+  filter(str_detect(scientificName, "^R"))
+bufferR <- check_onland(bufferR, buffer = 1000)
+
+bufferS <- Aves_EEZnd %>% 
+  filter(str_detect(scientificName, "^S"))
+bufferS <- check_onland(bufferS, buffer = 1000)
+
+bufferT <- Aves_EEZnd %>% 
+  filter(str_detect(scientificName, "^T"))
+bufferT <- check_onland(bufferT, buffer = 1000)
+
+bufferU <- Aves_EEZnd %>% 
+  filter(str_detect(scientificName, "^U"))
+bufferU <- check_onland(bufferU, buffer = 1000)
+
+# bufferV <- Aves_EEZnd %>% 
+#   filter(str_detect(scientificName, "^V"))
+# bufferV <- check_onland(bufferV, buffer = 1000)
+# 
+# bufferW <- Aves_EEZnd %>% 
+#   filter(str_detect(scientificName, "^W"))
+# bufferW <- check_onland(bufferW, buffer = 1000)
+# 
+# bufferX <- Aves_EEZnd %>% 
+#   filter(str_detect(scientificName, "^X"))
+# bufferX <- check_onland(bufferX, buffer = 1000)
+
+land_buffer <- rbind(bufferA,bufferB) %>% 
+  rbind(bufferC) %>% 
+  rbind(bufferD) %>% 
+  rbind(bufferE) %>% 
+  rbind(bufferF) %>% 
+  rbind(bufferG) %>% 
+  rbind(bufferH) %>% 
+  rbind(bufferL) %>% 
+  rbind(bufferM) %>% 
+  rbind(bufferO) %>% 
+  rbind(bufferP) %>% 
+  rbind(bufferR) %>% 
+  rbind(bufferS) %>% 
+  rbind(bufferT) %>% 
+  rbind(bufferU)
+
+land_buffer <- land_buffer %>% 
+  arrange(scientificName)
+
+rm(bufferA,bufferB, bufferC, bufferD, bufferE, bufferF, bufferG, bufferH, bufferL,
+   bufferM, bufferO, bufferP, bufferR, bufferS, bufferT, bufferU)
+
+# remove land_buffer from Aves_EEZnd (there are additional 300 records removed 
+# bc they had duplicate catalogNumbers - which isn't supposed to happen, human error putting info into OBIS)
+Aves <- anti_join(Aves_EEZnd,land_buffer, by = "catalogNumber") 
+Aves <- Aves %>% 
+  arrange(scientificName)
+
+rm(Aves_EEZnd)
+
+# Aves does not have duplicates or iffy land data
+
+# Long Table: Number of data sets, Records from OBIS (Find better output in Shiny local repository - app.R) -----------------------------
+# before removing duplicates, land_buffer, and data without sampling effort
+# library("readxl")
+# install.packages("formattable")
+# library(formattable)
+# library("htmltools")
+# library("webshot") 
+
+# formattable(tbl, 
+#             align =c("l","c","c","c","r"), 
+#             list(`Dataset Name` = formatter(
+#               "span", style = ~ style(color = "grey",font.weight = "bold")) 
+#             ))
+# # webshot::install_phantomjs()
+# export_formattable <- function(f, file, width = "100%", height = NULL, 
+#                                background = "white", delay = 0.2)
+# {
+#   w <- as.htmlwidget(f, width = width, height = height)
+#   path <- html_print(w, background = background, viewer = NULL)
+#   url <- paste0("file:///", gsub("\\\\", "/", normalizePath(path)))
+#   webshot(url,
+#           file = file,
+#           selector = ".formattable_widget",
+#           delay = delay)
+# }
+# FT <- formattable(tbl, align =c("l","c","c","c","r"), 
+#                   list(`Dataset Name` = formatter(
+#                     "span", style = ~ style(color = "grey",font.weight = "bold")) 
+#                   )) 
+# 
+# export_formattable(FT,"FT.png")
+()
