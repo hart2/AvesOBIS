@@ -317,7 +317,7 @@ rm(Aves_EEZnd)
 
 # Aves does not have duplicates or iffy land data
 
-# Long Table: Number of data sets, Records from OBIS (Find better output in Shiny local repository - app.R) -----------------------------
+# Long Table: Number of data sets, Records from OBIS (Find better output in shinyAppTable.R) -----------------------------
 # before removing duplicates, land_buffer, and data without sampling effort
 # library("readxl")
 # install.packages("formattable")
