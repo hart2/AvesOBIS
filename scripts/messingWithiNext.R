@@ -2,11 +2,13 @@
 
 install.packages("iNEXT")
 library(iNEXT)
-source("covstop.R")
-aves <- Aves_EEZnd %>% 
+setwd("~/github/AavesOBIS")
+source("scripts/covstop.R")
+Avesnxt <- Aves %>% 
   select(scientificName,decimalLongitude,decimalLatitude,date_year,individualCount)
 
-out1 <- iNEXT(aves, q=0, datatype="abundance")
+# separate aves by lme, then have each regions abundance (each species' abundance?)
+out1 <- iNEXT(Avesnxt, q=0, datatype="abundance")
 ggiNEXT(out1)
 
 

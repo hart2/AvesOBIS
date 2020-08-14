@@ -28,9 +28,8 @@ library(mapproj)
 
 # LME Subregions ----------------------------------------------------------
 
-# First view the shapefile, get a feel for it
-lme <- st_read(
-  "data/LME66/LMEs66.shp") # found http://lme.edc.uri.edu/index.php/digital-data
+# Read in and view the shapefile, get a feel for it
+lme <- st_read("LMEs66.shp") # found http://lme.edc.uri.edu/index.php/digital-data
 ggplot() + 
   geom_sf(data = lme, color = "black", fill = "cyan1") + 
   coord_sf()
@@ -58,6 +57,7 @@ subset.shape <- function(x, domain){
 # Plotting the coastline and some animal observations
 # Specify the local directory and name of the shapefile 
 # and read its contents (global coastline data)
+setwd("~/Chp1")
 path.lme.coast <- ("data/LME66") #localdirectory
 fnam.lme.coast <- "LMEs66.shp"   #shapefile
 dat.coast <- readOGR(dsn = path.lme.coast, 
@@ -149,6 +149,7 @@ aves14 <- Aves %>%
 
 
 # Optimization of sampling ------------------------------------------------
+setwd("~/github/AvesOBIS")
 source("scripts/covstop.R")
 
 # generate rarefaction curves by region
