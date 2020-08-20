@@ -2,11 +2,11 @@
 # Written by E. Montes (2019), edited by S. Hartman
 # August 3, 2020
 
-install.packages("maptools")
-install.packages("rgeos")
-install.packages("rgdal")
-install.packages("maps")
-install.packages("mapproj")
+# install.packages("maptools")
+# install.packages("rgeos")
+# install.packages("rgdal")
+# install.packages("maps")
+# install.packages("mapproj")
 
 library(robis)
 library(rgdal) # for `ogrInfo()` and `readOGR()`
@@ -29,11 +29,11 @@ library(mapproj)
 # LME Subregions ----------------------------------------------------------
 
 # Read in and view the shapefile, get a feel for it
+setwd("~/Chp1/data/LME66")
 lme <- st_read("LMEs66.shp") # found http://lme.edc.uri.edu/index.php/digital-data
 ggplot() + 
   geom_sf(data = lme, color = "black", fill = "cyan1") + 
   coord_sf()
-
 
 # Provide the function fortify.shape(), which puts the shapefile data in the object class data.frame, 
 # so that it can be used by ggplot2

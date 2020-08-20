@@ -7,15 +7,19 @@
 
 
 # USGS Patuxent Wildlife Research Center Seabirds Compendium (coll --------
-# SHIP SURVEYS
+# SHIP AND AERIAL SURVEYS
 
 # manipulated dataset "seabird_data_archive_2" from "seabird_data_archive_NODC_30Dec2013)
-
-# upload seabird_data.csv and usgs_eaec.csv into R (done previously)
-
+library(readr)
 library(tidyverse)
 library(dplyr)
 
+setwd("~/Chp1/data")
+# upload seabird_data.csv and usgs_eaec.csv 
+usgs_eaec7873_a1d8_43cf_baa2_27b2772a8d1f <- read_csv("usgs_eaec7873-a1d8-43cf-baa2-27b2772a8d1f.csv")
+seabird_data_archive_2 <- read_csv("seabird_data_archive_2.csv")
+
+setwd("~/github/AvesOBIS")
 # rename to usgs for simplification, remove blank scientificName
 usgs <- usgs_eaec7873_a1d8_43cf_baa2_27b2772a8d1f %>%
   filter(!(scientificName == "")) %>% 
@@ -28,7 +32,7 @@ usgs <- usgs_eaec7873_a1d8_43cf_baa2_27b2772a8d1f %>%
 # Removing scientificName that is genus only
 gensp <- usgs %>% 
   select(scientificName)            # Create data frame with only scientific names
-freq <- as.data.frame(table(gensp)) # Create a data frame with species names and how often they appear in dataset "Aves_EEZ"
+freq <- as.data.frame(table(gensp)) # Create a data frame with species names and how often they appear in dataset "usgs"
 num_gs <- count(freq)               # Counts the number of genus/genus species found in dataset "freq"
 
 v1 <- gensp                         # vector with scientificNames
@@ -50,7 +54,7 @@ alpha <- function(species){         # Fxn to filter data frame to include only r
 species <- alpha(species)          # Gives True/False whether scientifcName contains a space
 species <- as.data.frame(species)  # Creating into a vector
 
-# Trying to merge "species" with "Aves_EEZ" to remove genus only names
+# Trying to merge "species" with "usgs" to remove genus only names
 df1 <- c(species,usgs)             # Inputting "species" T/F into "usgs" dataframe
 df2 <- as.data.frame(df1) %>% 
   filter(species == "TRUE")        # Making it readable as a dataframe and removing genus only
@@ -436,12 +440,18 @@ rm(seabird_data_archive_2,seabird)
 # CalCOFI and NMFS Seabird and Marine Mammal Observation Data, 198 --------
 # SHIP SURVEYS
 
-# Upload CalCOFI_NMFS_3a9eb868_6924_4776_8040_bd635cbd2bfd.csv
-# Run CalCOFI_NMFS.R script
+setwd("~/Chp1/data/3a9eb868-6924-4776-8040-bd635cbd2bfd")
+X1488405241_allspecieslist <- read_csv("1488405241_allspecieslist.csv")
 
 speciesList <- X1488405241_allspecieslist %>% 
   select(Species,`Latin Name`)
 colnames(speciesList) <- c("Species","scientificName")
+
+setwd("~/Chp1/data")
+CalCOFI_NMFS_3a9eb868_6924_4776_8040_bd635cbd2bfd <- read_csv("CalCOFI_NMFS_3a9eb868-6924-4776-8040-bd635cbd2bfd.csv")
+
+setwd("~/github/AvesOBIS/scripts")
+source("CalCOFI_NMFS.R")
 
 # put scientificName into data table of dt 2,4,6 (join by Species)
 dt2 <- right_join(speciesList,dt2, by ="Species") %>% 
@@ -464,9 +474,10 @@ dt3 <- left_join(dt5,dt6, by = "GIS.key") %>%
 # df4 will be the final data frame with the above calcofi data
 df4 <- rbind(dt1,dt2)
 df4 <- rbind(df4,dt3)
-df4 <- add_column(df4, effort = df4$Length / (df4$Time * 3600)) # get effort of length / time *3600 (time is in seconds)
+df4 <- add_column(df4, effort = (df4$Area / 1000000) / (df4$Time / 3600)) # get effort of area km2 / time hr
 df4 <- df4 %>% 
-  select(Date,Longitude.Mid,Latitude.Mid,scientificName,effort)
+  select(Date,Longitude.Mid,Latitude.Mid,scientificName,effort) %>% 
+  filter(!(effort == "Inf"))
 colnames(df4) <- c("eventDate","decimalLongitude","decimalLatitude","scientificName","effort")
 options(digits = 6)
 df4 <- df4 %>%
@@ -485,7 +496,7 @@ calco <- CalCOFI_NMFS_3a9eb868_6924_4776_8040_bd635cbd2bfd %>%
 # Removing scientificName that is genus only
 gensp <- calco %>% 
   select(scientificName)            # Create data frame with only scientific names
-freq <- as.data.frame(table(gensp)) # Create a data frame with species names and how often they appear in dataset "Aves_EEZ"
+freq <- as.data.frame(table(gensp)) # Create a data frame with species names and how often they appear in dataset "calco"
 num_gs <- count(freq)               # Counts the number of genus/genus species found in dataset "freq"
 
 v1 <- gensp                         # vector with scientificNames
@@ -496,7 +507,7 @@ colnames(species) <- c("scientificName", "v2")
 species <- alpha(species)           # Gives True/False whether scientifcName contains a space
 species <- as.data.frame(species)   # Creating into a vector
 
-# Trying to merge "species" with "Aves_EEZ" to remove genus only names
+# Trying to merge "species" with "calco" to remove genus only names
 df1 <- c(species,calco)             # Inputting "species" T/F into "eco" dataframe
 df2 <- as.data.frame(df1) %>% 
   filter(species == "TRUE")         # Making it readable as a dataframe and removing genus only
