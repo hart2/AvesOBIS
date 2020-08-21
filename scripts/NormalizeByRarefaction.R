@@ -104,48 +104,147 @@ p0 # view map
 
 # Separate Data by Subregion ----------------------------------------------
 
-# want to filter out the necessary data from each region using polygons dat.sel_#
-aves1 <- Aves %>% 
-  filter() # North Brazil shelf
+# want to filter out the necessary data from each region using LMEs
+# Use GIS with LME66.shp and Aves.csv to separate into regions
+# write.csv(Aves, file = "C:\\Users\\samantha\\Documents\\Aves.csv") # saving Aves.csv to local directory
+setwd("~/LME subregions")
 
-aves2 <- Aves %>% 
-  filter() # California Current
+california     <- read_csv("CaliforniaCurrentLMEspecies.csv")
+caribbean      <- read_csv("CarribbeanLMEspecies.csv")
+gulfofMexico   <- read_csv("GoMLMEspecies.csv")
+gulfofAlaska   <- read_csv("GulfofAlaskaLMEspecies.csv")
+humboldt       <- read_csv("HumboldtLMEspecies.csv")
+neUSShelf      <- read_csv("NEUSShelfLMEspecies.csv")
+northBrazilian <- read_csv("NorthBrazilianShelfLMEspecies.csv")
+pacificCentral <- read_csv("PacificCentralAmericanLMEspecies.csv")
+southBrazilian <- read_csv("South Brazilian Shelf LME Species.csv")
+pacificCentral <- read_csv("PacificCentralAmericanLMEspecies.csv")
+patagonia      <- read_csv("PatagoniaLMEspecies.csv")
+seUSShelf      <- read_csv("SEUSShelfLMEspecies.csv")
 
-aves3 <- Aves %>% 
-  filter() # Gulf of California
+setwd("~/github/AvesOBIS")
 
-aves4 <- Aves %>% 
-  filter() # Gulf of Mexico
+# select variables you need for analysis
+california           <- california %>% 
+  select(scientific,eventDate,decimalLon,decimalLat,basisOfRec,date_year,  
+         individual, identified, datasetID, datasetNam, dataset_id, institutio, 
+         ownerInsti, collection, catalogNum, occurrence, samplingEf)
+colnames(california) <- c("scientificName","eventDate","decimalLongitude",
+                          "decimalLatitude","basisOfRecord","date_year",  
+                          "individualCount","identifiedBy","datasetID","datasetName",
+                          "dataset_id", "institutionCode","ownerInstitutionCode",
+                          "collectionCode","catalogNumber","occurrenceStatus","samplingEffort")
+california <- add_column(california, LME = "California Current")
 
-aves5 <- Aves %>% 
-  filter() # Southeast U.S. Continental Shelf
+caribbean           <- caribbean %>% 
+  select(scientific,eventDate,decimalLon,decimalLat,basisOfRec,date_year,  
+         individual, identified, datasetID, datasetNam, dataset_id, institutio, 
+         ownerInsti, collection, catalogNum, occurrence, samplingEf)
+colnames(caribbean) <- c("scientificName","eventDate","decimalLongitude",
+                          "decimalLatitude","basisOfRecord","date_year",  
+                          "individualCount","identifiedBy","datasetID","datasetName",
+                          "dataset_id", "institutionCode","ownerInstitutionCode",
+                          "collectionCode","catalogNumber","occurrenceStatus","samplingEffort")
+caribbean <- add_column(caribbean, LME = "Caribbean Sea")
 
-aves6 <- Aves %>% 
-  filter() # Northeast U.S. Continental Shelf
+gulfofMexico           <- gulfofMexico %>% 
+  select(scientific,eventDate,decimalLon,decimalLat,basisOfRec,date_year,  
+         individual, identified, datasetID, datasetNam, dataset_id, institutio, 
+         ownerInsti, collection, catalogNum, occurrence, samplingEf)
+colnames(gulfofMexico) <- c("scientificName","eventDate","decimalLongitude",
+                          "decimalLatitude","basisOfRecord","date_year",  
+                          "individualCount","identifiedBy","datasetID","datasetName",
+                          "dataset_id", "institutionCode","ownerInstitutionCode",
+                          "collectionCode","catalogNumber","occurrenceStatus","samplingEffort")
+gulfofMexico <- add_column(gulfofMexico, LME = "Gulf of Mexico")
 
-aves7 <- Aves %>% 
-  filter() # Scotian Shelf
+gulfofAlaska           <- gulfofAlaska %>% 
+  select(scientific,eventDate,decimalLon,decimalLat,basisOfRec,date_year,  
+         individual, identified, datasetID, datasetNam, dataset_id, institutio, 
+         ownerInsti, collection, catalogNum, occurrence, samplingEf)
+colnames(gulfofAlaska) <- c("scientificName","eventDate","decimalLongitude",
+                            "decimalLatitude","basisOfRecord","date_year",  
+                            "individualCount","identifiedBy","datasetID","datasetName",
+                            "dataset_id", "institutionCode","ownerInstitutionCode",
+                            "collectionCode","catalogNumber","occurrenceStatus","samplingEffort")
+gulfofAlaska <- add_column(gulfofAlaska, LME = "Gulf of Alaska")
 
-aves8 <- Aves %>% 
-  filter() # Pacific Central-American
+humboldt           <- humboldt %>% 
+  select(scientific,eventDate,decimalLon,decimalLat,basisOfRec,date_year,  
+         individual, identified, datasetID, datasetNam, dataset_id, institutio, 
+         ownerInsti, collection, catalogNum, occurrence, samplingEf)
+colnames(humboldt) <- c("scientificName","eventDate","decimalLongitude",
+                            "decimalLatitude","basisOfRecord","date_year",  
+                            "individualCount","identifiedBy","datasetID","datasetName",
+                            "dataset_id", "institutionCode","ownerInstitutionCode",
+                            "collectionCode","catalogNumber","occurrenceStatus","samplingEffort")
+humboldt <- add_column(humboldt, LME = "Humboldt Current")
 
-aves9 <- Aves %>% 
-  filter() # Caribbean Sea
+neUSShelf           <- neUSShelf %>% 
+  select(scientific,eventDate,decimalLon,decimalLat,basisOfRec,date_year,  
+         individual, identified, datasetID, datasetNam, dataset_id, institutio, 
+         ownerInsti, collection, catalogNum, occurrence, samplingEf)
+colnames(neUSShelf) <- c("scientificName","eventDate","decimalLongitude",
+                            "decimalLatitude","basisOfRecord","date_year",  
+                            "individualCount","identifiedBy","datasetID","datasetName",
+                            "dataset_id", "institutionCode","ownerInstitutionCode",
+                            "collectionCode","catalogNumber","occurrenceStatus","samplingEffort")
+neUSShelf <- add_column(neUSShelf, LME = "Northeast U.S. Continental Shelf")
 
-aves10 <- Aves %>% 
-  filter() # Humboldt Current
+northBrazilian           <- northBrazilian %>% 
+  select(scientific,eventDate,decimalLon,decimalLat,basisOfRec,date_year,  
+         individual, identified, datasetID, datasetNam, dataset_id, institutio, 
+         ownerInsti, collection, catalogNum, occurrence, samplingEf)
+colnames(northBrazilian) <- c("scientificName","eventDate","decimalLongitude",
+                            "decimalLatitude","basisOfRecord","date_year",  
+                            "individualCount","identifiedBy","datasetID","datasetName",
+                            "dataset_id", "institutionCode","ownerInstitutionCode",
+                            "collectionCode","catalogNumber","occurrenceStatus","samplingEffort")
+northBrazilian <- add_column(northBrazilian, LME = "North Brazil Shelf")
 
-aves11 <- Aves %>% 
-  filter() # Patagonian Shelf
+pacificCentral           <- pacificCentral %>% 
+  select(scientific,eventDate,decimalLon,decimalLat,basisOfRec,date_year,  
+         individual, identified, datasetID, datasetNam, dataset_id, institutio, 
+         ownerInsti, collection, catalogNum, occurrence, samplingEf)
+colnames(pacificCentral) <- c("scientificName","eventDate","decimalLongitude",
+                              "decimalLatitude","basisOfRecord","date_year",  
+                              "individualCount","identifiedBy","datasetID","datasetName",
+                              "dataset_id", "institutionCode","ownerInstitutionCode",
+                              "collectionCode","catalogNumber","occurrenceStatus","samplingEffort")
+pacificCentral <- add_column(pacificCentral, LME = "Pacific Central-American Coastal")
 
-aves12 <- Aves %>% 
-  filter() # South Brazil Shelf
+patagonia           <- patagonia %>% 
+  select(scientific,eventDate,decimalLon,decimalLat,basisOfRec,date_year,  
+         individual, identified, datasetID, datasetNam, dataset_id, institutio, 
+         ownerInsti, collection, catalogNum, occurrence, samplingEf)
+colnames(patagonia) <- c("scientificName","eventDate","decimalLongitude",
+                              "decimalLatitude","basisOfRecord","date_year",  
+                              "individualCount","identifiedBy","datasetID","datasetName",
+                              "dataset_id", "institutionCode","ownerInstitutionCode",
+                              "collectionCode","catalogNumber","occurrenceStatus","samplingEffort")
+patagonia <- add_column(patagonia, LME = "Patagonian Shelf")
 
-aves13 <- Aves %>% 
-  filter() # East Brazil Shelf
+seUSShelf           <- seUSShelf %>% 
+  select(scientific,eventDate,decimalLon,decimalLat,basisOfRec,date_year,  
+         individual, identified, datasetID, datasetNam, dataset_id, institutio, 
+         ownerInsti, collection, catalogNum, occurrence, samplingEf)
+colnames(seUSShelf) <- c("scientificName","eventDate","decimalLongitude",
+                              "decimalLatitude","basisOfRecord","date_year",  
+                              "individualCount","identifiedBy","datasetID","datasetName",
+                              "dataset_id", "institutionCode","ownerInstitutionCode",
+                              "collectionCode","catalogNumber","occurrenceStatus","samplingEffort")
+seUSShelf <- add_column(seUSShelf, LME = "Southeast U.S. Continental Shelf")
 
-aves14 <- Aves %>% 
-  filter() # Newfoundland-Labrador Shelf
+southBrazilian           <- southBrazilian %>% 
+  select(scientific,eventDate,decimalLon,decimalLat,basisOfRec,date_year,  
+         individual, identified, datasetID, datasetNam, dataset_id, institutio, 
+         ownerInsti, collection, catalogNum, occurrence, samplingEf)
+colnames(southBrazilian) <- c("scientificName","eventDate","decimalLongitude",
+                              "decimalLatitude","basisOfRecord","date_year",  
+                              "individualCount","identifiedBy","datasetID","datasetName",
+                              "dataset_id", "institutionCode","ownerInstitutionCode",
+                              "collectionCode","catalogNumber","occurrenceStatus","samplingEffort")
+southBrazilian <- add_column(southBrazilian, LME = "South Brazil Shelf")
 
 
 # Optimization of sampling ------------------------------------------------
