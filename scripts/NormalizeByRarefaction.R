@@ -247,6 +247,16 @@ colnames(southBrazilian) <- c("scientificName","eventDate","decimalLongitude",
                               "collectionCode","catalogNumber","occurrenceStatus","samplingEffort")
 southBrazilian <- add_column(southBrazilian, LME = "South Brazil Shelf")
 
+x       <- rbind(california,caribbean) %>% 
+          rbind(gulfofAlaska) 
+AvesLME <- rbind(x,gulfofMexico) %>% 
+          rbind(humboldt) %>% 
+          rbind(neUSShelf) %>% 
+          rbind(northBrazilian) %>% 
+          rbind(pacificCentral) %>% 
+          rbind(patagonia) %>% 
+          rbind(seUSShelf) %>% 
+          rbind(southBrazilian)
 
 # Optimization of sampling ------------------------------------------------
 setwd("~/github/AvesOBIS")
