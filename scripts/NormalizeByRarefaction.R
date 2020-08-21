@@ -257,6 +257,10 @@ AvesLME <- rbind(x,gulfofMexico) %>%
           rbind(patagonia) %>% 
           rbind(seUSShelf) %>% 
           rbind(southBrazilian)
+# change AvesLME eventDate format
+
+
+y       <- left_join(Aves,AvesLME)
 
 # Optimization of sampling ------------------------------------------------
 setwd("~/github/AvesOBIS")
