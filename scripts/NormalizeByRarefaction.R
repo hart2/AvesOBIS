@@ -18,6 +18,7 @@ library(tidyr) # for `gather()`
 library(readr) # for `write_tsv()`
 library(leaflet)
 library(lubridate)
+library(tidyverse)
 library(sp)
 library(sf)
 library(iNEXT)
