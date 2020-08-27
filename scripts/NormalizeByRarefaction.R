@@ -257,9 +257,12 @@ AvesLME <- rbind(x,gulfofMexico) %>%
           rbind(patagonia) %>% 
           rbind(seUSShelf) %>% 
           rbind(southBrazilian)
+
 # change AvesLME eventDate format
 
-# Find species richness per LME
+
+# Find species richness per LME before rarefaction----------------------------------
+
 california_sr <- data.frame(unique(california$scientificName))
 colnames(california_sr) <- c("California Current") 
 
