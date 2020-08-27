@@ -9,5 +9,5 @@ x <- df4 %>%
   select(scientificName,effort) %>% 
   arrange(`scientificName`)
 
-write.csv(x,"C:\\Users\\samantha\\Documents\\Chp1\\calco.csv", row.names = FALSE)
+write.csv(x,"C:\\Users\\samantha\\Documents\\Chp1\\calco1.csv", row.names = FALSE)
 # I manipulated the file in excel
