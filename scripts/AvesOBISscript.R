@@ -24,7 +24,7 @@ library(sf)
 library(rnaturalearth)
 
 # data downloaded from OBIS already within lat long limits of the study
-# upload AvesEEZ.csv into R (done previously)
+Aves_EEZ <- read.csv("~/Chp1/data/Aves_EEZ.csv")
 Aves_EEZ <- Aves_EEZ %>% 
   select(scientificName,eventDate,decimalLongitude,decimalLatitude,basisOfRecord,date_year,  
          individualCount, identifiedBy, datasetID, datasetName, dataset_id, institutionCode, 

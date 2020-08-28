@@ -394,8 +394,9 @@ rm(usgs1,usgs2,usgs3,usgs4,usgs5,usgs6,usgs7,usgs8,usgs9,usgs10,usgs11,usgs15,
 rm(usgs_eaec7873_a1d8_43cf_baa2_27b2772a8d1f)
 # Ecological Baseline Studies of the U.S. Outer Continental Shelf  --------
 # AERIAL SURVEYS
-
-eco <- ecologicalBaseline_b26ccb50_aab3_400d_ac62_b2b421a25b6b %>%
+library(readr)
+eco <- read_csv("~/Chp1/data/ecologicalBaseline_b26ccb50-aab3-400d-ac62-b2b421a25b6b.csv")
+eco <- eco %>%
   filter(!(scientificName == "")) %>% 
   select(scientificName,eventDate,decimalLongitude,decimalLatitude,basisOfRecord,date_year,  
          individualCount, identifiedBy, institutionCode, ownerInstitutionCode, collectionCode, catalogNumber, 
