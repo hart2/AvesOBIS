@@ -327,12 +327,12 @@ LME_sr <- as.data.frame(t(LME_sr))
 colnames(LME_sr) <- c("speciesRichness")
 LME_sr$LME       <- c("California Current","Caribbean Sea","Gulf of Alaska","Gulf of Mexico",
                      "Humboldt Current","Northeast U.S. Continental","North Brazil Shelf",
-                     "Pacific Central-American Coastal","Patagonian Shelf",
+                     "Pacific Central-American","Patagonian Shelf",
                      "Southeast U.S. Continental","South Brazil Shelf")
 
 # plot
 my_title <- expression(paste("Species Richness among LMEs from 1960 - 2018"))
-g <- ggplot(data= LME_sr, aes(x = reorder(LME,-speciesRichness), y = speciesRichness))+
+g <- ggplot(data= LME_sr, aes(x = LME, y = speciesRichness))+
      geom_bar(stat = "identity", fill = "steelblue")+
      labs(x = "LME", y = "Species Richness", title = my_title)+
      theme(plot.title = element_text(h=0.5))
