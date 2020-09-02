@@ -257,14 +257,86 @@ AvesLME <- rbind(x,gulfofMexico) %>%
           rbind(patagonia) %>% 
           rbind(seUSShelf) %>% 
           rbind(southBrazilian)
+
 # change AvesLME eventDate format
 
 
-y       <- left_join(Aves,AvesLME)
+# Find species richness per LME before rarefaction----------------------------------
 
-# Optimization of sampling ------------------------------------------------
-setwd("~/github/AvesOBIS")
-source("scripts/covstop.R")
+california_sr <- data.frame(unique(california$scientificName))
+colnames(california_sr) <- c("California Current") 
 
-# generate rarefaction curves by region
+caribbean_sr <- data.frame(unique(caribbean$scientificName))
+colnames(caribbean_sr) <- c("Caribbean Sea")
 
+gulfofAlaska_sr <- data.frame(unique(gulfofAlaska$scientificName))
+colnames(gulfofAlaska_sr) <- c("Gulf of Alaska")
+
+gulfofMexico_sr <- data.frame(unique(gulfofMexico$scientificName))
+colnames(gulfofMexico_sr) <- c("Gulf of Mexico")
+
+humboldt_sr <- data.frame(unique(humboldt$scientificName))
+colnames(humboldt_sr) <- c("Humboldt Current")
+
+neUSShelf_sr <- data.frame(unique(neUSShelf$scientificName))
+colnames(neUSShelf_sr) <- c("Northeast U.S. Continental Shelf")
+
+northBrazilian_sr <- data.frame(unique(northBrazilian$scientificName))
+colnames(northBrazilian_sr) <- c("North Brazil Shelf")
+
+pacificCentral_sr <- data.frame(unique(pacificCentral$scientificName))
+colnames(pacificCentral_sr) <- c("Pacific Central-American Coastal")
+
+patagonia_sr <- data.frame(unique(patagonia$scientificName))
+colnames(patagonia_sr) <- c("Patagonian Shelf")
+
+seUSShelf_sr <- data.frame(unique(seUSShelf$scientificName))
+colnames(seUSShelf_sr) <- c("Southeast U.S. Continental Shelf")
+
+southBrazilian_sr <- data.frame(unique(southBrazilian$scientificName))
+colnames(southBrazilian_sr) <- c("South Brazil Shelf")
+
+x   <- merge(data.frame(california_sr, row.names=NULL), data.frame(caribbean_sr, row.names=NULL), 
+           by = 0, all = TRUE)[-1]
+
+y   <- nrow(california_sr)
+y1  <- nrow(caribbean_sr)
+y2  <- nrow(gulfofAlaska_sr)
+y3  <- nrow(gulfofMexico_sr)
+y4  <- nrow(humboldt_sr)
+y5  <- nrow(neUSShelf_sr)
+y6  <- nrow(northBrazilian_sr)
+y7  <- nrow(pacificCentral_sr)
+y8  <- nrow(patagonia_sr)
+y9  <- nrow(seUSShelf_sr)
+y10 <- nrow(southBrazilian_sr)
+
+
+LME_sr <- cbind(y,y1) %>% 
+  cbind(y2) %>% 
+  cbind(y3) %>% 
+  cbind(y4) %>% 
+  cbind(y5) %>% 
+  cbind(y6) %>% 
+  cbind(y7) %>% 
+  cbind(y8) %>% 
+  cbind(y9) %>% 
+  cbind(y10)
+
+LME_sr <- as.data.frame(t(LME_sr))
+colnames(LME_sr) <- c("speciesRichness")
+LME_sr$LME       <- c("California Current","Caribbean Sea","Gulf of Alaska","Gulf of Mexico",
+                     "Humboldt Current","Northeast U.S. Continental","North Brazil Shelf",
+                     "Pacific Central-American","Patagonian Shelf",
+                     "Southeast U.S. Continental","South Brazil Shelf")
+
+# plot
+my_title <- expression(paste("Species Richness among LMEs from 1960 - 2018"))
+g <- ggplot(data= LME_sr, aes(x = LME, y = speciesRichness))+
+     geom_bar(stat = "identity", fill = "steelblue")+
+     labs(x = "LME", y = "Species Richness", title = my_title)+
+     theme(plot.title = element_text(h=0.5))
+
+g
+
+  

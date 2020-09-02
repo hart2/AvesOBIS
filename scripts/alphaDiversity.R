@@ -3,7 +3,7 @@
 # Determine how to find alpha diversity per region/habitat (geographic maps?)
 
 # set up the first year
-Avesperyr <- Aves_EEZnd %>%
+Avesperyr <- Aves_EEZ %>%
   select(date_year,scientificName) %>%
   filter(date_year == 1961) 
 Avesperyr <- unique(Avesperyr)
@@ -11,7 +11,7 @@ Avesperyr <- count(Avesperyr)
 
 # join all following years
 for(year in 1962:2018){
-  count <- Aves_EEZnd %>%
+  count <- Aves_EEZ %>%
     select(date_year,scientificName) %>%
     filter(date_year == year) 
   count <- unique(count)
@@ -22,79 +22,79 @@ for(year in 1962:2018){
 
 # Years are missing, add them by hand (Years: 1963, 1964, 1966:1968, 1997, 2004, 2010:2012, 2014, 2018)
 
-cnt_1962 <- Aves_EEZnd %>%
+cnt_1962 <- Aves_EEZ %>%
   select(date_year,scientificName) %>%
   filter(date_year == 1962)
 cnt_1962 <- unique(cnt_1962)
 cnt_1962 <- count(cnt_1962)
 
-cnt_1963 <- Aves_EEZnd %>%
+cnt_1963 <- Aves_EEZ %>%
   select(date_year,scientificName) %>%
   filter(date_year == 1963)
 cnt_1963 <- unique(cnt_1963)
 cnt_1963 <- count(cnt_1963)
 
-cnt_1964 <- Aves_EEZnd %>%
+cnt_1964 <- Aves_EEZ %>%
   select(date_year,scientificName) %>%
   filter(date_year == 1964)
 cnt_1964 <- unique(cnt_1964)
 cnt_1964 <- count(cnt_1964)
 
-cnt_1966 <- Aves_EEZnd %>%
+cnt_1966 <- Aves_EEZ %>%
   select(date_year,scientificName) %>%
   filter(date_year == 1966)
 cnt_1966 <- unique(cnt_1966)
 cnt_1966 <- count(cnt_1966)
 
-cnt_1967 <- Aves_EEZnd %>%
+cnt_1967 <- Aves_EEZ %>%
   select(date_year,scientificName) %>%
   filter(date_year == 1967)
 cnt_1967 <- unique(cnt_1967)
 cnt_1967 <- count(cnt_1967)
 
-cnt_1968 <- Aves_EEZnd %>%
+cnt_1968 <- Aves_EEZ %>%
   select(date_year,scientificName) %>%
   filter(date_year == 1968)
 cnt_1968 <- unique(cnt_1968)
 cnt_1968 <- count(cnt_1968)
 
-cnt_1997 <- Aves_EEZnd %>%
+cnt_1997 <- Aves_EEZ %>%
   select(date_year,scientificName) %>%
   filter(date_year == 1997)
 cnt_1997 <- unique(cnt_1997)
 cnt_1997 <- count(cnt_1997)
 
-cnt_2004 <- Aves_EEZnd %>%
+cnt_2004 <- Aves_EEZ %>%
   select(date_year,scientificName) %>%
   filter(date_year == 2004)
 cnt_2004 <- unique(cnt_2004)
 cnt_2004 <- count(cnt_2004)
 
-cnt_2010 <- Aves_EEZnd %>%
+cnt_2010 <- Aves_EEZ %>%
   select(date_year,scientificName) %>%
   filter(date_year == 2010)
 cnt_2010 <- unique(cnt_2010)
 cnt_2010 <- count(cnt_2010)
 
-cnt_2011 <- Aves_EEZnd %>%
+cnt_2011 <- Aves_EEZ %>%
   select(date_year,scientificName) %>%
   filter(date_year == 2011)
 cnt_2011 <- unique(cnt_2011)
 cnt_2011 <- count(cnt_2011)
 
-cnt_2012 <- Aves_EEZnd %>%
+cnt_2012 <- Aves_EEZ %>%
   select(date_year,scientificName) %>%
   filter(date_year == 2012)
 cnt_2012 <- unique(cnt_2012)
 cnt_2012 <- count(cnt_2012)
 
-cnt_2014 <- Aves_EEZnd %>%
+cnt_2014 <- Aves_EEZ %>%
   select(date_year,scientificName) %>%
   filter(date_year == 2014)
 cnt_2014 <- unique(cnt_2014)
 cnt_2014 <- count(cnt_2014)
 
-cnt_2018 <- Aves_EEZnd %>%
+cnt_2018 <- Aves_EEZ %>%
   select(date_year,scientificName) %>%
   filter(date_year == 2018)
 cnt_2018 <- unique(cnt_2018)

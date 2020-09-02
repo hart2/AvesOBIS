@@ -7,11 +7,13 @@
 # Load required libraries
 library(iNEXT)
 library(tidyverse)
+library(readr)
 
-x <- ECUADOR_GALAPAGOS_ALL_ipt_occurrence
+x <- read_csv("~/ECUADOR-GALAPAGOS-ALL_ipt_occurrence.csv")
 
 # Load function to compute coverage-based stopping
-source("R/covstop.R")
+setwd("~/github/AvesOBIS")
+source("~/github/AvesOBIS/scripts/covstop.R")
 
 # Read in data
 
@@ -77,7 +79,7 @@ rare <- do.call(rbind, lapply(unique(x$locality), function(i) {
       
       z <- as.incfreq(mat) # ERROR: could not find function "as.incfreq"
       
-      out <- iNEXT(z, datatype = "incidence_freq")
+      out <- iNEXT(z, datatype = "incidence_freq") 
       
       ret <- out$iNextEst
       
@@ -164,3 +166,136 @@ ggsave(rareplot, device = "pdf", width = 10, height = 5, units = "in")
       # legend.position = "none"
     )
 )
+
+### Delete rows from specific localities in 'rare' data frame
+rare2 <- rare[!grepl("MASSACHUSETTS", rare$locality),] ### this allowes to generate 'rare_plot_2'
+
+# Plot results with curves colored according to locality  
+(rareplot_1 <- ggplot() +
+    geom_line(data = subset(rare2, method == "interpolated" & strata == strata), aes(x = t, y = qD, group = paste(locality, strata), col = locality)) + 
+    geom_line(data = subset(rare2, method == "extrapolated" & strata == strata), aes(x = t, y = qD, group = paste(locality, strata), col = locality), lty = 3) + 
+    geom_point(data = subset(rare2, method == "observed" & strata == strata), aes(x = t, y = qD, group = paste(locality, strata), col = locality), size = 2) + 
+    ylim(0, 65) + 
+    labs(x = "Number of samples", y = "Species richness") + 
+    facet_grid( ~ strata, scales = "free_x") + 
+    theme_bw(base_size = 14) +
+    theme(
+      panel.grid.major = element_blank(),
+      panel.grid.minor = element_blank(),
+      # legend.position = "none"
+    )
+)
+
+### Calculate % coverage based on observed number of species and maximum extrapolated values
+
+sel_site = "ANTARTICA"
+tide_stratum = "MIDTIDE"
+inter_data <- subset(rare2, method == "interpolated" & strata == tide_stratum & locality == sel_site)
+extra_data <- subset(rare2, method == "extrapolated" & strata == tide_stratum & locality == sel_site)
+obs_data <- subset(rare2, method == "observed" & strata == tide_stratum & locality == sel_site)
+
+spp_cover <- obs_data$qD/max(extra_data$qD)
+
+#####-----------------------------------------------------------------------------------------------
+
+### Delete rows from specific localities in 'samps' data frame
+p2p <- p2p[!grepl("MASSACHUSETTS", p2p$locality),] ### this allowes to generate 'stopping_plot_3'
+
+# Run coverage optimization
+samps <- do.call(rbind, lapply(unique(p2p$locality), function(i) {
+  
+  x <- subset(p2p, locality == as.character(i)) 
+  
+  do.call(rbind, lapply(unique(x$site), function(j) {
+    
+    x <- subset(x, site == as.character(j)) 
+    
+    do.call(rbind, lapply(unique(x$strata), function(k) {
+      
+      print(paste(i, j, k))
+      
+      x <- subset(x, strata == as.character(k))
+      
+      if(nrow(x) == 0) data.frame() else {
+        
+        x$presence <- 1
+        
+        # Cast longways
+        mat <- x %>% select(quadrat, taxa, presence) %>% 
+          
+          pivot_wider(id_cols = quadrat, names_from = taxa, values_from = presence) 
+        
+        mat[is.na(mat)] <- 0
+        
+        data.frame(
+          x[1, 1:6],
+          totsamples = nrow(mat),
+          minsamples = covstop(mat[, -1])
+        )
+        
+      }
+      
+    } ) )
+    
+  } ) )
+  
+} ) )
+
+samps$strata <- factor(samps$strata, levels = c("HIGHTIDE", "MIDTIDE", "LOWTIDE"))
+
+samps$locality <- factor(samps$locality, levels = c("ANTARTICA", "PUNTAARENAS", "PUERTOMADRYN",  "CONCEPCIÃ“N", "REÃ‘ACA,VIÃ‘ADELMAR",
+                                                    "ARRAIALDOCABO", "APACOSTADASALGAS", "SANTACRUZ", "FERNANDODENORONHA", "ISLAGORGONA", 
+                                                    "NORTHERNMA", "BIDDEFORD","GIANTSTAIRS", "CHAMBERLAIN", "MAINE", "CENTRALMAINE"))
+
+# Generate summary figures
+samps.summary <- samps %>% group_by(locality, strata) %>% 
+  
+  # mutate(minsamples = minsamples / totsamples ) +
+  
+  summarize(mean.samples = mean(minsamples), se.samples = plotrix::std.error(minsamples), totsamples = mean(totsamples))
+
+(stopplot <- ggplot(samps.summary, aes(x = locality, y = mean.samples, group = strata, fill = strata)) +
+    geom_errorbar(aes(ymax = mean.samples + se.samples, ymin = mean.samples - se.samples), width = 0.3) +
+    geom_bar(stat = "identity") +
+    geom_point(aes(x = locality, y = totsamples, group = strata), shape = 23, fill = "red", size = 5) +
+    facet_grid(~ strata, scale = "free_y") +
+    scale_fill_manual(values = c("black", "dodgerblue3", "forestgreen")) +
+    labs(x = "", y = "Minimum number of samples") +
+    theme_bw(base_size = 14) +
+    theme(
+      axis.text.x = element_text(angle = 90, hjust = 1),
+      panel.grid.major = element_blank(),
+      panel.grid.minor = element_blank(),
+      legend.position = "none"
+    )
+)
+
+#ggsave("./output/Stopping plot.pdf", stopplot, device = "pdf", width = 11, height = 6, units = "in")
+
+### This extracts maximum values of extrapolated richness from each locality
+max_extra <- filter(rare2, method == "extrapolated" & locality == "ISLAGORGONA")
+max(max_extra$qD)
+
+### This calculates the difference between minimum number of samples needed for 100% coverage and actual number of samples collected
+
+min_coverage <- samps.summary$mean.samples
+collected_samps <- samps.summary$totsamples
+
+diff_samps <- collected_samps - min_coverage
+frac_samps <- diff_samps/min_coverage
+
+### covstop vs MultiSE
+
+covstop_data <- samps.summary[, c("locality", "strata", "mean.samples", "se.samples")]
+
+### use this for filtering by range value (need to run multSE_SSP.R first to generate 'multse.samples')
+# multse_data <- multse.samples[, c("samples", "mean", "upper", "lower", "Strata", "locality")] %>% 
+#   filter(mean < 0.11) %>% filter(mean > 0.09) 
+
+### use this for filtering by single value (need to run multSE_SSP.R first to generate 'multse.samples')
+multse_data <- multse.samples[, c("samples", "mean", "upper", "lower", "Strata", "locality")] %>% 
+  filter(mean <= 0.1)
+
+multse_min <- aggregate(multse_data$samples, by = list(multse_data$Strata, multse_data$locality), min)
+# multse_mean <- aggregate(multse_data$samples, by = list(multse_data$Strata, multse_data$locality), mean)
+# multse_sd <- aggregate(multse_data$samples, by = list(multse_data$Strata, multse_data$locality), sd)
