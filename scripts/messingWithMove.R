@@ -2,16 +2,16 @@ install.packages("move")
 library(move)
 
 ## create a move object from a Movebank csv file
-filePath<-system.file("extdata","leroy.csv.gz",package="move")
-data <- move(filePath)
-
+# filePath<-system.file("extdata","leroy.csv.gz",package="move")
+# data <- move(filePath)
+# 
 ## create a move object from non-Movebank data
-file <- read.table(filePath, header=TRUE, sep=",", dec=".")
-data <- move(x=file$location.long, y=file$location.lat, 
-             time=as.POSIXct(file$timestamp, format="%Y-%m-%d %H:%M:%S", tz="UTC"), 
-             data=file, proj=CRS("+proj=longlat +ellps=WGS84"), 
-             animal="Leroy", sensor="GPS")
-plot(data, type="b", pch=20)
+# file <- read.table(filePath, header=TRUE, sep=",", dec=".")
+# data <- move(x=file$location.long, y=file$location.lat, 
+#              time=as.POSIXct(file$timestamp, format="%Y-%m-%d %H:%M:%S", tz="UTC"), 
+#              data=file, proj=CRS("+proj=longlat +ellps=WGS84"), 
+#              animal="Leroy", sensor="GPS")
+# plot(data, type="b", pch=20)
 
 ## if the data contain multiple individuals a moveStack will be created
 fishersPath<-system.file("extdata","fishersSubset.csv.gz",package="move")
