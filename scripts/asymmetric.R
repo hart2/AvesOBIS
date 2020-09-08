@@ -168,7 +168,7 @@ ggsave(rareplot, device = "pdf", width = 10, height = 5, units = "in")
 )
 
 ### Delete rows from specific localities in 'rare' data frame
-rare2 <- rare[!grepl("MASSACHUSETTS", rare$locality),] ### this allowes to generate 'rare_plot_2'
+rare2 <- rare[!grepl("MASSACHUSETTS", rare$locality),] ### this allows to generate 'rare_plot_2'
 
 # Plot results with curves colored according to locality  
 (rareplot_1 <- ggplot() +
