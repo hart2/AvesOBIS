@@ -2,7 +2,7 @@
 
 install.packages("iNEXT")
 library(iNEXT)
-setwd("~/github/AavesOBIS")
+setwd("~/github/AvesOBIS")
 source("scripts/covstop.R")
 Avesnxt <- Aves %>% 
   select(scientificName,decimalLongitude,decimalLatitude,date_year,individualCount)
