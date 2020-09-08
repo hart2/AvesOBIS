@@ -4,6 +4,15 @@ install.packages("iNEXT")
 library(iNEXT)
 setwd("~/github/AvesOBIS")
 source("scripts/covstop.R")
+
+data(ciliates)
+y <- lapply(ciliates,as.abucount)
+
+
+
+
+
+
 Avesnxt <- Aves %>% 
   select(scientificName,decimalLongitude,decimalLatitude,date_year,individualCount)
 
