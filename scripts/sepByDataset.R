@@ -75,7 +75,7 @@ rare <- do.call(rbind, lapply(unique(usgs$datasetName), function(i) {
   
 } ) )
 
-# Plot results for the subdatasets collected by Normandeau
+# Plot results for the subdatasets collected
 rareplot_0 <- ggplot() +
   geom_line(data = subset(rare, method == "interpolated"), aes(x = t, y = qD, col = datasetName)) + 
   geom_line(data = subset(rare, method == "extrapolated"), aes(x = t, y = qD, col = datasetName), lty = 3) + 
@@ -229,7 +229,7 @@ rare2 <- do.call(rbind, lapply(unique(mms$datasetName), function(i) {
   
 } ) )
 
-# Plot results for the subdatasets collected by Normandeau
+# Plot results for the subdatasets collected
 rareplot_2 <- ggplot() +
   geom_line(data = subset(rare2, method == "interpolated"), aes(x = t, y = qD, col = datasetName)) + 
   geom_line(data = subset(rare2, method == "extrapolated"), aes(x = t, y = qD, col = datasetName), lty = 3) + 
@@ -310,7 +310,7 @@ rare3 <- do.call(rbind, lapply(unique(calcofi$datasetName), function(i) {
   
 } ) )
 
-# Plot results for the subdatasets collected by Normandeau
+# Plot results for the subdatasets collected
 rareplot_3 <- ggplot() +
   geom_line(data = subset(rare3, method == "interpolated"), aes(x = t, y = qD, col = datasetName)) + 
   geom_line(data = subset(rare3, method == "extrapolated"), aes(x = t, y = qD, col = datasetName), lty = 3) + 
@@ -388,7 +388,7 @@ rare4 <- do.call(rbind, lapply(unique(pirop$datasetName), function(i) {
   
 } ) )
 
-# Plot results for the subdatasets collected by Normandeau
+# Plot results for the subdatasets collected
 rareplot_4 <- ggplot() +
   geom_line(data = subset(rare4, method == "interpolated"), aes(x = t, y = qD, col = datasetName)) + 
   geom_line(data = subset(rare4, method == "extrapolated"), aes(x = t, y = qD, col = datasetName), lty = 3) + 
@@ -466,7 +466,7 @@ rare5 <- do.call(rbind, lapply(unique(wadfw$datasetName), function(i) {
   
 } ) )
 
-# Plot results for the subdatasets collected by Normandeau
+# Plot results for the subdatasets collected
 rareplot_5 <- ggplot() +
   geom_line(data = subset(rare5, method == "interpolated"), aes(x = t, y = qD, col = datasetName)) + 
   geom_line(data = subset(rare5, method == "extrapolated"), aes(x = t, y = qD, col = datasetName), lty = 3) + 
@@ -544,7 +544,7 @@ rare6 <- do.call(rbind, lapply(unique(sem$dataset_id), function(i) {
   
 } ) )
 
-# Plot results for the subdatasets collected by Normandeau
+# Plot results for the subdatasets collected
 rareplot_6 <- ggplot() +
   geom_line(data = subset(rare6, method == "interpolated"), aes(x = t, y = qD, col = dataset_id)) + 
   geom_line(data = subset(rare6, method == "extrapolated"), aes(x = t, y = qD, col = dataset_id), lty = 3) + 
