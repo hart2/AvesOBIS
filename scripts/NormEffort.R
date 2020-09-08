@@ -475,7 +475,7 @@ dt3 <- left_join(dt5,dt6, by = "GIS.key") %>%
 # df4 will be the final data frame with the above calcofi data
 df4 <- rbind(dt1,dt2)
 df4 <- rbind(df4,dt3)
-df4 <- add_column(df4, effort = (df4$Area / 1000000) / (df4$Time / 3600)) # get effort of area km2 / time hr
+df4 <- add_column(df4, effort = (df4$Time / 60)) # get effort of time (min)
 df4 <- df4 %>% 
   select(Date,Longitude.Mid,Latitude.Mid,scientificName,effort) %>% 
   filter(!(effort == "Inf"))
