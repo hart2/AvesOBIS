@@ -87,7 +87,21 @@ rareplot_0 <- ggplot() +
     panel.grid.minor = element_blank(),
     # legend.position = "none"
   )
-ggsave(rareplot_0, device = "pdf", width = 10, height = 5, units = "in")
+ggsave("USGS_data.png", rareplot_0, width = 10, height = 5, units = "in")
+
+### This extracts maximum values of extrapolated richness from dataset
+max_extra <- filter(rare, method == "extrapolated")
+max(max_extra$qD)
+
+### This calculates the difference between minimum number of samples needed for 
+#   100% coverage and actual number of samples collected
+
+min_coverage <- samps.summary$mean.samples
+collected_samps <- samps.summary$totsamples
+
+diff_samps <- collected_samps - min_coverage
+frac_samps <- diff_samps/min_coverage
+
 
 # Eco (Normandeau)--------------------------------------------------------------
 
@@ -167,7 +181,7 @@ rareplot_1 <- ggplot() +
       panel.grid.minor = element_blank(),
       # legend.position = "none"
       )
-ggsave(rareplot_1, device = "pdf", width = 10, height = 5, units = "in")
+ggsave("Normandeau_data.png", rareplot_1, width = 10, height = 5, units = "in")
 
 # MMS (BOEM) ---------------------------------------------------------------------
 mms <- Aves %>% 
@@ -242,7 +256,7 @@ rareplot_2 <- ggplot() +
     # legend.position = "none"
   )
 
-ggsave(rareplot_2, device = "pdf", width = 10, height = 5, units = "in")
+ggsave("BOEM_data.png", rareplot_2, width = 10, height = 5, units = "in")
 
 # CalCOFi (PRBO Conservation Science) ------------------------------------------
 
@@ -322,7 +336,7 @@ rareplot_3 <- ggplot() +
     panel.grid.minor = element_blank(),
     # legend.position = "none"
   )
-ggsave(rareplot_3, device = "pdf", width = 10, height = 5, units = "in")
+ggsave("PRBO_data.png", rareplot_3, width = 10, height = 5, units = "in")
 
 # Pirop (Canadian Wildlife Service)---------------------------------------------
 
@@ -400,7 +414,7 @@ rareplot_4 <- ggplot() +
     panel.grid.minor = element_blank(),
     # legend.position = "none"
   )
-ggsave(rareplot_4, device = "pdf", width = 10, height = 5, units = "in")
+ggsave("CWS_data.png", rareplot_4, width = 10, height = 5, units = "in")
 
 # WADFW (Washington Dept. of Fish and Wildlife)---------------------------------
 
@@ -478,7 +492,7 @@ rareplot_5 <- ggplot() +
     panel.grid.minor = element_blank(),
     # legend.position = "none"
   )
-ggsave(rareplot_5, device = "pdf", width = 10, height = 5, units = "in")
+ggsave("WADFW_data.png", rareplot_5, width = 10, height = 5, units = "in")
 
 # Southeast Mangrove (APTA or Argos tracking) ----------------------------------
 
@@ -556,7 +570,7 @@ rareplot_6 <- ggplot() +
     panel.grid.minor = element_blank(),
     # legend.position = "none"
   )
-ggsave(rareplot_6, device = "pdf", width = 10, height = 5, units = "in")
+ggsave("SoutheastMangrove_data.png", rareplot_6, width = 10, height = 5, units = "in")
 
 
 # Censo abundancia (CALIDRIS)--------------------------------------------------------
