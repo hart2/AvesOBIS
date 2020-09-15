@@ -68,7 +68,8 @@ rare <- do.call(rbind, lapply(unique(usgs$datasetName), function(i) {
     
     data.frame(
       datasetName = i,
-      ret[, c(1:2, 4)]
+      totsamples = nrow(mat),
+      minsamples = covstop(mat[, -1])
     )
     
   }
@@ -96,8 +97,8 @@ max(max_extra$qD)
 ### This calculates the difference between minimum number of samples needed for 
 #   100% coverage and actual number of samples collected
 
-min_coverage <- samps.summary$mean.samples
-collected_samps <- samps.summary$totsamples
+min_coverage <- rare$minsamples
+collected_samps <- rare$totsamples
 
 diff_samps <- collected_samps - min_coverage
 frac_samps <- diff_samps/min_coverage
@@ -182,6 +183,19 @@ rareplot_1 <- ggplot() +
       # legend.position = "none"
       )
 ggsave("Normandeau_data.png", rareplot_1, width = 10, height = 5, units = "in")
+
+### This extracts maximum values of extrapolated richness from dataset
+max_extra <- filter(rare1, method == "extrapolated")
+max(max_extra$qD)
+
+### This calculates the difference between minimum number of samples needed for 
+#   100% coverage and actual number of samples collected
+
+min_coverage <- mean(rare1$qD)
+collected_samps <- nrow(eco)
+
+diff_samps <- collected_samps - min_coverage
+frac_samps <- diff_samps/min_coverage
 
 # MMS (BOEM) ---------------------------------------------------------------------
 mms <- Aves %>% 

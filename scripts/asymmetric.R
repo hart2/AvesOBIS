@@ -77,7 +77,7 @@ rare <- do.call(rbind, lapply(unique(x$locality), function(i) {
       
       # z <- c(sum(mat), apply(mat, 1, sum))
       
-      z <- as.incfreq(mat) # ERROR: could not find function "as.incfreq"
+      z <- as.incfreq(mat) 
       
       out <- iNEXT(z, datatype = "incidence_freq") 
       
