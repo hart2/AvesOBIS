@@ -79,7 +79,7 @@ rare <- do.call(rbind, lapply(unique(usgs$datasetName), function(i) {
 # Plot results for the subdatasets collected
 rareplot_0 <- ggplot() +
   geom_line(data = subset(rare, method == "interpolated"), aes(x = t, y = qD, col = datasetName)) + 
-  geom_line(data = subset(rare, method == "extrapolated"), aes(x = t, y = qD, col = datasetName), lty = 3) + 
+  geom_line(data = subset(rare, method == "extrapolated"), aes(x = t, y = qD, col = datasetName), lty = 3) +                 
   geom_point(data = subset(rare, method == "observed"), aes(x = t, y = qD, col = datasetName), size = 2) + 
   labs(x = "Number of samples", y = "Species richness") + 
   theme_bw(base_size = 14) +
