@@ -67,6 +67,7 @@ usgs <- usgs %>%
   select(date_year,eventDate,scientificName,decimalLongitude,decimalLatitude)
 options(digits = 6)
 usgs$effort <- NA
+usgs$eventDate <- format(as.POSIXct(usgs$eventDate,format='%m/%d/%Y %H:%M'),format='%m/%d/%Y')
 
 seabird <- seabird_data_archive_2 %>% 
   select(year,observation_date,scientific_nm,observation_longitude,observation_latitude,transect_time_minutes) 
@@ -77,25 +78,23 @@ seabird <- seabird %>%
   # remove scientificName blanks
   filter(!(scientificName == "")) %>% 
   filter(date_year >= 1960 & date_year < 2018, decimalLatitude > -55)
+seabird$eventDate <- format(as.POSIXct(seabird$eventDate,format='%m/%d/%Y'),format='%m/%d/%Y')
 
 # Find Species per Year for USGS -------------------------------------------------
 # commented out data frames had 0 records
 
 df <- rbind(usgs, seabird) %>% 
-  # remove scientificName not found in usgs
-  filter(!(scientificName == "Ardea alba" | scientificName == "Actitis macularius" | 
-             scientificName == "Calonectris borealis")) %>% 
   filter(!(effort == "NA"))
 
 rm(df1,df2,freq,gensp,num_gs,v1,species)
 
 usgs1 <- df %>% 
-   filter(eventDate == "1/1/1978") %>% 
-   select(scientificName,effort) %>% 
+   filter(eventDate == "01/01/1978") %>% 
+   select(scientificName,effort) %>%     # effort is the average effort for total of single species identified
    arrange(`scientificName`)
 
 # column of averaged effort for a species for single day
-usgs1 <- aggregate(.~scientificName, FUN=mean, data=usgs1[, -3])
+usgs1 <- aggregate(.~scientificName, FUN=mean, data=usgs1[, -3])   # Here seems to be a good spot to count the abundance!!!!
 usgs1$date <- c("1/1/1978")
 
 usgs2 <- df %>% 
@@ -154,27 +153,27 @@ usgs9 <- df %>%
 usgs9 <- aggregate(.~scientificName, FUN=mean, data=usgs9[, -3])
 usgs9$eventDate <- c("1/11/1978")
 
-# usgs10 <- df %>% 
-#   filter(date_year == "1987") %>% 
-#   select(scientificName,effort) %>% 
-#   arrange(`scientificName`)
-# usgs10 <- aggregate(.~scientificName, FUN=mean, data=usgs10[, -3])
-# usgs10$year <- c(1987)
-# 
-# usgs11 <- df %>% 
-#   filter(date_year == "1988") %>% 
-#   select(scientificName,effort) %>% 
-#   arrange(`scientificName`)
-# usgs11 <- aggregate(.~scientificName, FUN=mean, data=usgs11[, -3])
-# usgs11$year <- c(1988)
-# 
-# usgs12 <- df %>%
-#   filter(date_year == "1989") %>%
-#   select(scientificName,effort) %>%
-#   arrange(`scientificName`)
-# usgs12 <- aggregate(.~scientificName, FUN=mean, data=usgs12[, -3])
-# usgs12$year <- c(1989)
-#
+usgs10 <- df %>%
+  filter(eventDate == "1/11/1979") %>%
+  select(scientificName,effort) %>%
+  arrange(`scientificName`)
+usgs10 <- aggregate(.~scientificName, FUN=mean, data=usgs10[, -3])
+usgs10$eventDate <- c("1/11/1979")
+
+usgs11 <- df %>%
+  filter(eventDate == "1/11/1984") %>%
+  select(scientificName,effort) %>%
+  arrange(`scientificName`)
+usgs11 <- aggregate(.~scientificName, FUN=mean, data=usgs11[, -3])
+usgs11$eventDate <- c("1/11/1984")
+
+usgs12 <- df %>%
+  filter(eventDate == "1/11/1985") %>%
+  select(scientificName,effort) %>%
+  arrange(`scientificName`)
+usgs12 <- aggregate(.~scientificName, FUN=mean, data=usgs12[, -3])
+usgs12$eventDate <- c("1/11/1985")
+
 # usgs13 <- df %>%
 #   filter(date_year == "1990") %>%
 #   select(scientificName,effort) %>%
