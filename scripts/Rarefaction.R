@@ -2,7 +2,9 @@
 # September 8th, 2020 
 
 library(tidyverse)
+library(tidyr)
 library(iNEXT)
+library(dplyr)
 library(devtools)
 library(ggplot2)
 
@@ -11,7 +13,7 @@ source("~/github/AvesOBIS/scripts/covstop.R")
 
 
 # USGS (USGS-FWS)---------------------------------------------------------------
-usgs <- Aves %>%
+usgs <- Aves_NA %>%
   filter(ownerInstitutionCode == "USGS-FWS") #has multiple sampling methods
 
 # write csv
@@ -24,6 +26,8 @@ sites <- read.csv("./usgsSites.csv", header = T)
 
 rare <- do.call(rbind, lapply(unique(usgs$datasetName), function(i) {
   
+  
+  # read in data
   x <- subset(sites, datasetName == i)
   
   if(nrow(x) == 0) data.frame() else {
@@ -32,9 +36,9 @@ rare <- do.call(rbind, lapply(unique(usgs$datasetName), function(i) {
     x$presence <- 1
     
     # Cast longways
-    mat <- x %>% select(X, scientificName, presence) %>% 
+    mat <- x %>% select(X, scientificName) %>% 
       
-      pivot_wider(id_cols = c(X), names_from = scientificName, values_from = presence) 
+      pivot_wider(id_cols = c(X), names_from = scientificName) 
     
     mat[is.na(mat)] <- 0
     
@@ -71,9 +75,7 @@ rare <- do.call(rbind, lapply(unique(usgs$datasetName), function(i) {
       totsamples = nrow(mat),
       minsamples = covstop(mat[, -1])
     )
-    
   }
-  
 } ) )
 
 # Plot results for the subdatasets collected
@@ -106,7 +108,7 @@ frac_samps <- diff_samps/min_coverage
 
 # Eco (Normandeau)--------------------------------------------------------------
 
-eco <- Aves %>% 
+eco <- Aves_NA %>% 
   filter(ownerInstitutionCode == "NORMANDEAU") #aerial surveys
 
 # write csv
@@ -198,7 +200,7 @@ diff_samps <- collected_samps - min_coverage
 frac_samps <- diff_samps/min_coverage
 
 # MMS (BOEM) ---------------------------------------------------------------------
-mms <- Aves %>% 
+mms <- Aves_NA %>% 
   filter (ownerInstitutionCode == "DOI;BOEM") #aerial surveys
 
 write.csv(mms, "./mmsSites.csv")
@@ -272,89 +274,22 @@ rareplot_2 <- ggplot() +
 
 ggsave("BOEM_data.png", rareplot_2, width = 10, height = 5, units = "in")
 
-# CalCOFi (PRBO Conservation Science) ------------------------------------------
+### This extracts maximum values of extrapolated richness from dataset
+max_extra <- filter(rare2, method == "extrapolated")
+max(max_extra$qD)
 
-calcofi <- Aves %>% 
-  filter(ownerInstitutionCode == "PRBO Conservation Science") #ship surveys
+### This calculates the difference between minimum number of samples needed for 
+#   100% coverage and actual number of samples collected
 
-# write csv
-write.csv(calcofi, "./calcofiSites.csv")
+min_coverage <- mean(rare2$qD)
+collected_samps <- nrow(mms)
 
-# Read in site lat/longs
-sites <- read.csv("./calcofiSites.csv", header = T)
-
-# Generate interpolation/extrapolation curves for each dataset
-
-rare3 <- do.call(rbind, lapply(unique(calcofi$datasetName), function(i) {
-  
-  x <- subset(sites, datasetName == i)
-  
-  if(nrow(x) == 0) data.frame() else {
-    
-    # summarize by dataset
-    x$presence <- 1
-    
-    # Cast longways
-    mat <- x %>% select(X, scientificName, presence) %>% 
-      
-      pivot_wider(id_cols = c(X), names_from = scientificName, values_from = presence) 
-    
-    mat[is.na(mat)] <- 0
-    
-    dnames <- list(colnames(mat)[-(1:2)], as.character(mat$X))
-    
-    mat <- t(as.matrix(mat)[, -(1:2), drop = FALSE])
-    
-    mat <- apply(mat, 2, as.numeric)
-    
-    dimnames(mat) <- dnames
-    
-    z <- as.incfreq(mat) 
-    
-    out <- iNEXT(z, datatype = "incidence_freq") 
-    
-    ret <- out$iNextEst
-    
-    idx <- which(ret$method == "observed")
-    
-    ret <- rbind.data.frame(
-      ret[ret$method == "interpolated", ],
-      ret[idx, ],
-      ret[idx, ],
-      ret[idx, ],
-      ret[ret$method == "extrapolated", ]
-    )
-    
-    ret[idx, "method"] <- "interpolated"
-    
-    ret[idx + 2, "method"] <- "extrapolated"
-    
-    data.frame(
-      datasetName = i,
-      ret[, c(1:2, 4)]
-    )
-    
-  }
-  
-} ) )
-
-# Plot results for the subdatasets collected
-rareplot_3 <- ggplot() +
-  geom_line(data = subset(rare3, method == "interpolated"), aes(x = t, y = qD, col = datasetName)) + 
-  geom_line(data = subset(rare3, method == "extrapolated"), aes(x = t, y = qD, col = datasetName), lty = 3) + 
-  geom_point(data = subset(rare3, method == "observed"), aes(x = t, y = qD, col = datasetName), size = 2) + 
-  labs(x = "Number of samples", y = "Species richness") + 
-  theme_bw(base_size = 14) +
-  theme(
-    panel.grid.major = element_blank(),
-    panel.grid.minor = element_blank(),
-    # legend.position = "none"
-  )
-ggsave("PRBO_data.png", rareplot_3, width = 10, height = 5, units = "in")
+diff_samps <- collected_samps - min_coverage
+frac_samps <- diff_samps/min_coverage
 
 # Pirop (Canadian Wildlife Service)---------------------------------------------
 
-pirop <- Aves %>% 
+pirop <- Aves_NA %>% 
   filter(ownerInstitutionCode == "Canadian Wildlife Service") #ship surveys
 
 # write csv
@@ -429,6 +364,20 @@ rareplot_4 <- ggplot() +
     # legend.position = "none"
   )
 ggsave("CWS_data.png", rareplot_4, width = 10, height = 5, units = "in")
+
+
+### This extracts maximum values of extrapolated richness from dataset
+max_extra <- filter(rare4, method == "extrapolated")
+max(max_extra$qD)
+
+### This calculates the difference between minimum number of samples needed for 
+#   100% coverage and actual number of samples collected
+
+min_coverage <- mean(rare4$qD)
+collected_samps <- nrow(pirop)
+
+diff_samps <- collected_samps - min_coverage
+frac_samps <- diff_samps/min_coverage
 
 # WADFW (Washington Dept. of Fish and Wildlife)---------------------------------
 
@@ -508,20 +457,45 @@ rareplot_5 <- ggplot() +
   )
 ggsave("WADFW_data.png", rareplot_5, width = 10, height = 5, units = "in")
 
-# Southeast Mangrove (APTA or Argos tracking) ----------------------------------
+# Censo abundancia (CALIDRIS)--------------------------------------------------------
 
-sem <- Aves %>% 
-  filter(institutionCode == "APTA" | institutionCode == "IPESCA")
+calidris <- Aves %>% 
+  filter(institutionCode == "CALIDRIS")
 
 # write csv
-write.csv(sem, "./semSites.csv")
+write.csv(sem, "./calidrisSites.csv")
 
 # Read in site lat/longs
-sites <- read.csv("./semSites.csv", header = T)
+sites <- read.csv("./calidrisSites.csv", header = T)
 
-rare6 <- do.call(rbind, lapply(unique(sem$dataset_id), function(i) {
+
+# Biomass 1980-1985 -------------------------------------------------------
+
+sayed <- Aves %>% 
+  filter(institutionCode == "Dr. S.Z. El-Sayed")
+
+# write csv
+write.csv(sem, "./sayedSites.csv")
+
+# Read in site lat/longs
+sites <- read.csv("./sayedSites.csv", header = T)
+
+# Seabird and cetacean sightings from Cruise SY002 of RV Shoyo Maru, Tropical Atlantic Ocean, Oct. 2000
+
+sc <- Aves_NA %>% 
+  filter(ownerInstitutionCode == "Institut de Recherche pour le Developpement, Departement des Ressources Vivantes")
+
+# write csv
+write.csv(sc, "./scSites.csv")
+
+# Read in site lat/longs
+sites <- read.csv("./scSites.csv", header = T)
+
+# Generate interpolation/extrapolation curves for each dataset
+
+rare <- do.call(rbind, lapply(unique(sc$datasetName), function(i) {
   
-  x <- subset(sites, dataset_id == i)
+  x <- subset(sites, datasetName == i)
   
   if(nrow(x) == 0) data.frame() else {
     
@@ -564,7 +538,7 @@ rare6 <- do.call(rbind, lapply(unique(sem$dataset_id), function(i) {
     ret[idx + 2, "method"] <- "extrapolated"
     
     data.frame(
-      dataset_id = i,
+      datasetName = i,
       ret[, c(1:2, 4)]
     )
     
@@ -572,11 +546,11 @@ rare6 <- do.call(rbind, lapply(unique(sem$dataset_id), function(i) {
   
 } ) )
 
-# Plot results for the subdatasets collected
-rareplot_6 <- ggplot() +
-  geom_line(data = subset(rare6, method == "interpolated"), aes(x = t, y = qD, col = dataset_id)) + 
-  geom_line(data = subset(rare6, method == "extrapolated"), aes(x = t, y = qD, col = dataset_id), lty = 3) + 
-  geom_point(data = subset(rare6, method == "observed"), aes(x = t, y = qD, col = dataset_id), size = 2) + 
+# Plot results for the subdatasets collected by Normandeau
+rareplot_1 <- ggplot() +
+  geom_line(data = subset(rare, method == "interpolated"), aes(x = t, y = qD, col = datasetName)) + 
+  geom_line(data = subset(rare, method == "extrapolated"), aes(x = t, y = qD, col = datasetName), lty = 3) + 
+  geom_point(data = subset(rare, method == "observed"), aes(x = t, y = qD, col = datasetName), size = 2) + 
   labs(x = "Number of samples", y = "Species richness") + 
   theme_bw(base_size = 14) +
   theme(
@@ -584,28 +558,17 @@ rareplot_6 <- ggplot() +
     panel.grid.minor = element_blank(),
     # legend.position = "none"
   )
-ggsave("SoutheastMangrove_data.png", rareplot_6, width = 10, height = 5, units = "in")
+ggsave("sc_data.png", rareplot_1, width = 10, height = 5, units = "in")
 
+### This extracts maximum values of extrapolated richness from dataset
+max_extra <- filter(rare, method == "extrapolated")
+max(max_extra$qD)
 
-# Censo abundancia (CALIDRIS)--------------------------------------------------------
+### This calculates the difference between minimum number of samples needed for 
+#   100% coverage and actual number of samples collected
 
-calidris <- Aves %>% 
-  filter(institutionCode == "CALIDRIS")
+min_coverage <- mean(rare$qD)
+collected_samps <- nrow(sc)
 
-# write csv
-write.csv(sem, "./calidrisSites.csv")
-
-# Read in site lat/longs
-sites <- read.csv("./calidrisSites.csv", header = T)
-
-
-# Biomass 1980-1985 -------------------------------------------------------
-
-sayed <- Aves %>% 
-  filter(institutionCode == "Dr. S.Z. El-Sayed")
-
-# write csv
-write.csv(sem, "./sayedSites.csv")
-
-# Read in site lat/longs
-sites <- read.csv("./sayedSites.csv", header = T)
+diff_samps <- collected_samps - min_coverage
+frac_samps <- diff_samps/min_coverage
