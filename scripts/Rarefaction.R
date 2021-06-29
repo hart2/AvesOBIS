@@ -381,7 +381,7 @@ frac_samps <- diff_samps/min_coverage
 
 # WADFW (Washington Dept. of Fish and Wildlife)---------------------------------
 
-wadfw <- Aves %>% 
+wadfw <- Aves_NA %>% 
   filter(ownerInstitutionCode == "Washington Dept. of Fish and Wildlife")
 
 # write csv
@@ -1534,5 +1534,182 @@ rm(Aves_NA1,AvesFamily)
 Aves_NA <- Aves_NA%>% filter(!(datasetName == "SEFSC Gomex Shelf 2000"))
 Aves_NA <- Aves_NA%>% filter(!(datasetName == "SEFSC Gomex Shelf 1998"))
 Aves_NA <- Aves_NA%>% filter(!(datasetName == "Sargasso 2004 - Seabirds"))
+
+
+# PRBO --------------------------------------------------------------------
+
+prbo <- Aves_NA %>% 
+  filter(datasetName == "CalCOFI and NMFS Seabird and Marine Mammal Observation Data, 1987-2006")
+
+# write csv
+write.csv(prbo, "./prboSites.csv")
+
+# Read in site lat/longs
+sites <- read.csv("./prboSites.csv", header = T)
+
+# Generate interpolation/extrapolation curves for each dataset
+
+rare <- do.call(rbind, lapply(unique(prbo$datasetName), function(i) {
+  
+  x <- subset(sites, datasetName == i)
+  
+  if(nrow(x) == 0) data.frame() else {
+    
+    # summarize by dataset
+    x$presence <- 1
+    
+    # Cast longways
+    mat <- x %>% select(X, scientificName, presence) %>% 
+      
+      pivot_wider(id_cols = c(X), names_from = scientificName, values_from = presence) 
+    
+    mat[is.na(mat)] <- 0
+    
+    dnames <- list(colnames(mat)[-(1:2)], as.character(mat$X))
+    
+    mat <- t(as.matrix(mat)[, -(1:2), drop = FALSE])
+    
+    mat <- apply(mat, 2, as.numeric)
+    
+    dimnames(mat) <- dnames
+    
+    z <- as.incfreq(mat) 
+    
+    out <- iNEXT(z, datatype = "incidence_freq") 
+    
+    ret <- out$iNextEst
+    
+    idx <- which(ret$method == "observed")
+    
+    ret <- rbind.data.frame(
+      ret[ret$method == "interpolated", ],
+      ret[idx, ],
+      ret[idx, ],
+      ret[idx, ],
+      ret[ret$method == "extrapolated", ]
+    )
+    
+    ret[idx, "method"] <- "interpolated"
+    
+    ret[idx + 2, "method"] <- "extrapolated"
+    
+    data.frame(
+      datasetName = i,
+      ret[, c(1:2, 4)]
+    )
+    
+  }
+  
+} ) )
+
+# Plot results for the subdatasets
+rareplot <- ggplot() +
+  geom_line(data = subset(rare, method == "interpolated"), aes(x = t, y = qD, col = datasetName)) + 
+  geom_line(data = subset(rare, method == "extrapolated"), aes(x = t, y = qD, col = datasetName), lty = 3) + 
+  geom_point(data = subset(rare, method == "observed"), aes(x = t, y = qD, col = datasetName), size = 2) + 
+  labs(x = "Number of samples", y = "Species richness") + 
+  theme_bw(base_size = 14) +
+  theme(
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    # legend.position = "none"
+  )
+ggsave("prbo_data.png", rareplot, width = 10, height = 5, units = "in")
+
+### This extracts maximum values of extrapolated richness from dataset
+max_extra <- filter(rare, method == "extrapolated")
+max(max_extra$qD)
+
+### This calculates the difference between minimum number of samples needed for 
+#   100% coverage and actual number of samples collected
+
+min_coverage <- mean(rare$qD)
+collected_samps <- nrow(prbo)
+
+diff_samps <- collected_samps - min_coverage
+frac_samps <- diff_samps/min_coverage
+
+Aves_NA <- Aves_NA %>% filter(!(datasetName == "CalCOFI and NMFS Seabird and Marine Mammal Observation Data, 1987-2006"))
+
+write.csv(Aves_NA, "./Aves_NA.csv")
+
+
+# Calidris - Monitoreo Aves SAMP 2015 -------------------------------------
+cal <- Aves_NA %>% 
+  filter(datasetName == "Monitoreo Aves SAMP 2015")
+
+# write csv
+write.csv(cal, "./calSites.csv")
+
+# Read in site lat/longs
+sites <- read.csv("./calSites.csv", header = T)
+
+rare5 <- do.call(rbind, lapply(unique(cal$datasetName), function(i) {
+  
+  x <- subset(sites, datasetName == i)
+  
+  if(nrow(x) == 0) data.frame() else {
+    
+    # summarize by dataset
+    x$presence <- 1
+    
+    # Cast longways
+    mat <- x %>% select(X, scientificName, presence) %>% 
+      
+      pivot_wider(id_cols = c(X), names_from = scientificName, values_from = presence) 
+    
+    mat[is.na(mat)] <- 0
+    
+    dnames <- list(colnames(mat)[-(1:2)], as.character(mat$X))
+    
+    mat <- t(as.matrix(mat)[, -(1:2), drop = FALSE])
+    
+    mat <- apply(mat, 2, as.numeric)
+    
+    dimnames(mat) <- dnames
+    
+    z <- as.incfreq(mat) 
+    
+    out <- iNEXT(z, datatype = "incidence_freq") 
+    
+    ret <- out$iNextEst
+    
+    idx <- which(ret$method == "observed")
+    
+    ret <- rbind.data.frame(
+      ret[ret$method == "interpolated", ],
+      ret[idx, ],
+      ret[idx, ],
+      ret[idx, ],
+      ret[ret$method == "extrapolated", ]
+    )
+    
+    ret[idx, "method"] <- "interpolated"
+    
+    ret[idx + 2, "method"] <- "extrapolated"
+    
+    data.frame(
+      datasetName = i,
+      ret[, c(1:2, 4)]
+    )
+    
+  }
+  
+} ) )
+
+# Plot results for the subdatasets collected
+rareplot_5 <- ggplot() +
+  geom_line(data = subset(rare5, method == "interpolated"), aes(x = t, y = qD, col = datasetName)) + 
+  geom_line(data = subset(rare5, method == "extrapolated"), aes(x = t, y = qD, col = datasetName), lty = 3) + 
+  geom_point(data = subset(rare5, method == "observed"), aes(x = t, y = qD, col = datasetName), size = 2) + 
+  labs(x = "Number of samples", y = "Species richness") + 
+  theme_bw(base_size = 14) +
+  theme(
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    # legend.position = "none"
+  )
+ggsave("cal_data.png", rareplot_5, width = 10, height = 5, units = "in")
+
 
 write.csv(Aves_NA, "./Aves_NA.csv")
