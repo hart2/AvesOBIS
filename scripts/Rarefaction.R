@@ -1534,3 +1534,5 @@ rm(Aves_NA1,AvesFamily)
 Aves_NA <- Aves_NA%>% filter(!(datasetName == "SEFSC Gomex Shelf 2000"))
 Aves_NA <- Aves_NA%>% filter(!(datasetName == "SEFSC Gomex Shelf 1998"))
 Aves_NA <- Aves_NA%>% filter(!(datasetName == "Sargasso 2004 - Seabirds"))
+
+write.csv(Aves_NA, "./Aves_NA.csv")
