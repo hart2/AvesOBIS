@@ -1,6 +1,6 @@
 # This script plots LME's and observations inside LME's
-# Written by E. Montes
-# Aug 19, 2019
+# Adapted from E. Montes (2019)
+
 
 library(devtools)
 library(robis)
@@ -13,6 +13,7 @@ library(tidyr) # for `gather()`
 library(readr) # for `write_tsv()`
 library(leaflet)
 library(lubridate)
+library(sf)
 
 # Provide the function fortify.shape(), which puts the shapefile data in the object class data.frame, 
 # so that it can be used by ggplot2
@@ -46,34 +47,34 @@ dat.coast <- readOGR(dsn = path.lme.coast,
 dat.coast <- fortify.shape(dat.coast) # a 410951x8 dataframe
 
 # Specify the desired LME:
-dat.sel_1 <- subset(dat.coast, LME_NUMBER == 15) # S. Brazil. See numbers here: http://lme.edc.uri.edu/index.php/lme-introduction
-dat.sel_2 <- subset(dat.coast, LME_NUMBER == 16) # E. Brazil
-dat.sel_3 <- subset(dat.coast, LME_NUMBER == 17) # N. Brazil
-dat.sel_4 <- subset(dat.coast, LME_NUMBER == 14) # Patagonia
-dat.sel_5 <- subset(dat.coast, LME_NUMBER == 13) # Humboldt C.
+# dat.sel_1 <- subset(dat.coast, LME_NUMBER == 15) # S. Brazil. See numbers here: http://lme.edc.uri.edu/index.php/lme-introduction
+# dat.sel_2 <- subset(dat.coast, LME_NUMBER == 16) # E. Brazil
+# dat.sel_3 <- subset(dat.coast, LME_NUMBER == 17) # N. Brazil
+# dat.sel_4 <- subset(dat.coast, LME_NUMBER == 14) # Patagonia
+# dat.sel_5 <- subset(dat.coast, LME_NUMBER == 13) # Humboldt C.
 dat.sel_6 <- subset(dat.coast, LME_NUMBER == 12) # Caribbean
 dat.sel_7 <- subset(dat.coast, LME_NUMBER == 11) # P. Ctral A.
 dat.sel_8 <- subset(dat.coast, LME_NUMBER == 5) # GoM
 dat.sel_9 <- subset(dat.coast, LME_NUMBER == 4) # Gulf of California
 dat.sel_10 <- subset(dat.coast, LME_NUMBER == 3) # CCS
 dat.sel_11 <- subset(dat.coast, LME_NUMBER == 2) # G. Alaska
-dat.sel_12 <- subset(dat.coast, LME_NUMBER == 1) # E. Bearing S.
-dat.sel_13 <- subset(dat.coast, LME_NUMBER == 54) # Chukchi S.
-dat.sel_14 <- subset(dat.coast, LME_NUMBER == 55) # Beauford S.
-dat.sel_15 <- subset(dat.coast, LME_NUMBER == 66) # Canadian Arctic
-dat.sel_16 <- subset(dat.coast, LME_NUMBER == 18) # Canadian E. Arctic
-dat.sel_17 <- subset(dat.coast, LME_NUMBER == 9) # Labrador S.
-dat.sel_18 <- subset(dat.coast, LME_NUMBER == 8) # Scotian Shelf
+#dat.sel_12 <- subset(dat.coast, LME_NUMBER == 1) # E. Bearing S.
+#dat.sel_13 <- subset(dat.coast, LME_NUMBER == 54) # Chukchi S.
+#dat.sel_14 <- subset(dat.coast, LME_NUMBER == 55) # Beauford S.
+#dat.sel_15 <- subset(dat.coast, LME_NUMBER == 66) # Canadian Arctic
+#dat.sel_16 <- subset(dat.coast, LME_NUMBER == 18) # Canadian E. Arctic
+#dat.sel_17 <- subset(dat.coast, LME_NUMBER == 9) # Labrador S.
+#dat.sel_18 <- subset(dat.coast, LME_NUMBER == 8) # Scotian Shelf
 dat.sel_19 <- subset(dat.coast, LME_NUMBER == 7) # NE US
 dat.sel_20 <- subset(dat.coast, LME_NUMBER == 6) # SE US
-dat.sel_21 <- subset(dat.coast, LME_NUMBER == 10) # Hawaii
-dat.sel_22 <- subset(dat.coast, LME_NUMBER == 63) # Hudson Bay Complex
-dat.sel_23 <- subset(dat.coast, LME_NUMBER == 19) # Greenland Sea
-dat.sel_24 <- subset(dat.coast, LME_NUMBER == 21) # Norwegian Sea
-dat.sel_25 <- subset(dat.coast, LME_NUMBER == 20) # Barents Sea
-dat.sel_26 <- subset(dat.coast, LME_NUMBER == 58) # Kara Sea
-dat.sel_27 <- subset(dat.coast, LME_NUMBER == 57) # Laptev Sea
-dat.sel_28 <- subset(dat.coast, LME_NUMBER == 56) # E. Sibarian Sea
+#dat.sel_21 <- subset(dat.coast, LME_NUMBER == 10) # Hawaii
+#dat.sel_22 <- subset(dat.coast, LME_NUMBER == 63) # Hudson Bay Complex
+#dat.sel_23 <- subset(dat.coast, LME_NUMBER == 19) # Greenland Sea
+#dat.sel_24 <- subset(dat.coast, LME_NUMBER == 21) # Norwegian Sea
+#dat.sel_25 <- subset(dat.coast, LME_NUMBER == 20) # Barents Sea
+#dat.sel_26 <- subset(dat.coast, LME_NUMBER == 58) # Kara Sea
+#dat.sel_27 <- subset(dat.coast, LME_NUMBER == 57) # Laptev Sea
+#dat.sel_28 <- subset(dat.coast, LME_NUMBER == 56) # E. Sibarian Sea
 
 
 xlims <- c(-180, 175)
@@ -125,27 +126,27 @@ p.sel <- p0  + mapWorld +
 # geom_path(data = dat.sel_10,
 #           aes(x = long, y = lat, group = group),
 #           colour = "brown3", size = 0.75) +
-geom_path(data = dat.sel_11,
-          aes(x = long, y = lat, group = group),
-          colour = "red", size = 0.75) +
-  geom_path(data = dat.sel_12,
-            aes(x = long, y = lat, group = group),
-            colour = "blue", size = 0.75) +
-  geom_path(data = dat.sel_13,
-            aes(x = long, y = lat, group = group),
-            colour = "green", size = 0.75) +
-  geom_path(data = dat.sel_14,
-            aes(x = long, y = lat, group = group),
-            colour = "red", size = 0.75) +
-  geom_path(data = dat.sel_15,
-            aes(x = long, y = lat, group = group),
-            colour = "blue", size = 0.75) +
-  geom_path(data = dat.sel_16,
-            aes(x = long, y = lat, group = group),
-            colour = "green", size = 0.75) +
-  geom_path(data = dat.sel_17,
-            aes(x = long, y = lat, group = group),
-            colour = "red", size = 0.75) +
+# geom_path(data = dat.sel_11,
+#           aes(x = long, y = lat, group = group),
+#           colour = "red", size = 0.75) +
+#   geom_path(data = dat.sel_12,
+#             aes(x = long, y = lat, group = group),
+#             colour = "blue", size = 0.75) +
+#   geom_path(data = dat.sel_13,
+#             aes(x = long, y = lat, group = group),
+#             colour = "green", size = 0.75) +
+#   geom_path(data = dat.sel_14,
+#             aes(x = long, y = lat, group = group),
+#             colour = "red", size = 0.75) +
+#   geom_path(data = dat.sel_15,
+#             aes(x = long, y = lat, group = group),
+#             colour = "blue", size = 0.75) +
+#   geom_path(data = dat.sel_16,
+#             aes(x = long, y = lat, group = group),
+#             colour = "green", size = 0.75) +
+#   geom_path(data = dat.sel_17,
+#             aes(x = long, y = lat, group = group),
+#             colour = "red", size = 0.75) +
   # geom_path(data = dat.sel_18,
   #           aes(x = long, y = lat, group = group),
   #           colour = "blue", size = 0.75) +
@@ -158,27 +159,27 @@ geom_path(data = dat.sel_11,
   # geom_path(data = dat.sel_21,
   #           aes(x = long, y = lat, group = group),
 #           colour = "red", size = 0.75)
-geom_path(data = dat.sel_22,
-          aes(x = long, y = lat, group = group),
-          colour = "blue", size = 0.75) +
-  geom_path(data = dat.sel_23,
-            aes(x = long, y = lat, group = group),
-            colour = "green", size = 0.75) +
-  geom_path(data = dat.sel_24,
-            aes(x = long, y = lat, group = group),
-            colour = "red", size = 0.75) +
-  geom_path(data = dat.sel_25,
-            aes(x = long, y = lat, group = group),
-            colour = "blue", size = 0.75) +
-  geom_path(data = dat.sel_26,
-            aes(x = long, y = lat, group = group),
-            colour = "green", size = 0.75) +
-  geom_path(data = dat.sel_27,
-            aes(x = long, y = lat, group = group),
-            colour = "red", size = 0.75) +
-  geom_path(data = dat.sel_28,
-            aes(x = long, y = lat, group = group),
-            colour = "blue", size = 0.75)
+# geom_path(data = dat.sel_22,
+#           aes(x = long, y = lat, group = group),
+#           colour = "blue", size = 0.75) +
+#   geom_path(data = dat.sel_23,
+#             aes(x = long, y = lat, group = group),
+#             colour = "green", size = 0.75) +
+#   geom_path(data = dat.sel_24,
+#             aes(x = long, y = lat, group = group),
+#             colour = "red", size = 0.75) +
+#   geom_path(data = dat.sel_25,
+#             aes(x = long, y = lat, group = group),
+#             colour = "blue", size = 0.75) +
+#   geom_path(data = dat.sel_26,
+#             aes(x = long, y = lat, group = group),
+#             colour = "green", size = 0.75) +
+#   geom_path(data = dat.sel_27,
+#             aes(x = long, y = lat, group = group),
+#             colour = "red", size = 0.75) +
+#   geom_path(data = dat.sel_28,
+#             aes(x = long, y = lat, group = group),
+#             colour = "blue", size = 0.75)
 p.sel
 
 #######################################################################################################################
