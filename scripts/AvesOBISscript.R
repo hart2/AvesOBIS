@@ -349,3 +349,4 @@ rm(Aves_EEZnd)
 # 
 # export_formattable(FT,"FT.png")
 
+#Note: Aves_EEZnd replaced with Aves_NA (north american datasets only)
