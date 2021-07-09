@@ -48,14 +48,14 @@ total_samp <- nrow(CaliforniaCurrent)
 
 sub20 <- round(0.2*total_samp)
 iters <- 1000
-dat1 <- matrix(NA, nrow = iters, ncol = length(unique(Aves_NA$scientificName)))
-colnames(dat1) <- unique(Aves_NA$scientificName)
+dat1 <- matrix(NA, nrow = iters, ncol = length(unique(Aves_NA$scientificName)))  
+colnames(dat1) <- unique(Aves_NA$scientificName) 
 
 for (i in 1:iters){
   idx <- sample(total_samp, sub20)
   
   dat1[i,]
-  tests2 <- t(CaliforniaCurrent[idx,1])
+  tests2 <- t(CaliforniaCurrent[idx,6])
   
   for (j in 1:length(tests2)){
     idx2 <- colnames(dat1) == tests2[j]
@@ -90,7 +90,7 @@ for (i in 1:iters){
   idx <- sample(total_samp, sub20)
   
   dat1[i,]
-  tests2 <- t(GulfofAlaska[idx,1])
+  tests2 <- t(GulfofAlaska[idx,6])
   
   for (j in 1:length(tests2)){
     idx2 <- colnames(dat1) == tests2[j]
@@ -110,8 +110,6 @@ write.csv(x3, "./probGulfofAlaska.csv")
 # for (k in 1:ncol(graphn)){
 # plot(graphn[,k])
 # }
-
-
 
 # NE US Shelf -------------------------------------------------------------
 NEShelf <- read_csv("~/github/AvesOBIS/NEShelf.csv")
@@ -196,7 +194,7 @@ for (i in 1:iters){
   idx <- sample(total_samp, sub20)
   
   dat1[i,]
-  tests2 <- t(SEShelf[idx,1])
+  tests2 <- t(SEShelf[idx,6])
   
   for (j in 1:length(tests2)){
     idx2 <- colnames(dat1) == tests2[j]
@@ -230,7 +228,7 @@ for (i in 1:iters){
   idx <- sample(total_samp, sub20)
   
   dat1[i,]
-  tests2 <- t(Carribean[idx,1])
+  tests2 <- t(Carribean[idx,6])
   
   for (j in 1:length(tests2)){
     idx2 <- colnames(dat1) == tests2[j]
@@ -239,7 +237,7 @@ for (i in 1:iters){
 }
 df <- as.data.frame(dat1)
 df[is.na(df)] <- 0
-x7 <- apply(df, 2, sum)/iters*100
+x7 <- apply(df, 2, sum)/iters*100 #Shows probability of species showing up in that subregion
 write.csv(x7, "./probCarribean.csv")
 
 # for each species, gives how often it is seen in each iteration 
@@ -250,7 +248,6 @@ write.csv(x7, "./probCarribean.csv")
 # for (k in 1:ncol(graphn)){
 # plot(graphn[,k])
 # }
-
 
 # Gulf of Mexico ----------------------------------------------------------
 GulfofMexico <- read_csv("~/github/AvesOBIS/GulfofMexico.csv")
@@ -265,7 +262,7 @@ for (i in 1:iters){
   idx <- sample(total_samp, sub20)
   
   dat1[i,]
-  tests2 <- t(GulfofMexico[idx,1])
+  tests2 <- t(GulfofMexico[idx,6])
   
   for (j in 1:length(tests2)){
     idx2 <- colnames(dat1) == tests2[j]
