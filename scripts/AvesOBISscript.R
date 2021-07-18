@@ -28,7 +28,7 @@ Aves_EEZ <- read.csv("~/Chp1/data/Aves_EEZ.csv")
 Aves_EEZ <- Aves_EEZ %>% 
   select(scientificName,eventDate,date_mid,decimalLongitude,decimalLatitude,basisOfRecord,date_year,  
          individualCount, identifiedBy, datasetID, datasetName, dataset_id, institutionCode, 
-         ownerInstitutionCode, collectionCode, catalogNumber, occurrenceStatus, samplingEffort) %>%  
+         ownerInstitutionCode, collectionCode, catalogNumber, occurrenceStatus) %>%  
   filter(basisOfRecord == "HumanObservation", date_year >= 1960 & date_year < 2019, decimalLatitude > 5)        #filtering for only human observations and data collection post 1960
 
 gensp <- Aves_EEZ %>% 
@@ -316,8 +316,11 @@ Aves <- Aves %>%
 rm(Aves_EEZnd)
 
 # Aves does not have duplicates or iffy land data
+# Make sure time is in the same format
+Aves$eventDate_2 <- as.POSIXct(Aves$date_mid/1000, origin="1970-01-01", tz="UTC")
 
-# NOW REMOVE DATASETS THAT DO NOT HAVE APPROPRIATE RAREFACTION
+# Remove datasets that don't meet rarefaction standard --------------------
+
 
 
 # Long Table: Number of data sets, Records from OBIS (Find better output in shinyAppTable.R) -----------------------------
