@@ -321,6 +321,24 @@ Aves$eventDate_2 <- as.POSIXct(Aves$date_mid/1000, origin="1970-01-01", tz="UTC"
 
 # Remove datasets that don't meet rarefaction standard --------------------
 
+# Keep these datasets:
+         # "Aerial Oil Spill Response Survey 1994-1997",
+         # "Digital Aerial Baseline Survey of Marine Wildlife in Support of Offshore Wind Energy - OPA 2017", 
+         # "Ecological Baseline Studies of the U.S. Outer Continental Shelf Option Year 1", 
+         # "Empire Wind Digital Aerial Wildlife Surveys for BOEM Lease Area OCS-A 0520, Equinor Wind US LLC, November 2017-October 2018", 
+         # "Gomex Sperm Whale Survey 2000", "IPHC seabird survey 2002-2011",
+         # "Mingan Island Cetacean Study 84-07", "MMS Aerial Survey, PNW 1989-1990",
+         # "MMS Low Altitude Survey 1980-1983","MMS Ship Survey, PNW 1989",
+         # "PIROP Northwest Atlantic 1965-1992","SEFSC GoMex Oceanic 1993 (W)","SEFSC GoMex Oceanic 1996",
+         # "SEFSC GoMex Oceanic 2000","SEFSC Gomex Shelf 1994","USGS Patuxent Wildlife Research Center Seabirds Compendium",
+         # "WADFW PSAMP S1993","WADFW PSAMP S1994","WADFW PSAMP S1996","WADFW PSAMP S1997",
+         # "WADFW PSAMP S1998","WADFW PSAMP S1999","WADFW PSAMP W1993","WADFW PSAMP W1994",
+         # "WADFW PSAMP W1995","WADFW PSAMP W1996","WADFW PSAMP W1997","WADFW PSAMP W1998",
+         # "WADFW PSAMP W1999","WADFW PSAMP W2000","WADFW PSAMP W2001","WADFW PSAMP W2002",
+         # "WADFW PSAMP W2003","WADFW PSAMP W2004")
+
+# Seasons -----------------------------------------------------------------
+
 
 
 # Long Table: Number of data sets, Records from OBIS (Find better output in shinyAppTable.R) -----------------------------
