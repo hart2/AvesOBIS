@@ -24,11 +24,11 @@ library(sf)
 library(rnaturalearth)
 
 # data downloaded from OBIS already within lat long limits of the study
-Aves_EEZ <- read.csv("~/Chp1/data/Aves_EEZ.csv")
+Aves_EEZ <- read.csv("Aves_EEZ.csv")
 Aves_EEZ <- Aves_EEZ %>% 
-  select(scientificName,eventDate,date_mid,decimalLongitude,decimalLatitude,basisOfRecord,date_year,  
+  select(scientificName,family,eventDate,date_mid,date_year,decimalLongitude,decimalLatitude,basisOfRecord,  
          individualCount, identifiedBy, datasetID, datasetName, dataset_id, institutionCode, 
-         ownerInstitutionCode, collectionCode, catalogNumber, occurrenceStatus) %>%  
+         ownerInstitutionCode, collectionCode, catalogNumber) %>%  
   filter(basisOfRecord == "HumanObservation", date_year >= 1960 & date_year < 2019, decimalLatitude > 5)        #filtering for only human observations and data collection post 1960
 
 gensp <- Aves_EEZ %>% 
@@ -221,17 +221,17 @@ bufferH <- Aves_EEZnd %>%
   filter(str_detect(scientificName, "^H"))
 bufferH <- check_onland(bufferH, buffer = 1000)
 
-# bufferI <- Aves_EEZnd %>% 
-#   filter(str_detect(scientificName, "^I"))
-# bufferI <- check_onland(bufferI, buffer = 1000)
-# 
-# bufferJ <- Aves_EEZnd %>% 
-#   filter(str_detect(scientificName, "^J"))
-# bufferJ <- check_onland(bufferJ, buffer = 1000)
-# 
-# bufferK <- Aves_EEZnd %>% 
-#   filter(str_detect(scientificName, "^K"))
-# bufferK <- check_onland(bufferK, buffer = 1000)
+bufferI <- Aves_EEZnd %>%
+  filter(str_detect(scientificName, "^I"))
+bufferI <- check_onland(bufferI, buffer = 1000)
+
+bufferJ <- Aves_EEZnd %>%
+  filter(str_detect(scientificName, "^J"))
+bufferJ <- check_onland(bufferJ, buffer = 1000)
+
+bufferK <- Aves_EEZnd %>%
+  filter(str_detect(scientificName, "^K"))
+bufferK <- check_onland(bufferK, buffer = 1000)
 
 bufferL <- Aves_EEZnd %>% 
   filter(str_detect(scientificName, "^L"))
@@ -241,9 +241,9 @@ bufferM <- Aves_EEZnd %>%
   filter(str_detect(scientificName, "^M"))
 bufferM <- check_onland(bufferM, buffer = 1000)
 
-# bufferN <- Aves_EEZnd %>% 
-#   filter(str_detect(scientificName, "^N"))
-# bufferN <- check_onland(bufferN, buffer = 1000)
+bufferN <- Aves_EEZnd %>%
+  filter(str_detect(scientificName, "^N"))
+bufferN <- check_onland(bufferN, buffer = 1000)
 
 bufferO <- Aves_EEZnd %>% 
   filter(str_detect(scientificName, "^O"))
@@ -253,9 +253,9 @@ bufferP <- Aves_EEZnd %>%
   filter(str_detect(scientificName, "^P"))
 bufferP <- check_onland(bufferP, buffer = 1000)
 
-# bufferQ <- Aves_EEZnd %>% 
-#   filter(str_detect(scientificName, "^Q"))
-# bufferQ <- check_onland(bufferQ, buffer = 1000)
+bufferQ <- Aves_EEZnd %>%
+  filter(str_detect(scientificName, "^Q"))
+bufferQ <- check_onland(bufferQ, buffer = 1000)
 
 bufferR <- Aves_EEZnd %>% 
   filter(str_detect(scientificName, "^R"))
@@ -273,17 +273,17 @@ bufferU <- Aves_EEZnd %>%
   filter(str_detect(scientificName, "^U"))
 bufferU <- check_onland(bufferU, buffer = 1000)
 
-# bufferV <- Aves_EEZnd %>% 
-#   filter(str_detect(scientificName, "^V"))
-# bufferV <- check_onland(bufferV, buffer = 1000)
-# 
-# bufferW <- Aves_EEZnd %>% 
-#   filter(str_detect(scientificName, "^W"))
-# bufferW <- check_onland(bufferW, buffer = 1000)
-# 
-# bufferX <- Aves_EEZnd %>% 
-#   filter(str_detect(scientificName, "^X"))
-# bufferX <- check_onland(bufferX, buffer = 1000)
+bufferV <- Aves_EEZnd %>%
+  filter(str_detect(scientificName, "^V"))
+bufferV <- check_onland(bufferV, buffer = 1000)
+
+bufferW <- Aves_EEZnd %>%
+  filter(str_detect(scientificName, "^W"))
+bufferW <- check_onland(bufferW, buffer = 1000)
+
+bufferX <- Aves_EEZnd %>%
+  filter(str_detect(scientificName, "^X"))
+bufferX <- check_onland(bufferX, buffer = 1000)
 
 land_buffer <- rbind(bufferA,bufferB) %>% 
   rbind(bufferC) %>% 
@@ -304,8 +304,9 @@ land_buffer <- rbind(bufferA,bufferB) %>%
 land_buffer <- land_buffer %>% 
   arrange(scientificName)
 
-rm(bufferA,bufferB, bufferC, bufferD, bufferE, bufferF, bufferG, bufferH, bufferL,
-   bufferM, bufferO, bufferP, bufferR, bufferS, bufferT, bufferU)
+rm(bufferA, bufferB, bufferC, bufferD, bufferE, bufferF, bufferG, bufferH, bufferI,
+   bufferJ, bufferK, bufferL, bufferM, bufferN, bufferO, bufferP, bufferQ,
+   bufferR, bufferS, bufferT, bufferU, bufferV, bufferW, bufferX)
 
 # remove land_buffer from Aves_EEZnd (there are additional 300 records removed 
 # bc they had duplicate catalogNumbers - which isn't supposed to happen, human error putting info into OBIS)
@@ -336,11 +337,68 @@ Aves$eventDate_2 <- as.POSIXct(Aves$date_mid/1000, origin="1970-01-01", tz="UTC"
          # "WADFW PSAMP W1995","WADFW PSAMP W1996","WADFW PSAMP W1997","WADFW PSAMP W1998",
          # "WADFW PSAMP W1999","WADFW PSAMP W2000","WADFW PSAMP W2001","WADFW PSAMP W2002",
          # "WADFW PSAMP W2003","WADFW PSAMP W2004")
+Aves1 <- Aves%>%
+  filter(!(datasetName == "CalCOFI and NMFS Seabird and Marine Mammal Observation Data, 1987-2006"))
+Aves1 <- Aves1%>%
+  filter(!(datasetName == "Digital Aerial Baseline Survey of Marine Wildlife in Support of Offshore Wind Energy - OPA 2016"))
+Aves1 <- Aves1 %>%
+  filter(!(datasetName == "MMS Surveys, SCB 1995-1997"))
+Aves1 <- Aves1 %>% 
+  filter(!(datasetName == "MMS Ship survey, SCB 1975-1978"))
 
 # Seasons -----------------------------------------------------------------
 
+# Added month column via excel
+AvWinter1 <- Aves1 %>% 
+  filter(month =="12") #December
+AvWinter2 <- Aves1 %>%
+  filter(month == "1") #January
+AvWinter3 <- Aves1%>%
+  filter(month == "2") #February
+AvSpring1 <- Aves1 %>%
+  filter(month == "3") #March
+AvSpring2 <- Aves1 %>%
+  filter(month == "4") #April
+AvSpring3<- Aves1 %>%
+  filter(month == "5") #May
+AvSummer1<- Aves1 %>%
+  filter(month == "6") #June
+AvSummer2<- Aves1 %>%
+  filter(month == "7") #July
+AvSummer3<- Aves1 %>%
+  filter(month == "8") #August
+AvFall1<- Aves1 %>%
+  filter(month == "9") #September
+AvFall2<- Aves1 %>%
+  filter(month == "10") #October
+AvFall3<- Aves1 %>%
+  filter(month == "11") #November
 
+Fall <- rbind(AvFall1,AvFall2)
+Fall <- rbind(Fall,AvFall3)
 
+Summer <- rbind(AvSummer1,AvSummer2)
+Summer <- rbind(Summer,AvSummer3)
+
+Spring <- rbind(AvSpring1,AvSpring2)
+Spring <- rbind(Spring,AvSpring3)
+
+Winter <- rbind(AvWinter1,AvWinter2)
+Winter <- rbind(Winter,AvWinter3)
+
+rm(AvSpring1,AvSpring2,AvSpring3,AvSummer1,AvSummer2,AvSummer3,AvFall1,AvFall2,AvFall3,
+   AvWinter1,AvWinter2,AvWinter3)
+
+Fall$season <- "Fall"
+Spring$season <- "Spring"
+Summer$season <- "Summer"
+Winter$season <- "Winter"
+
+Aves2 <- rbind(Fall,Spring)
+Aves2 <- rbind(Aves2,Summer)
+Aves2 <- rbind(Aves2,Winter)
+
+rm(Fall,Spring,Summer,Winter,Aves1)
 # Long Table: Number of data sets, Records from OBIS (Find better output in shinyAppTable.R) -----------------------------
 # before removing duplicates, land_buffer, and data without sampling effort
 # library("readxl")
