@@ -399,6 +399,7 @@ Aves2 <- rbind(Aves2,Summer)
 Aves2 <- rbind(Aves2,Winter)
 
 rm(Fall,Spring,Summer,Winter,Aves1)
+
 # Long Table: Number of data sets, Records from OBIS (Find better output in shinyAppTable.R) -----------------------------
 # before removing duplicates, land_buffer, and data without sampling effort
 # library("readxl")
