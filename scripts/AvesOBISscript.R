@@ -21,10 +21,10 @@ library(robis)
 library(obistools)
 library(ggplot2)
 library(sf)
-library(rnaturalearth)
+# library(rnaturalearth)
 
 # data downloaded from OBIS already within lat long limits of the study
-Aves_EEZ <- read.csv("Aves_EEZ.csv")
+Aves_EEZ <- read.csv("~/github/Aves_EEZ.csv")
 Aves_EEZ <- Aves_EEZ %>% 
   select(scientificName,family,eventDate,date_mid,date_year,decimalLongitude,decimalLatitude,basisOfRecord,  
          individualCount, identifiedBy, datasetID, datasetName, dataset_id, institutionCode, 
@@ -323,7 +323,7 @@ Aves$eventDate_2 <- as.POSIXct(Aves$date_mid/1000, origin="1970-01-01", tz="UTC"
 # Remove datasets that don't meet rarefaction standard --------------------
 
 # Keep these datasets:
-         # "Aerial Oil Spill Response Survey 1994-1997",
+         # "Aerial Oil Spill Response Survey 1994-1997","Cape Hatteras 04-05",
          # "Digital Aerial Baseline Survey of Marine Wildlife in Support of Offshore Wind Energy - OPA 2017", 
          # "Ecological Baseline Studies of the U.S. Outer Continental Shelf Option Year 1", 
          # "Empire Wind Digital Aerial Wildlife Surveys for BOEM Lease Area OCS-A 0520, Equinor Wind US LLC, November 2017-October 2018", 
@@ -345,6 +345,10 @@ Aves1 <- Aves1 %>%
   filter(!(datasetName == "MMS Surveys, SCB 1995-1997"))
 Aves1 <- Aves1 %>% 
   filter(!(datasetName == "MMS Ship survey, SCB 1975-1978"))
+Aves1 <- Aves1 %>% 
+  filter(!(datasetName == "Cape Hatteras 04-05"))
+
+
 
 # Seasons -----------------------------------------------------------------
 
