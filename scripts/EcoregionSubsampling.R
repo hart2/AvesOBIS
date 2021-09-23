@@ -186,7 +186,7 @@ Aves_20perc <- rbind(Bahamas20,Carolinian20)%>%
   rbind(Virginian)
 Aves_20perc <- Aves_20perc%>%
   select(scientificName,family,decimalLongitude,decimalLatitude,date_year,
-         datasetName,season,ecoregion)
+         datasetName,month,season,ecoregion)
 write.csv(Aves_20perc,"./Aves_20perc.csv")
 
 

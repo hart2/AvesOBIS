@@ -29,7 +29,7 @@ Aves_EEZ <- Aves_EEZ %>%
   select(scientificName,family,eventDate,date_mid,date_year,decimalLongitude,decimalLatitude,basisOfRecord,  
          individualCount, identifiedBy, datasetID, datasetName, dataset_id, institutionCode, 
          ownerInstitutionCode, collectionCode, catalogNumber) %>%  
-  filter(basisOfRecord == "HumanObservation", date_year >= 1960 & date_year < 2019, decimalLatitude > 5)        #filtering for only human observations and data collection post 1960
+  filter(basisOfRecord == "HumanObservation", date_year >= 1960 & date_year < 2019, decimalLatitude > -55)        #filtering for only human observations and data collection post 1960
 
 gensp <- Aves_EEZ %>% 
   select(scientificName)            # Create data frame with only scientific names
@@ -98,92 +98,93 @@ rm(Aves_EEZ,num,v1,species,num_gs,gensp,freq,freq1,df1,df2)
 # Check to make sure none of the points are on land, check top 5 species to start with
 # bucephala albeola, map showing all suspicious records, in orange by default but in red 
 # when they are suspicious even with the 1000 m buffer zone:
-land_ba <- Aves_EEZnd %>% 
-  filter(scientificName == "Bucephala albeola")
-land_ba <- check_onland(land_ba)
-land_babuffer <- check_onland(land_ba, buffer = 1000)
-world <- map_data("world") %>% 
-  filter(lat >= -60 & lat <= 60, long >= -150 & long <= -25)
 
-my_title <- expression(paste("Fig. 1 Suspicious Records of ", italic("Bucephala albeola")))
-ggplot() +
-  geom_polygon(data = world, 
-               aes(x = long, y = lat, group = group), 
-               fill = "#dddddd") +
-  geom_point(data = land_ba, 
-             aes(x = decimalLongitude, y = decimalLatitude, color = "Buffered")) +     #this is unbuffered data
-  geom_point(data = land_babuffer, 
-             aes(x = decimalLongitude, y = decimalLatitude, color = "Unbuffered")) +   #this is buffered data
-  coord_fixed(1)+
-  labs(title = my_title, color = 'Records')+           #title for for graph and legend
-  scale_color_manual(values=c("#cc3300", "#ff9900"))+  #specific colors for map
-  theme(plot.title = element_text(face="italic"))      #creating a italicized, centered title
-
-# Larus argentatus
-land_la <- Aves_EEZnd %>% 
-  filter(scientificName == "Larus argentatus")
-land_la <- check_onland(land_la)
-land_labuffer <- check_onland(land_la, buffer = 1000)
-
-my_title <- expression(paste("Fig. 2 Suspicious Records of ", italic("Larus argentatus")))
-ggplot() +
-  geom_polygon(data = world, 
-               aes(x = long, y = lat, group = group), 
-               fill = "#dddddd") +
-  geom_point(data = land_la, 
-             aes(x = decimalLongitude, y = decimalLatitude, color = "Buffered")) +     #this is unbuffered data
-  geom_point(data = land_labuffer, 
-             aes(x = decimalLongitude, y = decimalLatitude, color = "Unbuffered")) +   #this is buffered data
-  coord_fixed(1)+
-  labs(title = my_title, color = 'Records')+           #title for for graph and legend
-  scale_color_manual(values=c("#cc3300", "#ff9900"))+  #specific colors for map
-  theme(plot.title = element_text(face="italic"))      #creating a italicized, centered title
-
-# Morus bassanus
-land_mb <- Aves_EEZnd %>% 
-  filter(scientificName == "Morus bassanus")
-land_mb <- check_onland(land_mb)
-land_mbbuffer <- check_onland(land_mb, buffer = 1000)
-
-my_title <- expression(paste("Fig. 3 Suspicious Records of ", italic("Morus bassanus")))
-ggplot() +
-  geom_polygon(data = world, 
-               aes(x = long, y = lat, group = group), 
-               fill = "#dddddd") +
-  geom_point(data = land_mb, 
-             aes(x = decimalLongitude, y = decimalLatitude, color = "Buffered")) +     #this is unbuffered data
-  geom_point(data = land_mbbuffer, 
-             aes(x = decimalLongitude, y = decimalLatitude, color = "Unbuffered")) +   #this is buffered data
-  coord_fixed(1)+
-  labs(title = my_title, color = 'Records')+           #title for for graph and legend
-  scale_color_manual(values=c("#cc3300", "#ff9900"))+  #specific colors for map
-  theme(plot.title = element_text(face="italic"))      #creating a italicized, centered title
-
-# Uria aalge, no suspicious records
-land_ua <- Aves_EEZnd %>% 
-  filter(scientificName == "Uria aalgae")
-land_ua <- check_onland(land_ua) # shows that there aren't any suspicious records
-
-# Larus glaucescens
-land_lg <- Aves_EEZnd %>% 
-  filter(scientificName == "Larus glaucescens")
-land_lg <- check_onland(land_lg)
-land_lgbuffer <- check_onland(land_lg, buffer = 1000)
-
-
-my_title <- expression(paste("Fig. 4 Suspicious Records of ", italic("Larus glaucescens")))
-ggplot() +
-  geom_polygon(data = world, 
-               aes(x = long, y = lat, group = group), 
-               fill = "#dddddd") +
-  geom_point(data = land_lg, 
-             aes(x = decimalLongitude, y = decimalLatitude, color = "Buffered")) +     #this is unbuffered data
-  geom_point(data = land_lgbuffer, 
-             aes(x = decimalLongitude, y = decimalLatitude, color = "Unbuffered")) +   #this is buffered data
-  coord_fixed(1)+
-  labs(title = my_title, color = 'Records')+           #title for for graph and legend
-  scale_color_manual(values=c("#cc3300", "#ff9900"))+  #specific colors for map
-  theme(plot.title = element_text(face="italic"))      #creating a italicized, centered title
+# land_ba <- Aves_EEZnd %>% 
+#   filter(scientificName == "Bucephala albeola")
+# land_ba <- check_onland(land_ba)
+# land_babuffer <- check_onland(land_ba, buffer = 1000)
+# world <- map_data("world") %>% 
+#   filter(lat >= -60 & lat <= 60, long >= -150 & long <= -25)
+# 
+# my_title <- expression(paste("Fig. 1 Suspicious Records of ", italic("Bucephala albeola")))
+# ggplot() +
+#   geom_polygon(data = world, 
+#                aes(x = long, y = lat, group = group), 
+#                fill = "#dddddd") +
+#   geom_point(data = land_ba, 
+#              aes(x = decimalLongitude, y = decimalLatitude, color = "Buffered")) +     #this is unbuffered data
+#   geom_point(data = land_babuffer, 
+#              aes(x = decimalLongitude, y = decimalLatitude, color = "Unbuffered")) +   #this is buffered data
+#   coord_fixed(1)+
+#   labs(title = my_title, color = 'Records')+           #title for for graph and legend
+#   scale_color_manual(values=c("#cc3300", "#ff9900"))+  #specific colors for map
+#   theme(plot.title = element_text(face="italic"))      #creating a italicized, centered title
+# 
+# # Larus argentatus
+# land_la <- Aves_EEZnd %>% 
+#   filter(scientificName == "Larus argentatus")
+# land_la <- check_onland(land_la)
+# land_labuffer <- check_onland(land_la, buffer = 1000)
+# 
+# my_title <- expression(paste("Fig. 2 Suspicious Records of ", italic("Larus argentatus")))
+# ggplot() +
+#   geom_polygon(data = world, 
+#                aes(x = long, y = lat, group = group), 
+#                fill = "#dddddd") +
+#   geom_point(data = land_la, 
+#              aes(x = decimalLongitude, y = decimalLatitude, color = "Buffered")) +     #this is unbuffered data
+#   geom_point(data = land_labuffer, 
+#              aes(x = decimalLongitude, y = decimalLatitude, color = "Unbuffered")) +   #this is buffered data
+#   coord_fixed(1)+
+#   labs(title = my_title, color = 'Records')+           #title for for graph and legend
+#   scale_color_manual(values=c("#cc3300", "#ff9900"))+  #specific colors for map
+#   theme(plot.title = element_text(face="italic"))      #creating a italicized, centered title
+# 
+# # Morus bassanus
+# land_mb <- Aves_EEZnd %>% 
+#   filter(scientificName == "Morus bassanus")
+# land_mb <- check_onland(land_mb)
+# land_mbbuffer <- check_onland(land_mb, buffer = 1000)
+# 
+# my_title <- expression(paste("Fig. 3 Suspicious Records of ", italic("Morus bassanus")))
+# ggplot() +
+#   geom_polygon(data = world, 
+#                aes(x = long, y = lat, group = group), 
+#                fill = "#dddddd") +
+#   geom_point(data = land_mb, 
+#              aes(x = decimalLongitude, y = decimalLatitude, color = "Buffered")) +     #this is unbuffered data
+#   geom_point(data = land_mbbuffer, 
+#              aes(x = decimalLongitude, y = decimalLatitude, color = "Unbuffered")) +   #this is buffered data
+#   coord_fixed(1)+
+#   labs(title = my_title, color = 'Records')+           #title for for graph and legend
+#   scale_color_manual(values=c("#cc3300", "#ff9900"))+  #specific colors for map
+#   theme(plot.title = element_text(face="italic"))      #creating a italicized, centered title
+# 
+# # Uria aalge, no suspicious records
+# land_ua <- Aves_EEZnd %>% 
+#   filter(scientificName == "Uria aalgae")
+# land_ua <- check_onland(land_ua) # shows that there aren't any suspicious records
+# 
+# # Larus glaucescens
+# land_lg <- Aves_EEZnd %>% 
+#   filter(scientificName == "Larus glaucescens")
+# land_lg <- check_onland(land_lg)
+# land_lgbuffer <- check_onland(land_lg, buffer = 1000)
+# 
+# 
+# my_title <- expression(paste("Fig. 4 Suspicious Records of ", italic("Larus glaucescens")))
+# ggplot() +
+#   geom_polygon(data = world, 
+#                aes(x = long, y = lat, group = group), 
+#                fill = "#dddddd") +
+#   geom_point(data = land_lg, 
+#              aes(x = decimalLongitude, y = decimalLatitude, color = "Buffered")) +     #this is unbuffered data
+#   geom_point(data = land_lgbuffer, 
+#              aes(x = decimalLongitude, y = decimalLatitude, color = "Unbuffered")) +   #this is buffered data
+#   coord_fixed(1)+
+#   labs(title = my_title, color = 'Records')+           #title for for graph and legend
+#   scale_color_manual(values=c("#cc3300", "#ff9900"))+  #specific colors for map
+#   theme(plot.title = element_text(face="italic"))      #creating a italicized, centered title
 
 
 #-------Should remove all suspicious buffered records from original data ------------
@@ -403,6 +404,65 @@ Aves2 <- rbind(Aves2,Summer)
 Aves2 <- rbind(Aves2,Winter)
 
 rm(Fall,Spring,Summer,Winter,Aves1)
+
+# Final dataset is Aves_20perc (subsampled, found in EcoregionSubsampling.R)
+
+
+# Temporal Analysis -------------------------------------------------------
+# Using Aves_20perc
+
+# Separate data by century
+aves20th <- Aves_20perc %>%
+  filter(date_year < 2000)
+write.csv(aves20th, "./aves20th.csv")
+aves21st <- Aves_20perc %>%
+  filter(date_year >= 2000)
+write.csv(aves21st, "./aves21st.csv")
+
+# Separate data by decade
+aves60 <- Aves_20perc %>% # data from the 60s
+  filter(date_year < 1970)
+write.csv (aves60,'./aves60.csv')
+
+aves70 <- Aves_20perc %>%
+  filter(date_year <1980 & date_year >1969)
+write.csv (aves70,'./aves70.csv')
+
+aves80 <- Aves_20perc %>%
+  filter(date_year <1990 & date_year >1979)
+write.csv (aves80,'./aves80.csv')
+
+aves90 <- Aves_20perc %>%
+  filter(date_year <2000 & date_year >1989)
+write.csv (aves90,'./aves90.csv')
+
+aves00 <- Aves_20perc %>%
+  filter(date_year <2010 & date_year >1999)
+write.csv (aves00,'./aves00.csv')
+
+aves10 <- Aves_20perc %>%
+  filter(date_year >= 2010)
+write.csv (aves10,'./aves10.csv')
+
+# Dataset used for SDMs --------------------------------------------------
+
+winter <- Aves_20perc %>% 
+  filter(season == "Winter")%>%
+  filter(date_year == "2018")
+write.csv(winter,"./winter.csv")
+
+num <- winter %>%
+  select(scientificName)
+freq1 <- as.data.frame(table(num)) # Number of species found in winter (2018) dataset and freq of appearance
+
+
+
+
+
+
+
+
+
 
 # Long Table: Number of data sets, Records from OBIS (Find better output in shinyAppTable.R) -----------------------------
 # before removing duplicates, land_buffer, and data without sampling effort
