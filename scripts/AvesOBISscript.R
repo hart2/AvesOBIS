@@ -29,7 +29,7 @@ Aves_EEZ <- Aves_EEZ %>%
   select(scientificName,family,eventDate,date_mid,date_year,decimalLongitude,decimalLatitude,basisOfRecord,  
          individualCount, identifiedBy, datasetID, datasetName, dataset_id, institutionCode, 
          ownerInstitutionCode, collectionCode, catalogNumber) %>%  
-  filter(basisOfRecord == "HumanObservation", date_year >= 1960 & date_year < 2019, decimalLatitude > -55)        #filtering for only human observations and data collection post 1960
+  filter(basisOfRecord == "HumanObservation", date_year >= 1960 & date_year < 2019, decimalLatitude > 5)        #filtering for only human observations and data collection post 1960
 
 gensp <- Aves_EEZ %>% 
   select(scientificName)            # Create data frame with only scientific names

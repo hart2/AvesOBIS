@@ -8,24 +8,21 @@ library(robis)
 library(obistools)
 
 # data downloaded from OBIS already within lat long limits of the study
-Aves_EEZ1 <- read.csv("~/github/Aves_EEZ.csv")
-Aves_EEZ2 <- Aves_EEZ1 %>% 
+Aves_EEZ <- read.csv("~/github/Aves_EEZ.csv")
+Aves_EEZ <- Aves_EEZ %>% 
   select(scientificName,family,eventDate,date_mid,date_year,decimalLongitude,decimalLatitude,basisOfRecord,  
          individualCount, identifiedBy, datasetID, datasetName, dataset_id, institutionCode, 
          ownerInstitutionCode, collectionCode, catalogNumber) %>%  
-  filter(basisOfRecord == "HumanObservation", date_year >= 1960 & date_year < 2019, decimalLatitude > -55)        #filtering for only human observations and data collection post 1960
+  filter(basisOfRecord == "HumanObservation", date_year >= 1960 & date_year < 2019, decimalLatitude > -60)        #filtering for only human observations and data collection post 1960
 
-Aves_EEZ3 <- Aves_EEZ1 %>% 
-  select(scientificName,family,eventDate,date_mid,date_year,decimalLongitude,decimalLatitude,basisOfRecord,  
-         individualCount, identifiedBy, datasetID, datasetName, dataset_id, institutionCode, 
-         ownerInstitutionCode, collectionCode, catalogNumber) %>%  
-  filter(basisOfRecord == "PreservedSpecimen", date_year >= 1960 & date_year < 2019, decimalLatitude > -55)
-
-gensp <- Aves_EEZ2 %>% 
+gensp <- Aves_EEZ %>% 
   select(scientificName)            # Create data frame with only scientific names
 # freq <- table(gensp)     create a table with species names and how often they appear in dataset "Aves_EEZ"
 freq <- as.data.frame(table(gensp)) # Create a data frame with species names and how often they appear in dataset "Aves_EEZ"
-num_gs <- count(freq)
+num_gs <- count(freq)               # Counts the number of genus/genus species found in dataset "freq"
+
+# Finding species present Americas: 1960-2020-------------------------------------------------
+# (n = # of species), using a splitstring function
 
 v1 <- gensp                      # vector with scientificNames
 v2 <- 1:nrow(gensp)              # num of cells in scientificName and creating vector with the number of cells necessary for running splitstring fxn
@@ -48,14 +45,14 @@ species <- alpha(species)          # Gives True/False whether scientifcName cont
 species <- as.data.frame(species)  # Creating into a vector
 
 # Trying to merge "species" with "Aves_EEZ" to remove genus only names
-df1 <- c(species,Aves_EEZ2)         # Inputting "species" T/F into "Aves_EEZ" dataframe
+df1 <- c(species,Aves_EEZ)         # Inputting "species" T/F into "Aves_EEZ" dataframe
 df2 <- as.data.frame(df1) %>% 
   filter(species == "TRUE")        # Making it readable as a dataframe and removing genus only
 
-Aves_EEZ2 <- df2 %>% 
+Aves_EEZ <- df2 %>% 
   select(-species)                 # Removing T/F column from Aves dataset
 
-num <- Aves_EEZ2 %>% 
+num <- Aves_EEZ %>% 
   select(scientificName) 
 freq1 <- as.data.frame(table(num)) 
 numSpeciesFreq <- freq1 %>% 
@@ -67,11 +64,23 @@ alphadiv <- count(numSpeciesFreq)  # Number of species found in Aves dataset wit
 # If scientificName are equal & decimalLongitude are equal & decimalLatitude are equal & eventDate are equal, remove
 # one of the observations
 # NOTE: This step will take some time
-Aves_EEZnd <- invisible(unique(Aves_EEZ2)) %>%         # "invisible()" suppresses output
+Aves_EEZnd <- invisible(unique(Aves_EEZ)) %>%         # "invisible()" suppresses output
   arrange('scientificName')
-rm(Aves_EEZ2,Aves_EEZ3,num,v1,species,gensp,freq,freq1,df1,df2)
+rm(Aves_EEZ,num,v1,species,num_gs,gensp,freq,freq1,df1,df2)
 
-# rm suspicious records within 1km of coastline
+# Important!!!
+# Aves_EEZnd (aves data without duplicates), alphadiv (alpha diversity from 1960 - present), 
+# numSpeciesFreq (frequency of appearance in dataset of genus species )
+
+# Finding alpha diversity per year (Americas) -----------------------------
+# NOTE: Actual alpha diversity is the average species diversity in a habitat or specific area 
+# Determine how to find alpha diversity per region/habitat (geographic maps?)
+
+# see script "alphaDiversity.R"
+
+#-------Should remove all suspicious buffered records from original data ------------
+# buffers commented out had a zero value, buffer of 1000 m
+
 bufferA <- Aves_EEZnd %>% 
   filter(str_detect(scientificName, "^A")) # looking at all scientificNames starting with "a"
 bufferA <- check_onland(bufferA, buffer = 1000)
@@ -199,6 +208,159 @@ Aves <- Aves %>%
 
 rm(Aves_EEZnd)
 
-gensp <- Aves %>% 
-  select(scientificName)            # Create data frame with only scientific names
-freq <- as.data.frame(table(gensp))
+# Aves does not have duplicates or iffy land data
+# Make sure time is in the same format
+Aves$eventDate_2 <- as.POSIXct(Aves$date_mid/1000, origin="1970-01-01", tz="UTC")
+
+# Remove datasets that don't meet rarefaction standard --------------------
+
+# Keep these datasets:
+# "Aerial Oil Spill Response Survey 1994-1997",
+# "Digital Aerial Baseline Survey of Marine Wildlife in Support of Offshore Wind Energy - OPA 2017", 
+# "Ecological Baseline Studies of the U.S. Outer Continental Shelf Option Year 1", 
+# "Empire Wind Digital Aerial Wildlife Surveys for BOEM Lease Area OCS-A 0520, Equinor Wind US LLC, November 2017-October 2018", 
+# "Gomex Sperm Whale Survey 2000", "IPHC seabird survey 2002-2011",
+# "Mingan Island Cetacean Study 84-07", "MMS Aerial Survey, PNW 1989-1990",
+# "MMS Low Altitude Survey 1980-1983","MMS Ship Survey, PNW 1989",
+# "PIROP Northwest Atlantic 1965-1992","SEFSC GoMex Oceanic 1993 (W)","SEFSC GoMex Oceanic 1996",
+# "SEFSC GoMex Oceanic 2000","SEFSC Gomex Shelf 1994","USGS Patuxent Wildlife Research Center Seabirds Compendium",
+# "WADFW PSAMP S1993","WADFW PSAMP S1994","WADFW PSAMP S1996","WADFW PSAMP S1997",
+# "WADFW PSAMP S1998","WADFW PSAMP S1999","WADFW PSAMP W1993","WADFW PSAMP W1994",
+# "WADFW PSAMP W1995","WADFW PSAMP W1996","WADFW PSAMP W1997","WADFW PSAMP W1998",
+# "WADFW PSAMP W1999","WADFW PSAMP W2000","WADFW PSAMP W2001","WADFW PSAMP W2002",
+# "WADFW PSAMP W2003","WADFW PSAMP W2004")
+
+Aves1 <- Aves%>%
+  filter(!(datasetName == "CalCOFI and NMFS Seabird and Marine Mammal Observation Data, 1987-2006"))
+Aves1 <- Aves1%>%
+  filter(!(datasetName == "Digital Aerial Baseline Survey of Marine Wildlife in Support of Offshore Wind Energy - OPA 2016"))
+Aves1 <- Aves1 %>%
+  filter(!(datasetName == "MMS Surveys, SCB 1995-1997"))
+Aves1 <- Aves1 %>% 
+  filter(!(datasetName == "MMS Ship survey, SCB 1975-1978"))
+Aves1 <- Aves1 %>% 
+  filter(!(datasetName == "Cape Hatteras 04-05"))
+Aves1 <- Aves1 %>% 
+  filter(!(datasetName == " ")) #some of the data does not have a dataset name
+# Aves1 <- Aves1 %>%
+#   filter(!(datasetName == "NA")) This gets rid of all South American data
+Aves1 <- Aves1 %>% 
+  filter(!(datasetName == "ACCDC: Rare Species in Atlantic Canada and Adjacent Marine Waters"))
+Aves1 <- Aves1 %>% 
+  filter(!(datasetName == "BIOMASS 1980-1985"))
+Aves1 <- Aves1 %>% 
+  filter(!(datasetName == "CWS:Waterbird colony database (Atlantic region)"))
+Aves1 <- Aves1 %>% 
+  filter(!(datasetName == "Digital Aerial Baseline Survey of Marine Wildlife in Support of Offshore Wind Energy - WEA 2016"))
+Aves1 <- Aves1 %>% 
+  filter(!(datasetName == "Hatteras Eddy Cruise 2004"))
+Aves1 <- Aves1 %>% 
+  filter(!(datasetName == "MMS Low Altitude Survey for Seabirds, Southern California Bight 1975-1978"))
+Aves1 <- Aves1 %>% 
+  filter(!(datasetName == "MMS Seabird Ecology Study 1985"))
+Aves1 <- Aves1 %>% 
+  filter(!(datasetName == "Monitoreo Aves SAMP 2015"))
+Aves1 <- Aves1 %>% 
+  filter(!(datasetName == "NPPSD Short-tailed Albatross Sightings"))
+Aves1 <- Aves1 %>% 
+  filter(!(datasetName == "Observatoire Pelagis aerial surveys 2002-2018"))
+Aves1 <- Aves1 %>% 
+  filter(!(datasetName == "Sargasso 2004 - Seabirds"))
+Aves1 <- Aves1 %>% 
+  filter(!(datasetName == "Seabird and cetacean sightings from Cruise SY002 of RV Shoyo Maru, Tropical Atlantic Ocean, Oct. 2000"))
+Aves1 <- Aves1 %>% 
+  filter(!(datasetName == "SEFSC Atlantic surveys 1992"))
+Aves1 <- Aves1 %>% 
+  filter(!(datasetName == "SEFSC Atlantic surveys 1999"))
+Aves1 <- Aves1 %>% 
+  filter(!(datasetName == "SEFSC Atlantic surveys, 1998 (3)"))
+Aves1 <- Aves1 %>% 
+  filter(!(datasetName == "SEFSC Caribbean Survey 1995"))
+Aves1 <- Aves1 %>% 
+  filter(!(datasetName == "SEFSC Caribbean Survey 2000"))
+Aves1 <- Aves1 %>% 
+  filter(!(datasetName == "SEFSC GoMex Oceanic 1992 (199)"))
+Aves1 <- Aves1 %>% 
+  filter(!(datasetName == "SEFSC GoMex Oceanic 1993 (S)"))
+Aves1 <- Aves1 %>% 
+  filter(!(datasetName == "SEFSC GoMex Oceanic 1994"))
+Aves1 <- Aves1 %>% 
+  filter(!(datasetName == "SEFSC GoMex Oceanic 1999"))
+Aves1 <- Aves1 %>% 
+  filter(!(datasetName == "SEFSC GoMex Oceanic 2001"))
+Aves1 <- Aves1 %>% 
+  filter(!(datasetName == "SEFSC Gomex Shelf 1998"))
+Aves1 <- Aves1 %>% 
+  filter(!(datasetName == "SEFSC Gomex Shelf 2000"))
+Aves1 <- Aves1 %>% 
+  filter(!(datasetName == "SEFSC Gomex Shelf 2001"))
+Aves1 <- Aves1 %>% 
+  filter(!(datasetName == "Summer distribution of pelagic birds off the coast of Argentina (A Hudson 70 Expedition data set)"))
+Aves1 <- Aves1 %>% 
+  filter(!(datasetName == "TOPP Summary of SSM-derived Telemetry"))
+Aves1 <- Aves1 %>% 
+  filter(!(datasetName == "WADFW PSAMP S1992"))
+Aves1 <- Aves1 %>% 
+  filter(!(datasetName == "WADFW PSAMP S1995"))
+
+# write.csv(Aves1,"./bias.csv"), intersected data with ecoregions in arcgis
+# Seasons -----------------------------------------------------------------
+bias <- read.csv("~/github/AvesOBIS/BirdEcoregions.csv")
+# bias$eventDate_2 <- as.POSIXct(bias$date_mid/1000, origin="1970-01-01", tz="UTC")
+# write.csv(bias,"./BirdEcoregions.csv")
+# Added month column via excel (bias.csv)
+# bias <- read.csv("~/github/AvesOBIS/BirdEcoregion.csv")
+
+AvWinter1 <- bias %>% 
+  filter(month =="12") #December
+AvWinter2 <- bias %>%
+  filter(month == "1") #January
+AvWinter3 <- bias %>%
+  filter(month == "2") #February
+AvSpring1 <- bias %>%
+  filter(month == "3") #March
+AvSpring2 <- bias %>%
+  filter(month == "4") #April
+AvSpring3<- bias %>%
+  filter(month == "5") #May
+AvSummer1<- bias %>%
+  filter(month == "6") #June
+AvSummer2<- bias %>%
+  filter(month == "7") #July
+AvSummer3<- bias %>%
+  filter(month == "8") #August
+AvFall1<- bias %>%
+  filter(month == "9") #September
+AvFall2<- bias %>%
+  filter(month == "10") #October
+AvFall3<- bias %>%
+  filter(month == "11") #November
+
+Fall <- rbind(AvFall1,AvFall2)
+Fall <- rbind(Fall,AvFall3)
+
+Summer <- rbind(AvSummer1,AvSummer2)
+Summer <- rbind(Summer,AvSummer3)
+
+Spring <- rbind(AvSpring1,AvSpring2)
+Spring <- rbind(Spring,AvSpring3)
+
+Winter <- rbind(AvWinter1,AvWinter2)
+Winter <- rbind(Winter,AvWinter3)
+
+rm(AvSpring1,AvSpring2,AvSpring3,AvSummer1,AvSummer2,AvSummer3,AvFall1,AvFall2,AvFall3,
+   AvWinter1,AvWinter2,AvWinter3)
+
+Fall$season <- "Fall"
+Spring$season <- "Spring"
+Summer$season <- "Summer"
+Winter$season <- "Winter"
+
+bias <- rbind(Fall,Spring)
+bias <- rbind(bias,Summer)
+bias <- rbind(bias,Winter)
+
+rm(Fall,Spring,Summer,Winter,Aves1)
+
+write.csv(bias,"./seabirdoccurrencebias.csv")
+
