@@ -8,9 +8,6 @@
 #   (SST, SSH, Surf Currents, Sa, ML)
 #   Pacific -> northern shift due to temperature)
 
-# input table for Phoebastria nigripes, Puffinus griseus, Gavia immer
-  # this csv presence/absence
-
 library(vegan)
 library(tidyverse)
 library(ncdf4) # package for netcdf manipulation
@@ -282,6 +279,129 @@ mx
 mn <- min(x$Extract_EVnigripes_summer10s)
 mn
 
+# Eastern current velocity immer-----
+
+imEV_fall90s <- raster("Extract_EVimmer_fall90s.tif")
+imEV_fall90s <- as.data.frame(imEV_fall90s, xy = TRUE)
+x <- imEV_fall90s%>%
+  filter(Extract_EVimmer_fall90s >-20)
+av <- mean(x$Extract_EVimmer_fall90s) #number of occurrence points
+av
+mx <- max(x$Extract_EVimmer_fall90s)
+mx
+mn <- min(x$Extract_EVimmer_fall90s)
+mn
+
+imEV_fall00s <- raster("Extract_EVimmer_fall00s.tif")
+imEV_fall00s <- as.data.frame(imEV_fall00s, xy = TRUE)
+x <- imEV_fall00s%>%
+  filter(Extract_EVimmer_fall00s >-20)
+av <- mean(x$Extract_EVimmer_fall00s) #number of occurrence points
+av
+mx <- max(x$Extract_EVimmer_fall00s)
+mx
+mn <- min(x$Extract_EVimmer_fall00s)
+mn
+
+imEV_fall10s <- raster("Extract_EVimmer_fall10s.tif")
+imEV_fall10s <- as.data.frame(imEV_fall10s, xy = TRUE)
+x <- imEV_fall10s%>%
+  filter(Extract_EVimmer_fall10s >-20)
+av <- mean(x$Extract_EVimmer_fall10s) #number of occurrence points
+av
+mx <- max(x$Extract_EVimmer_fall10s)
+mx
+mn <- min(x$Extract_EVimmer_fall10s)
+mn
+
+imEV_winter90s <- raster("Extract_EVimmer_winter90s.tif")
+imEV_winter90s <- as.data.frame(imEV_winter90s, xy = TRUE)
+x <- imEV_winter90s%>%
+  filter(Extract_EVimmer_winter90s >-20)
+av <- mean(x$Extract_EVimmer_winter90s) #number of occurrence points
+av
+mx <- max(x$Extract_EVimmer_winter90s)
+mx
+mn <- min(x$Extract_EVimmer_winter90s)
+mn
+
+imEV_winter00s <- raster("Extract_EVimmer_winter00s.tif")
+imEV_winter00s <- as.data.frame(imEV_winter00s, xy = TRUE)
+x <- imEV_winter00s%>%
+  filter(Extract_EVimmer_winter00s >-20)
+av <- mean(x$Extract_EVimmer_winter00s) #number of occurrence points
+av
+mx <- max(x$Extract_EVimmer_winter00s)
+mx
+mn <- min(x$Extract_EVimmer_winter00s)
+mn
+
+imEV_winter10s <- raster("Extract_EVimmer_winter10s.tif")
+imEV_winter10s <- as.data.frame(imEV_winter10s, xy = TRUE)
+x <- imEV_winter10s%>%
+  filter(Extract_EVimmer_winter10s >-20)
+av <- mean(x$Extract_EVimmer_winter10s) #number of occurrence points
+av
+mx <- max(x$Extract_EVimmer_winter10s)
+mx
+mn <- min(x$Extract_EVimmer_winter10s)
+mn
+
+imEV_spring90s <- raster("Extract_EVimmer_spring90s.tif")
+imEV_spring90s <- as.data.frame(imEV_spring90s, xy = TRUE)
+x <- imEV_spring90s%>%
+  filter(Extract_EVimmer_spring90s >-20)
+av <- mean(x$Extract_EVimmer_spring90s) #number of occurrence points
+av
+mx <- max(x$Extract_EVimmer_spring90s)
+mx
+mn <- min(x$Extract_EVimmer_spring90s)
+mn
+
+imEV_spring00s <- raster("Extract_EVimmer_spring00s.tif")
+imEV_spring00s <- as.data.frame(imEV_spring00s, xy = TRUE)
+x <- imEV_spring00s%>%
+  filter(Extract_EVimmer_spring00s >-20)
+av <- mean(x$Extract_EVimmer_spring00s) #number of occurrence points
+av
+mx <- max(x$Extract_EVimmer_spring00s)
+mx
+mn <- min(x$Extract_EVimmer_spring00s)
+mn
+
+imEV_spring10s <- raster("Extract_EVimmer_spring10s.tif")
+imEV_spring10s <- as.data.frame(imEV_spring10s, xy = TRUE)
+x <- imEV_spring10s%>%
+  filter(Extract_EVimmer_spring10s >-20)
+av <- mean(x$Extract_EVimmer_spring10s) #number of occurrence points
+av
+mx <- max(x$Extract_EVimmer_spring10s)
+mx
+mn <- min(x$Extract_EVimmer_spring10s)
+mn
+
+imEV_summer00s <- raster("Extract_EVimmer_summer00s.tif")
+imEV_summer00s <- as.data.frame(imEV_summer00s, xy = TRUE)
+x <- imEV_summer00s%>%
+  filter(Extract_EVimmer_summer00s >-20)
+av <- mean(x$Extract_EVimmer_summer00s) #number of occurrence points
+av
+mx <- max(x$Extract_EVimmer_summer00s)
+mx
+mn <- min(x$Extract_EVimmer_summer00s)
+mn
+
+imEV_summer10s <- raster("Extract_EVimmer_summer10s.tif")
+imEV_summer10s <- as.data.frame(imEV_summer10s, xy = TRUE)
+x <- imEV_summer10s%>%
+  filter(Extract_EVimmer_summer10s >-20)
+av <- mean(x$Extract_EVimmer_summer10s) #number of occurrence points
+av
+mx <- max(x$Extract_EVimmer_summer10s)
+mx
+mn <- min(x$Extract_EVimmer_summer10s)
+mn
+
 # Mixed layer depth P. griseus east----------------------
 grisML_eastfall90s <- raster("Extract_MLgriseus_eastfall90s.tif")
 grisML_eastfall90s <- as.data.frame(grisML_eastfall90s, xy = TRUE)
@@ -465,7 +585,7 @@ mx
 mn <- min(x$Extract_MLgriseus_westsummer10s)
 mn
 
-# Mixed layer depth nigripes
+# Mixed layer depth nigripes -----
 
 nigML_fall90s <- raster("Extract_MLnigripes_fall90s.tif")
 nigML_fall90s <- as.data.frame(nigML_fall90s, xy = TRUE)
@@ -531,6 +651,129 @@ av
 mx <- max(x$Extract_MLnigripes_summer10s)
 mx
 mn <- min(x$Extract_MLnigripes_summer10s)
+mn
+
+# Mixed layer depth immer ------
+
+imML_fall90s <- raster("Extract_MLimmer_fall90s.tif")
+imML_fall90s <- as.data.frame(imML_fall90s, xy = TRUE)
+x <- imML_fall90s%>%
+  filter(Extract_MLimmer_fall90s >-20)
+av <- mean(x$Extract_MLimmer_fall90s) #number of occurrence points
+av
+mx <- max(x$Extract_MLimmer_fall90s)
+mx
+mn <- min(x$Extract_MLimmer_fall90s)
+mn
+
+imML_fall00s <- raster("Extract_MLimmer_fall00s.tif")
+imML_fall00s <- as.data.frame(imML_fall00s, xy = TRUE)
+x <- imML_fall00s%>%
+  filter(Extract_MLimmer_fall00s >-20)
+av <- mean(x$Extract_MLimmer_fall00s) #number of occurrence points
+av
+mx <- max(x$Extract_MLimmer_fall00s)
+mx
+mn <- min(x$Extract_MLimmer_fall00s)
+mn
+
+imML_fall10s <- raster("Extract_MLimmer_fall10s.tif")
+imML_fall10s <- as.data.frame(imML_fall10s, xy = TRUE)
+x <- imML_fall10s%>%
+  filter(Extract_MLimmer_fall10s >-20)
+av <- mean(x$Extract_MLimmer_fall10s) #number of occurrence points
+av
+mx <- max(x$Extract_MLimmer_fall10s)
+mx
+mn <- min(x$Extract_MLimmer_fall10s)
+mn
+
+imML_winter90s <- raster("Extract_MLimmer_winter90s.tif")
+imML_winter90s <- as.data.frame(imML_winter90s, xy = TRUE)
+x <- imML_winter90s%>%
+  filter(Extract_MLimmer_winter90s >-20)
+av <- mean(x$Extract_MLimmer_winter90s) #number of occurrence points
+av
+mx <- max(x$Extract_MLimmer_winter90s)
+mx
+mn <- min(x$Extract_MLimmer_winter90s)
+mn
+
+imML_winter00s <- raster("Extract_MLimmer_winter00s.tif")
+imML_winter00s <- as.data.frame(imML_winter00s, xy = TRUE)
+x <- imML_winter00s%>%
+  filter(Extract_MLimmer_winter00s >-20)
+av <- mean(x$Extract_MLimmer_winter00s) #number of occurrence points
+av
+mx <- max(x$Extract_MLimmer_winter00s)
+mx
+mn <- min(x$Extract_MLimmer_winter00s)
+mn
+
+imML_winter10s <- raster("Extract_MLimmer_winter10s.tif")
+imML_winter10s <- as.data.frame(imML_winter10s, xy = TRUE)
+x <- imML_winter10s%>%
+  filter(Extract_MLimmer_winter10s >-20)
+av <- mean(x$Extract_MLimmer_winter10s) #number of occurrence points
+av
+mx <- max(x$Extract_MLimmer_winter10s)
+mx
+mn <- min(x$Extract_MLimmer_winter10s)
+mn
+
+imML_spring90s <- raster("Extract_MLimmer_spring90s.tif")
+imML_spring90s <- as.data.frame(imML_spring90s, xy = TRUE)
+x <- imML_spring90s%>%
+  filter(Extract_MLimmer_spring90s >-20)
+av <- mean(x$Extract_MLimmer_spring90s) #number of occurrence points
+av
+mx <- max(x$Extract_MLimmer_spring90s)
+mx
+mn <- min(x$Extract_MLimmer_spring90s)
+mn
+
+imML_spring00s <- raster("Extract_MLimmer_spring00s.tif")
+imML_spring00s <- as.data.frame(imML_spring00s, xy = TRUE)
+x <- imML_spring00s%>%
+  filter(Extract_MLimmer_spring00s >-20)
+av <- mean(x$Extract_MLimmer_spring00s) #number of occurrence points
+av
+mx <- max(x$Extract_MLimmer_spring00s)
+mx
+mn <- min(x$Extract_MLimmer_spring00s)
+mn
+
+imML_spring10s <- raster("Extract_MLimmer_spring10s.tif")
+imML_spring10s <- as.data.frame(imML_spring10s, xy = TRUE)
+x <- imML_spring10s%>%
+  filter(Extract_MLimmer_spring10s >-20)
+av <- mean(x$Extract_MLimmer_spring10s) #number of occurrence points
+av
+mx <- max(x$Extract_MLimmer_spring10s)
+mx
+mn <- min(x$Extract_MLimmer_spring10s)
+mn
+
+imML_summer00s <- raster("Extract_MLimmer_summer00s.tif")
+imML_summer00s <- as.data.frame(imML_summer00s, xy = TRUE)
+x <- imML_summer00s%>%
+  filter(Extract_MLimmer_summer00s >-20)
+av <- mean(x$Extract_MLimmer_summer00s) #number of occurrence points
+av
+mx <- max(x$Extract_MLimmer_summer00s)
+mx
+mn <- min(x$Extract_MLimmer_summer00s)
+mn
+
+imML_summer10s <- raster("Extract_MLimmer_summer10s.tif")
+imML_summer10s <- as.data.frame(imML_summer10s, xy = TRUE)
+x <- imML_summer10s%>%
+  filter(Extract_MLimmer_summer10s >-20)
+av <- mean(x$Extract_MLimmer_summer10s) #number of occurrence points
+av
+mx <- max(x$Extract_MLimmer_summer10s)
+mx
+mn <- min(x$Extract_MLimmer_summer10s)
 mn
 
 # Northern current velocity P. griseus east ----------------
@@ -712,7 +955,7 @@ mx
 mn <- min(x$Extract_NVgriseus_westsummer10s)
 mn
 
-# Northern currect velocity nigripes ----
+# Northern current velocity nigripes ----
 
 nigNV_fall90s <- raster("Extract_NVnigripes_fall90s.tif")
 nigNV_fall90s <- as.data.frame(nigNV_fall90s, xy = TRUE)
@@ -778,6 +1021,129 @@ av
 mx <- max(x$Extract_NVnigripes_summer10s)
 mx
 mn <- min(x$Extract_NVnigripes_summer10s)
+mn
+
+# Northern current velocity immer ----
+
+imNV_fall90s <- raster("Extract_NVimmer_fall90s.tif")
+imNV_fall90s <- as.data.frame(imNV_fall90s, xy = TRUE)
+x <- imNV_fall90s%>%
+  filter(Extract_NVimmer_fall90s >-20)
+av <- mean(x$Extract_NVimmer_fall90s) #number of occurrence points
+av
+mx <- max(x$Extract_NVimmer_fall90s)
+mx
+mn <- min(x$Extract_NVimmer_fall90s)
+mn
+
+imNV_fall00s <- raster("Extract_NVimmer_fall00s.tif")
+imNV_fall00s <- as.data.frame(imNV_fall00s, xy = TRUE)
+x <- imNV_fall00s%>%
+  filter(Extract_NVimmer_fall00s >-20)
+av <- mean(x$Extract_NVimmer_fall00s) #number of occurrence points
+av
+mx <- max(x$Extract_NVimmer_fall00s)
+mx
+mn <- min(x$Extract_NVimmer_fall00s)
+mn
+
+imNV_fall10s <- raster("Extract_NVimmer_fall10s.tif")
+imNV_fall10s <- as.data.frame(imNV_fall10s, xy = TRUE)
+x <- imNV_fall10s%>%
+  filter(Extract_NVimmer_fall10s >-20)
+av <- mean(x$Extract_NVimmer_fall10s) #number of occurrence points
+av
+mx <- max(x$Extract_NVimmer_fall10s)
+mx
+mn <- min(x$Extract_NVimmer_fall10s)
+mn
+
+imNV_winter90s <- raster("Extract_NVimmer_winter90s.tif")
+imNV_winter90s <- as.data.frame(imNV_winter90s, xy = TRUE)
+x <- imNV_winter90s%>%
+  filter(Extract_NVimmer_winter90s >-20)
+av <- mean(x$Extract_NVimmer_winter90s) #number of occurrence points
+av
+mx <- max(x$Extract_NVimmer_winter90s)
+mx
+mn <- min(x$Extract_NVimmer_winter90s)
+mn
+
+imNV_winter00s <- raster("Extract_NVimmer_winter00s.tif")
+imNV_winter00s <- as.data.frame(imNV_winter00s, xy = TRUE)
+x <- imNV_winter00s%>%
+  filter(Extract_NVimmer_winter00s >-20)
+av <- mean(x$Extract_NVimmer_winter00s) #number of occurrence points
+av
+mx <- max(x$Extract_NVimmer_winter00s)
+mx
+mn <- min(x$Extract_NVimmer_winter00s)
+mn
+
+imNV_winter10s <- raster("Extract_NVimmer_winter10s.tif")
+imNV_winter10s <- as.data.frame(imNV_winter10s, xy = TRUE)
+x <- imNV_winter10s%>%
+  filter(Extract_NVimmer_winter10s >-20)
+av <- mean(x$Extract_NVimmer_winter10s) #number of occurrence points
+av
+mx <- max(x$Extract_NVimmer_winter10s)
+mx
+mn <- min(x$Extract_NVimmer_winter10s)
+mn
+
+imNV_spring90s <- raster("Extract_NVimmer_spring90s.tif")
+imNV_spring90s <- as.data.frame(imNV_spring90s, xy = TRUE)
+x <- imNV_spring90s%>%
+  filter(Extract_NVimmer_spring90s >-20)
+av <- mean(x$Extract_NVimmer_spring90s) #number of occurrence points
+av
+mx <- max(x$Extract_NVimmer_spring90s)
+mx
+mn <- min(x$Extract_NVimmer_spring90s)
+mn
+
+imNV_spring00s <- raster("Extract_NVimmer_spring00s.tif")
+imNV_spring00s <- as.data.frame(imNV_spring00s, xy = TRUE)
+x <- imNV_spring00s%>%
+  filter(Extract_NVimmer_spring00s >-20)
+av <- mean(x$Extract_NVimmer_spring00s) #number of occurrence points
+av
+mx <- max(x$Extract_NVimmer_spring00s)
+mx
+mn <- min(x$Extract_NVimmer_spring00s)
+mn
+
+imNV_spring10s <- raster("Extract_NVimmer_spring10s.tif")
+imNV_spring10s <- as.data.frame(imNV_spring10s, xy = TRUE)
+x <- imNV_spring10s%>%
+  filter(Extract_NVimmer_spring10s >-20)
+av <- mean(x$Extract_NVimmer_spring10s) #number of occurrence points
+av
+mx <- max(x$Extract_NVimmer_spring10s)
+mx
+mn <- min(x$Extract_NVimmer_spring10s)
+mn
+
+imNV_summer00s <- raster("Extract_NVimmer_summer00s.tif")
+imNV_summer00s <- as.data.frame(imNV_summer00s, xy = TRUE)
+x <- imNV_summer00s%>%
+  filter(Extract_NVimmer_summer00s >-20)
+av <- mean(x$Extract_NVimmer_summer00s) #number of occurrence points
+av
+mx <- max(x$Extract_NVimmer_summer00s)
+mx
+mn <- min(x$Extract_NVimmer_summer00s)
+mn
+
+imNV_summer10s <- raster("Extract_NVimmer_summer10s.tif")
+imNV_summer10s <- as.data.frame(imNV_summer10s, xy = TRUE)
+x <- imNV_summer10s%>%
+  filter(Extract_NVimmer_summer10s >-20)
+av <- mean(x$Extract_NVimmer_summer10s) #number of occurrence points
+av
+mx <- max(x$Extract_NVimmer_summer10s)
+mx
+mn <- min(x$Extract_NVimmer_summer10s)
 mn
 
 # Salinity P. griseus east ----------------
@@ -960,6 +1326,197 @@ mx
 mn <- min(x$Extract_Sagriseus_westsummer10s)
 mn
 
+# Salinity nigripes -----
+
+nigSa_fall90s <- raster("Extract_Sanigripes_fall90s.tif")
+nigSa_fall90s <- as.data.frame(nigSa_fall90s, xy = TRUE)
+x <- nigSa_fall90s%>%
+  filter(Extract_Sanigripes_fall90s >0)
+av <- mean(x$Extract_Sanigripes_fall90s) 
+av
+mx <- max(x$Extract_Sanigripes_fall90s)
+mx
+mn <- min(x$Extract_Sanigripes_fall90s)
+mn
+
+nigSa_fall10s <- raster("Extract_Sanigripes_fall10s.tif")
+nigSa_fall10s <- as.data.frame(nigSa_fall10s, xy = TRUE)
+x <- nigSa_fall10s %>%
+  filter(Extract_Sanigripes_fall10s >0)
+av <- mean(x$Extract_Sanigripes_fall10s) 
+av
+mx <- max(x$Extract_Sanigripes_fall10s)
+mx
+mn <- min(x$Extract_Sanigripes_fall10s)
+mn
+
+nigSa_spring90s <- raster("Extract_Sanigripes_spring90s.tif")
+nigSa_spring90s <- as.data.frame(nigSa_spring90s, xy = TRUE)
+x <- nigSa_spring90s%>%
+  filter(Extract_Sanigripes_spring90s >0)
+av <- mean(x$Extract_Sanigripes_spring90s) 
+av
+mx <- max(x$Extract_Sanigripes_spring90s)
+mx
+mn <- min(x$Extract_Sanigripes_spring90s)
+mn
+
+nigSa_summer90s <- raster("Extract_Sanigripes_summer90s.tif")
+nigSa_summer90s <- as.data.frame(nigSa_summer90s, xy = TRUE)
+x <- nigSa_summer90s%>%
+  filter(Extract_Sanigripes_summer90s >0)
+av <- mean(x$Extract_Sanigripes_summer90s) 
+av
+mx <- max(x$Extract_Sanigripes_summer90s)
+mx
+mn <- min(x$Extract_Sanigripes_summer90s)
+mn
+
+nigSa_summer00s <- raster("Extract_Sanigripes_summer00s.tif")
+nigSa_summer00s <- as.data.frame(nigSa_summer00s, xy = TRUE)
+x <- nigSa_summer00s %>%
+  filter(Extract_Sanigripes_summer00s >0)
+av <- mean(x$Extract_Sanigripes_summer00s) 
+av
+mx <- max(x$Extract_Sanigripes_summer00s)
+mx
+mn <- min(x$Extract_Sanigripes_summer00s)
+mn
+
+nigSa_summer10s <- raster("Extract_Sanigripes_summer10s.tif")
+nigSa_summer10s <- as.data.frame(nigSa_summer10s, xy = TRUE)
+x <- nigSa_summer10s%>%
+  filter(Extract_Sanigripes_summer10s >0)
+av <- mean(x$Extract_Sanigripes_summer10s) 
+av
+mx <- max(x$Extract_Sanigripes_summer10s)
+mx
+mn <- min(x$Extract_Sanigripes_summer10s)
+mn
+
+# Salinity immer -----
+
+imSa_fall90s <- raster("Extract_Saimmer_fall90s.tif")
+imSa_fall90s <- as.data.frame(imSa_fall90s, xy = TRUE)
+x <- imSa_fall90s%>%
+  filter(Extract_Saimmer_fall90s >0)
+av <- mean(x$Extract_Saimmer_fall90s) #number of occurrence points
+av
+mx <- max(x$Extract_Saimmer_fall90s)
+mx
+mn <- min(x$Extract_Saimmer_fall90s)
+mn
+
+imSa_fall00s <- raster("Extract_Saimmer_fall00s.tif")
+imSa_fall00s <- as.data.frame(imSa_fall00s, xy = TRUE)
+x <- imSa_fall00s%>%
+  filter(Extract_Saimmer_fall00s >0)
+av <- mean(x$Extract_Saimmer_fall00s) #number of occurrence points
+av
+mx <- max(x$Extract_Saimmer_fall00s)
+mx
+mn <- min(x$Extract_Saimmer_fall00s)
+mn
+
+imSa_fall10s <- raster("Extract_Saimmer_fall10s.tif")
+imSa_fall10s <- as.data.frame(imSa_fall10s, xy = TRUE)
+x <- imSa_fall10s%>%
+  filter(Extract_Saimmer_fall10s >0)
+av <- mean(x$Extract_Saimmer_fall10s) #number of occurrence points
+av
+mx <- max(x$Extract_Saimmer_fall10s)
+mx
+mn <- min(x$Extract_Saimmer_fall10s)
+mn
+
+imSa_winter90s <- raster("Extract_Saimmer_winter90s.tif")
+imSa_winter90s <- as.data.frame(imSa_winter90s, xy = TRUE)
+x <- imSa_winter90s %>%
+   filter(Extract_Saimmer_winter90s >0)
+av <- mean(x$Extract_Saimmer_winter90s) #cannot have negative salinity, all 0s
+av
+mx <- max(x$Extract_Saimmer_winter90s)
+mx
+mn <- min(x$Extract_Saimmer_winter90s)
+mn
+
+imSa_winter00s <- raster("Extract_Saimmer_winter00s.tif")
+imSa_winter00s <- as.data.frame(imSa_winter00s, xy = TRUE)
+x <- imSa_winter00s %>%
+  filter(Extract_Saimmer_winter00s >0)
+av <- mean(x$Extract_Saimmer_winter00s) 
+av
+mx <- max(x$Extract_Saimmer_winter00s)
+mx
+mn <- min(x$Extract_Saimmer_winter00s)
+mn
+
+imSa_winter10s <- raster("Extract_Saimmer_winter10s.tif")
+imSa_winter10s <- as.data.frame(imSa_winter10s, xy = TRUE)
+x <- imSa_winter10s%>%
+  filter(Extract_Saimmer_winter10s >0)
+av <- mean(x$Extract_Saimmer_winter10s) 
+av
+mx <- max(x$Extract_Saimmer_winter10s)
+mx
+mn <- min(x$Extract_Saimmer_winter10s)
+mn
+
+imSa_spring90s <- raster("Extract_Saimmer_spring90s.tif")
+imSa_spring90s <- as.data.frame(imSa_spring90s, xy = TRUE)
+x <- imSa_spring90s %>%
+  filter(Extract_Saimmer_spring90s >0)
+av <- mean(x$Extract_Saimmer_spring90s) 
+av
+mx <- max(x$Extract_Saimmer_spring90s)
+mx
+mn <- min(x$Extract_Saimmer_spring90s)
+mn
+
+imSa_spring00s <- raster("Extract_Saimmer_spring00s.tif")
+imSa_spring00s <- as.data.frame(imSa_spring00s, xy = TRUE)
+x <- imSa_spring00s%>%
+  filter(Extract_Saimmer_spring00s >0)
+av <- mean(x$Extract_Saimmer_spring00s) #number of occurrence points
+av
+mx <- max(x$Extract_Saimmer_spring00s)
+mx
+mn <- min(x$Extract_Saimmer_spring00s)
+mn
+
+imSa_spring10s <- raster("Extract_Saimmer_spring10s.tif")
+imSa_spring10s <- as.data.frame(imSa_spring10s, xy = TRUE)
+x <- imSa_spring10s%>%
+  filter(Extract_Saimmer_spring10s >0)
+av <- mean(x$Extract_Saimmer_spring10s) #number of occurrence points
+av
+mx <- max(x$Extract_Saimmer_spring10s)
+mx
+mn <- min(x$Extract_Saimmer_spring10s)
+mn
+
+imSa_summer00s <- raster("Extract_Saimmer_summer00s.tif")
+imSa_summer00s <- as.data.frame(imSa_summer00s, xy = TRUE)
+x <- imSa_summer00s%>%
+  filter(Extract_Saimmer_summer00s >0)
+av <- mean(x$Extract_Saimmer_summer00s) #number of occurrence points
+av
+mx <- max(x$Extract_Saimmer_summer00s)
+mx
+mn <- min(x$Extract_Saimmer_summer00s)
+mn
+
+imSa_summer10s <- raster("Extract_Saimmer_summer10s.tif")
+imSa_summer10s <- as.data.frame(imSa_summer10s, xy = TRUE)
+x <- imSa_summer10s%>%
+  filter(Extract_Saimmer_summer10s >0)
+av <- mean(x$Extract_Saimmer_summer10s) #number of occurrence points
+av
+mx <- max(x$Extract_Saimmer_summer10s)
+mx
+mn <- min(x$Extract_Saimmer_summer10s)
+mn
+
 # Sea surface temperature P. griseus east ------
 
 grisSST_eastfall90s <- raster("Extract_SSTgriseus_eastfall90s.tif")
@@ -1140,6 +1697,197 @@ mx
 mn <- min(x$Extract_SSTgriseus_westsummer10s)
 mn
 
+# Sea surface temperature nigripes----
+
+nigSST_fall90s <- raster("Extract_SSTnigripes_fall90s.tif")
+nigSST_fall90s <- as.data.frame(nigSST_fall90s, xy = TRUE)
+x <- nigSST_fall90s%>%
+  filter(Extract_SSTnigripes_fall90s >0)
+av <- mean(x$Extract_SSTnigripes_fall90s) 
+av
+mx <- max(x$Extract_SSTnigripes_fall90s)
+mx
+mn <- min(x$Extract_SSTnigripes_fall90s)
+mn
+
+nigSST_fall10s <- raster("Extract_SSTnigripes_fall10s.tif")
+nigSST_fall10s <- as.data.frame(nigSST_fall10s, xy = TRUE)
+x <- nigSST_fall10s %>%
+  filter(Extract_SSTnigripes_fall10s >0)
+av <- mean(x$Extract_SSTnigripes_fall10s) 
+av
+mx <- max(x$Extract_SSTnigripes_fall10s)
+mx
+mn <- min(x$Extract_SSTnigripes_fall10s)
+mn
+
+nigSST_spring90s <- raster("Extract_SSTnigripes_spring90s.tif")
+nigSST_spring90s <- as.data.frame(nigSST_spring90s, xy = TRUE)
+x <- nigSST_spring90s%>%
+  filter(Extract_SSTnigripes_spring90s >0)
+av <- mean(x$Extract_SSTnigripes_spring90s) 
+av
+mx <- max(x$Extract_SSTnigripes_spring90s)
+mx
+mn <- min(x$Extract_SSTnigripes_spring90s)
+mn
+
+nigSST_summer90s <- raster("Extract_SSTnigripes_summer90s.tif")
+nigSST_summer90s <- as.data.frame(nigSST_summer90s, xy = TRUE)
+x <- nigSST_summer90s%>%
+  filter(Extract_SSTnigripes_summer90s >0)
+av <- mean(x$Extract_SSTnigripes_summer90s) 
+av
+mx <- max(x$Extract_SSTnigripes_summer90s)
+mx
+mn <- min(x$Extract_SSTnigripes_summer90s)
+mn
+
+nigSST_summer00s <- raster("Extract_SSTnigripes_summer00s.tif")
+nigSST_summer00s <- as.data.frame(nigSST_summer00s, xy = TRUE)
+x <- nigSST_summer00s %>%
+  filter(Extract_SSTnigripes_summer00s >0)
+av <- mean(x$Extract_SSTnigripes_summer00s) 
+av
+mx <- max(x$Extract_SSTnigripes_summer00s)
+mx
+mn <- min(x$Extract_SSTnigripes_summer00s)
+mn
+
+nigSST_summer10s <- raster("Extract_SSTnigripes_summer10s.tif")
+nigSST_summer10s <- as.data.frame(nigSST_summer10s, xy = TRUE)
+x <- nigSST_summer10s%>%
+  filter(Extract_SSTnigripes_summer10s >0)
+av <- mean(x$Extract_SSTnigripes_summer10s) 
+av
+mx <- max(x$Extract_SSTnigripes_summer10s)
+mx
+mn <- min(x$Extract_SSTnigripes_summer10s)
+mn
+
+# Sea surface temperature immer ----
+
+imSST_fall90s <- raster("Extract_SSTimmer_fall90s.tif")
+imSST_fall90s <- as.data.frame(imSST_fall90s, xy = TRUE)
+x <- imSST_fall90s%>%
+  filter(Extract_SSTimmer_fall90s >0)
+av <- mean(x$Extract_SSTimmer_fall90s) #number of occurrence points
+av
+mx <- max(x$Extract_SSTimmer_fall90s)
+mx
+mn <- min(x$Extract_SSTimmer_fall90s)
+mn
+
+imSST_fall00s <- raster("Extract_SSTimmer_fall00s.tif")
+imSST_fall00s <- as.data.frame(imSST_fall00s, xy = TRUE)
+x <- imSST_fall00s%>%
+  filter(Extract_SSTimmer_fall00s >0)
+av <- mean(x$Extract_SSTimmer_fall00s) #number of occurrence points
+av
+mx <- max(x$Extract_SSTimmer_fall00s)
+mx
+mn <- min(x$Extract_SSTimmer_fall00s)
+mn
+
+imSST_fall10s <- raster("Extract_SSTimmer_fall10s.tif")
+imSST_fall10s <- as.data.frame(imSST_fall10s, xy = TRUE)
+x <- imSST_fall10s%>%
+  filter(Extract_SSTimmer_fall10s >0)
+av <- mean(x$Extract_SSTimmer_fall10s) #number of occurrence points
+av
+mx <- max(x$Extract_SSTimmer_fall10s)
+mx
+mn <- min(x$Extract_SSTimmer_fall10s)
+mn
+
+imSST_winter90s <- raster("Extract_SSTimmer_winter90s.tif")
+imSST_winter90s <- as.data.frame(imSST_winter90s, xy = TRUE)
+x <- imSST_winter90s%>%
+  filter(Extract_SSTimmer_winter90s >0)
+av <- mean(x$Extract_SSTimmer_winter90s) #number of occurrence points
+av
+mx <- max(x$Extract_SSTimmer_winter90s)
+mx
+mn <- min(x$Extract_SSTimmer_winter90s)
+mn
+
+imSST_winter00s <- raster("Extract_SSTimmer_winter00s.tif")
+imSST_winter00s <- as.data.frame(imSST_winter00s, xy = TRUE)
+x <- imSST_winter00s%>%
+  filter(Extract_SSTimmer_winter00s >0)
+av <- mean(x$Extract_SSTimmer_winter00s) #number of occurrence points
+av
+mx <- max(x$Extract_SSTimmer_winter00s)
+mx
+mn <- min(x$Extract_SSTimmer_winter00s)
+mn
+
+imSST_winter10s <- raster("Extract_SSTimmer_winter10.tif")
+imSST_winter10s <- as.data.frame(imSST_winter10s, xy = TRUE)
+x <- imSST_winter10s%>%
+  filter(Extract_SSTimmer_winter10 >0)
+av <- mean(x$Extract_SSTimmer_winter10) #number of occurrence points
+av
+mx <- max(x$Extract_SSTimmer_winter10)
+mx
+mn <- min(x$Extract_SSTimmer_winter10)
+mn
+
+imSST_spring90s <- raster("Extract_SSTimmer_spring90s.tif")
+imSST_spring90s <- as.data.frame(imSST_spring90s, xy = TRUE)
+x <- imSST_spring90s%>%
+  filter(Extract_SSTimmer_spring90s >0)
+av <- mean(x$Extract_SSTimmer_spring90s) #number of occurrence points
+av
+mx <- max(x$Extract_SSTimmer_spring90s)
+mx
+mn <- min(x$Extract_SSTimmer_spring90s)
+mn
+
+imSST_spring00s <- raster("Extract_SSTimmer_spring00.tif")
+imSST_spring00s <- as.data.frame(imSST_spring00s, xy = TRUE)
+x <- imSST_spring00s%>%
+  filter(Extract_SSTimmer_spring00 >0)
+av <- mean(x$Extract_SSTimmer_spring00) #number of occurrence points
+av
+mx <- max(x$Extract_SSTimmer_spring00)
+mx
+mn <- min(x$Extract_SSTimmer_spring00)
+mn
+
+imSST_spring10s <- raster("Extract_SSTimmer_spring10.tif")
+imSST_spring10s <- as.data.frame(imSST_spring10s, xy = TRUE)
+x <- imSST_spring10s%>%
+  filter(Extract_SSTimmer_spring10 >0)
+av <- mean(x$Extract_SSTimmer_spring10) #number of occurrence points
+av
+mx <- max(x$Extract_SSTimmer_spring10)
+mx
+mn <- min(x$Extract_SSTimmer_spring10)
+mn
+
+imSST_summer00s <- raster("Extract_SSTimmer_summer00.tif")
+imSST_summer00s <- as.data.frame(imSST_summer00s, xy = TRUE)
+x <- imSST_summer00s%>%
+  filter(Extract_SSTimmer_summer00 >0)
+av <- mean(x$Extract_SSTimmer_summer00) #number of occurrence points
+av
+mx <- max(x$Extract_SSTimmer_summer00)
+mx
+mn <- min(x$Extract_SSTimmer_summer00)
+mn
+
+imSST_summer10s <- raster("Extract_SSTimmer_summer10.tif")
+imSST_summer10s <- as.data.frame(imSST_summer10s, xy = TRUE)
+x <- imSST_summer10s%>%
+  filter(Extract_SSTimmer_summer10 >0)
+av <- mean(x$Extract_SSTimmer_summer10) #number of occurrence points
+av
+mx <- max(x$Extract_SSTimmer_summer10)
+mx
+mn <- min(x$Extract_SSTimmer_summer10)
+mn
+
 # Sea surface height P. griseus east ----
 
 grisSSH_eastfall90s <- raster("Extract_SSHgriseus_eastfall90s.tif")
@@ -1316,3 +2064,207 @@ mx <- max(x$Extract_SSHgriseus_westsummer10s)
 mx
 mn <- min(x$Extract_SSHgriseus_westsummer10s)
 mn
+# Sea surface height nigripes ----
+
+nigSSH_fall90s <- raster("Extract_SSHnigripes_fall90s.tif")
+nigSSH_fall90s <- as.data.frame(nigSSH_fall90s, xy = TRUE)
+x <- nigSSH_fall90s%>%
+  filter(Extract_SSHnigripes_fall90s >-10)
+av <- mean(x$Extract_SSHnigripes_fall90s) 
+av
+mx <- max(x$Extract_SSHnigripes_fall90s)
+mx
+mn <- min(x$Extract_SSHnigripes_fall90s)
+mn
+
+nigSSH_fall10s <- raster("Extract_SSHnigripes_fall10s.tif")
+nigSSH_fall10s <- as.data.frame(nigSSH_fall10s, xy = TRUE)
+x <- nigSSH_fall10s %>%
+  filter(Extract_SSHnigripes_fall10s >-10)
+av <- mean(x$Extract_SSHnigripes_fall10s) 
+av
+mx <- max(x$Extract_SSHnigripes_fall10s)
+mx
+mn <- min(x$Extract_SSHnigripes_fall10s)
+mn
+
+nigSSH_spring90s <- raster("Extract_SSHnigripes_spring90s.tif")
+nigSSH_spring90s <- as.data.frame(nigSSH_spring90s, xy = TRUE)
+x <- nigSSH_spring90s%>%
+  filter(Extract_SSHnigripes_spring90s >-10)
+av <- mean(x$Extract_SSHnigripes_spring90s) 
+av
+mx <- max(x$Extract_SSHnigripes_spring90s)
+mx
+mn <- min(x$Extract_SSHnigripes_spring90s)
+mn
+
+nigSSH_summer90s <- raster("Extract_SSHnigripes_summer90s.tif")
+nigSSH_summer90s <- as.data.frame(nigSSH_summer90s, xy = TRUE)
+x <- nigSSH_summer90s%>%
+  filter(Extract_SSHnigripes_summer90s >-10)
+av <- mean(x$Extract_SSHnigripes_summer90s) 
+av
+mx <- max(x$Extract_SSHnigripes_summer90s)
+mx
+mn <- min(x$Extract_SSHnigripes_summer90s)
+mn
+
+nigSSH_summer00s <- raster("Extract_SSHnigripes_summer00s.tif")
+nigSSH_summer00s <- as.data.frame(nigSSH_summer00s, xy = TRUE)
+x <- nigSSH_summer00s %>%
+  filter(Extract_SSHnigripes_summer00s >-10)
+av <- mean(x$Extract_SSHnigripes_summer00s) 
+av
+mx <- max(x$Extract_SSHnigripes_summer00s)
+mx
+mn <- min(x$Extract_SSHnigripes_summer00s)
+mn
+
+nigSSH_summer10s <- raster("Extract_SSHnigripes_summer10s.tif")
+nigSSH_summer10s <- as.data.frame(nigSSH_summer10s, xy = TRUE)
+x <- nigSSH_summer10s%>%
+  filter(Extract_SSHnigripes_summer10s >-10)
+av <- mean(x$Extract_SSHnigripes_summer10s) 
+av
+mx <- max(x$Extract_SSHnigripes_summer10s)
+mx
+mn <- min(x$Extract_SSHnigripes_summer10s)
+mn
+# Sea surface height immer ----
+
+imSSH_fall90s <- raster("Extract_SSHimmer_fall90s.tif")
+imSSH_fall90s <- as.data.frame(imSSH_fall90s, xy = TRUE)
+x <- imSSH_fall90s%>%
+  filter(Extract_SSHimmer_fall90s >-10)
+av <- mean(x$Extract_SSHimmer_fall90s) #number of occurrence points
+av
+mx <- max(x$Extract_SSHimmer_fall90s)
+mx
+mn <- min(x$Extract_SSHimmer_fall90s)
+mn
+
+imSSH_fall00s <- raster("Extract_SSHimmer_fall00s.tif")
+imSSH_fall00s <- as.data.frame(imSSH_fall00s, xy = TRUE)
+x <- imSSH_fall00s%>%
+  filter(Extract_SSHimmer_fall00s >-10)
+av <- mean(x$Extract_SSHimmer_fall00s) #number of occurrence points
+av
+mx <- max(x$Extract_SSHimmer_fall00s)
+mx
+mn <- min(x$Extract_SSHimmer_fall00s)
+mn
+
+imSSH_fall10s <- raster("Extract_SSHimmer_fall10s.tif")
+imSSH_fall10s <- as.data.frame(imSSH_fall10s, xy = TRUE)
+x <- imSSH_fall10s%>%
+  filter(Extract_SSHimmer_fall10s >-10)
+av <- mean(x$Extract_SSHimmer_fall10s) #number of occurrence points
+av
+mx <- max(x$Extract_SSHimmer_fall10s)
+mx
+mn <- min(x$Extract_SSHimmer_fall10s)
+mn
+
+imSSH_winter90s <- raster("Extract_SSHimmer_winter90s.tif")
+imSSH_winter90s <- as.data.frame(imSSH_winter90s, xy = TRUE)
+x <- imSSH_winter90s%>%
+  filter(Extract_SSHimmer_winter90s >-10)
+av <- mean(x$Extract_SSHimmer_winter90s) #number of occurrence points
+av
+mx <- max(x$Extract_SSHimmer_winter90s)
+mx
+mn <- min(x$Extract_SSHimmer_winter90s)
+mn
+
+imSSH_winter00s <- raster("Extract_SSHimmer_winter00s.tif")
+imSSH_winter00s <- as.data.frame(imSSH_winter00s, xy = TRUE)
+x <- imSSH_winter00s%>%
+  filter(Extract_SSHimmer_winter00s >-10)
+av <- mean(x$Extract_SSHimmer_winter00s) #number of occurrence points
+av
+mx <- max(x$Extract_SSHimmer_winter00s)
+mx
+mn <- min(x$Extract_SSHimmer_winter00s)
+mn
+
+imSSH_winter10s <- raster("Extract_SSHimmer_winter10.tif")
+imSSH_winter10s <- as.data.frame(imSSH_winter10s, xy = TRUE)
+x <- imSSH_winter10s%>%
+  filter(Extract_SSHimmer_winter10 >-10)
+av <- mean(x$Extract_SSHimmer_winter10) #number of occurrence points
+av
+mx <- max(x$Extract_SSHimmer_winter10)
+mx
+mn <- min(x$Extract_SSHimmer_winter10)
+mn
+
+imSSH_spring90s <- raster("Extract_SSHimmer_spring90s.tif")
+imSSH_spring90s <- as.data.frame(imSSH_spring90s, xy = TRUE)
+x <- imSSH_spring90s%>%
+  filter(Extract_SSHimmer_spring90s >-10)
+av <- mean(x$Extract_SSHimmer_spring90s) #number of occurrence points
+av
+mx <- max(x$Extract_SSHimmer_spring90s)
+mx
+mn <- min(x$Extract_SSHimmer_spring90s)
+mn
+
+imSSH_spring00s <- raster("Extract_SSHimmer_spring00.tif")
+imSSH_spring00s <- as.data.frame(imSSH_spring00s, xy = TRUE)
+x <- imSSH_spring00s%>%
+  filter(Extract_SSHimmer_spring00 >-10)
+av <- mean(x$Extract_SSHimmer_spring00) #number of occurrence points
+av
+mx <- max(x$Extract_SSHimmer_spring00)
+mx
+mn <- min(x$Extract_SSHimmer_spring00)
+mn
+
+imSSH_spring10s <- raster("Extract_SSHimmer_spring10.tif")
+imSSH_spring10s <- as.data.frame(imSSH_spring10s, xy = TRUE)
+x <- imSSH_spring10s%>%
+  filter(Extract_SSHimmer_spring10 >-10)
+av <- mean(x$Extract_SSHimmer_spring10) #number of occurrence points
+av
+mx <- max(x$Extract_SSHimmer_spring10)
+mx
+mn <- min(x$Extract_SSHimmer_spring10)
+mn
+
+imSSH_summer00s <- raster("Extract_SSHimmer_summer00.tif")
+imSSH_summer00s <- as.data.frame(imSSH_summer00s, xy = TRUE)
+x <- imSSH_summer00s%>%
+  filter(Extract_SSHimmer_summer00 >-10)
+av <- mean(x$Extract_SSHimmer_summer00) #number of occurrence points
+av
+mx <- max(x$Extract_SSHimmer_summer00)
+mx
+mn <- min(x$Extract_SSHimmer_summer00)
+mn
+
+imSSH_summer10s <- raster("Extract_SSHimmer_summer10.tif")
+imSSH_summer10s <- as.data.frame(imSSH_summer10s, xy = TRUE)
+x <- imSSH_summer10s%>%
+  filter(Extract_SSHimmer_summer10 >-10)
+av <- mean(x$Extract_SSHimmer_summer10) #number of occurrence points
+av
+mx <- max(x$Extract_SSHimmer_summer10)
+mx
+mn <- min(x$Extract_SSHimmer_summer10)
+mn
+
+# import summary data
+immerSummary    <- read.csv("C:/Users/savan/Documents/github/AvesOBIS/immerSummary.csv")
+immerSummary    <- immerSummary %>% 
+  column_to_rownames(var="X")
+nigSummary      <- read.csv("C:/Users/savan/Documents/github/AvesOBIS/nigSummary.csv")
+nigSummary      <- nigSummary %>% 
+  column_to_rownames(var="X")
+grisWestSummary <- read.csv("C:/Users/savan/Documents/github/AvesOBIS/grisWestSummary.csv")
+grisWestSummary    <- grisWestSummary %>% 
+  column_to_rownames(var="X")
+grisEastSummary <- read.csv("C:/Users/savan/Documents/github/AvesOBIS/grisEastSummary.csv")
+grisEastSummary    <- grisEastSummary %>% 
+  column_to_rownames(var="X")
+
