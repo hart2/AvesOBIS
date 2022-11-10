@@ -214,6 +214,74 @@ mx
 mn <- min(x$Extract_EVgriseus_westsummer10s)
 mn
 
+# Eastern current velocity nigripes ----
+
+grisEV_westfall90s <- raster("Extract_EVgriseus_westfall90s.tif")
+grisEV_westfall90s <- as.data.frame(grisEV_westfall90s, xy = TRUE)
+x <- grisEV_westfall90s%>%
+  filter(Extract_EVgriseus_westfall90s >-20)
+av <- mean(x$Extract_EVgriseus_westfall90s) 
+av
+mx <- max(x$Extract_EVgriseus_westfall90s)
+mx
+mn <- min(x$Extract_EVgriseus_westfall90s)
+mn
+
+nigEV_fall10s <- raster("Extract_EVnigripes_fall10s.tif")
+nigEV_fall10s <- as.data.frame(nigEV_fall10s, xy = TRUE)
+x <- nigEV_fall10s%>%
+  filter(Extract_EVnigipes_fall10s >-20)
+av <- mean(x$Extract_EVnigripes_fall0s) 
+av
+mx <- max(x$Extract_EVnigripes_fall10s)
+mx
+mn <- min(x$Extract_EVnigripes_fall10s)
+mn
+
+nigEV_spring90s <- raster("Extract_EVnigripes_spring90s.tif")
+nigEV_spring90s <- as.data.frame(nigEV_spring90s, xy = TRUE)
+x <- nigEV_spring90s%>%
+  filter(Extract_EVnigripes_spring90s >-20)
+av <- mean(x$Extract_EVnigripes_spring90s) 
+av
+mx <- max(x$Extract_EVnigripes_spring90s)
+mx
+mn <- min(x$Extract_EVnigripes_spring90s)
+mn
+
+nigEV_summer90s <- raster("Extract_EVnigripes_summer90s.tif")
+nigEV_summer90s <- as.data.frame(nigEV_summer90s, xy = TRUE)
+x <- nigEV_summer90s%>%
+  filter(Extract_EVnigripes_summer90s >-20)
+av <- mean(x$Extract_EVnigripes_summer90s) 
+av
+mx <- max(x$Extract_EVnigripes_summer90s)
+mx
+mn <- min(x$Extract_EVnigripes_summer90s)
+mn
+
+nigEV_summer00s <- raster("Extract_EVnigripes_summer00s.tif")
+nigEV_summer00s <- as.data.frame(nigEV_summer00s, xy = TRUE)
+x <- nigEV_summer00s %>%
+  filter(Extract_EVnigripes_summer00s >-20)
+av <- mean(x$Extract_EVnigripes_summer00s) 
+av
+mx <- max(x$Extract_EVnigripes_summer00s)
+mx
+mn <- min(x$Extract_EVnigripes_summer00s)
+mn
+
+nigEV_summer10s <- raster("Extract_EVnigripes_summer10s.tif")
+nigEV_summer10s <- as.data.frame(nigEV_summer10s, xy = TRUE)
+x <- nigEV_summer10s%>%
+  filter(Extract_EVnigripes_summer10s >-20)
+av <- mean(x$Extract_EVnigripes_summer10s) 
+av
+mx <- max(x$Extract_EVnigripes_summer10s)
+mx
+mn <- min(x$Extract_EVnigripes_summer10s)
+mn
+
 # Mixed layer depth P. griseus east----------------------
 grisML_eastfall90s <- raster("Extract_MLgriseus_eastfall90s.tif")
 grisML_eastfall90s <- as.data.frame(grisML_eastfall90s, xy = TRUE)
@@ -397,6 +465,74 @@ mx
 mn <- min(x$Extract_MLgriseus_westsummer10s)
 mn
 
+# Mixed layer depth nigripes
+
+nigML_fall90s <- raster("Extract_MLnigripes_fall90s.tif")
+nigML_fall90s <- as.data.frame(nigML_fall90s, xy = TRUE)
+x <- nigML_fall90s%>%
+  filter(Extract_MLnigripes_fall90s >-20)
+av <- mean(x$Extract_MLnigripes_fall90s) 
+av
+mx <- max(x$Extract_MLnigripes_fall90s)
+mx
+mn <- min(x$Extract_MLnigripes_fall90s)
+mn
+
+nigML_fall10s <- raster("Extract_MLnigripes_fall10s.tif")
+nigML_fall10s <- as.data.frame(nigML_fall10s, xy = TRUE)
+x <- nigML_fall10s %>%
+  filter(Extract_MLnigripes_fall10s >-20)
+av <- mean(x$Extract_MLnigripes_fall10s) 
+av
+mx <- max(x$Extract_MLnigripes_fall10s)
+mx
+mn <- min(x$Extract_MLnigripes_fall10s)
+mn
+
+nigML_spring90s <- raster("Extract_MLnigripes_spring90s.tif")
+nigML_spring90s <- as.data.frame(nigML_spring90s, xy = TRUE)
+x <- nigML_spring90s%>%
+  filter(Extract_MLnigripes_spring90s >-20)
+av <- mean(x$Extract_MLnigripes_spring90s) 
+av
+mx <- max(x$Extract_MLnigripes_spring90s)
+mx
+mn <- min(x$Extract_MLnigripes_spring90s)
+mn
+
+nigML_summer90s <- raster("Extract_MLnigripes_summer90s.tif")
+nigML_summer90s <- as.data.frame(nigML_summer90s, xy = TRUE)
+x <- nigML_summer90s%>%
+  filter(Extract_MLnigripes_summer90s >-20)
+av <- mean(x$Extract_MLnigripes_summer90s) 
+av
+mx <- max(x$Extract_MLnigripes_summer90s)
+mx
+mn <- min(x$Extract_MLnigripes_summer90s)
+mn
+
+nigML_summer00s <- raster("Extract_MLnigripes_summer00s.tif")
+nigML_summer00s <- as.data.frame(nigML_summer00s, xy = TRUE)
+x <- nigML_summer00s %>%
+  filter(Extract_MLnigripes_summer00s >-20)
+av <- mean(x$Extract_MLnigripes_summer00s) 
+av
+mx <- max(x$Extract_MLnigripes_summer00s)
+mx
+mn <- min(x$Extract_MLnigripes_summer00s)
+mn
+
+nigML_summer10s <- raster("Extract_MLnigripes_summer10s.tif")
+nigML_summer10s <- as.data.frame(nigML_summer10s, xy = TRUE)
+x <- nigML_summer10s%>%
+  filter(Extract_MLnigripes_summer10s >-20)
+av <- mean(x$Extract_MLnigripes_summer10s) 
+av
+mx <- max(x$Extract_MLnigripes_summer10s)
+mx
+mn <- min(x$Extract_MLnigripes_summer10s)
+mn
+
 # Northern current velocity P. griseus east ----------------
 
 grisNV_eastfall90s <- raster("Extract_NVgriseus_eastfall90s.tif")
@@ -574,6 +710,74 @@ av
 mx <- max(x$Extract_NVgriseus_westsummer10s)
 mx
 mn <- min(x$Extract_NVgriseus_westsummer10s)
+mn
+
+# Northern currect velocity nigripes ----
+
+nigNV_fall90s <- raster("Extract_NVnigripes_fall90s.tif")
+nigNV_fall90s <- as.data.frame(nigNV_fall90s, xy = TRUE)
+x <- nigNV_fall90s%>%
+  filter(Extract_NVnigripes_fall90s >-20)
+av <- mean(x$Extract_NVnigripes_fall90s) 
+av
+mx <- max(x$Extract_NVnigripes_fall90s)
+mx
+mn <- min(x$Extract_NVnigripes_fall90s)
+mn
+
+nigNV_fall10s <- raster("Extract_NVnigripes_fall10s.tif")
+nigNV_fall10s <- as.data.frame(nigNV_fall10s, xy = TRUE)
+x <- nigNV_fall10s %>%
+  filter(Extract_NVnigripes_fall10s >-20)
+av <- mean(x$Extract_NVnigripes_fall10s) 
+av
+mx <- max(x$Extract_NVnigripes_fall10s)
+mx
+mn <- min(x$Extract_NVnigripes_fall10s)
+mn
+
+nigNV_spring90s <- raster("Extract_NVnigripes_spring90s.tif")
+nigNV_spring90s <- as.data.frame(nigNV_spring90s, xy = TRUE)
+x <- nigNV_spring90s%>%
+  filter(Extract_NVnigripes_spring90s >-20)
+av <- mean(x$Extract_NVnigripes_spring90s) 
+av
+mx <- max(x$Extract_NVnigripes_spring90s)
+mx
+mn <- min(x$Extract_NVnigripes_spring90s)
+mn
+
+nigNV_summer90s <- raster("Extract_NVnigripes_summer90s.tif")
+nigNV_summer90s <- as.data.frame(nigNV_summer90s, xy = TRUE)
+x <- nigNV_summer90s%>%
+  filter(Extract_NVnigripes_summer90s >-20)
+av <- mean(x$Extract_NVnigripes_summer90s) 
+av
+mx <- max(x$Extract_NVnigripes_summer90s)
+mx
+mn <- min(x$Extract_NVnigripes_summer90s)
+mn
+
+nigNV_summer00s <- raster("Extract_NVnigripes_summer00s.tif")
+nigNV_summer00s <- as.data.frame(nigNV_summer00s, xy = TRUE)
+x <- nigNV_summer00s %>%
+  filter(Extract_NVnigripes_summer00s >-20)
+av <- mean(x$Extract_NVnigripes_summer00s) 
+av
+mx <- max(x$Extract_NVnigripes_summer00s)
+mx
+mn <- min(x$Extract_NVnigripes_summer00s)
+mn
+
+nigNV_summer10s <- raster("Extract_NVnigripes_summer10s.tif")
+nigNV_summer10s <- as.data.frame(nigNV_summer10s, xy = TRUE)
+x <- nigNV_summer10s%>%
+  filter(Extract_NVnigripes_summer10s >-20)
+av <- mean(x$Extract_NVnigripes_summer10s) 
+av
+mx <- max(x$Extract_NVnigripes_summer10s)
+mx
+mn <- min(x$Extract_NVnigripes_summer10s)
 mn
 
 # Salinity P. griseus east ----------------
