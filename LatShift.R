@@ -16,16 +16,7 @@ library(raster) # package for raster manipulation
 # library(ggplot2) # package for plotting
 
 # response variables
-species            <- read.csv("C:/Users/savan/Desktop/Chapter 2/Species_latlon.csv")
-nigripes           <- as.data.frame(species[1:10,2:3]) # Species' occurrence lat/lon
-immer              <- as.data.frame(species[11:26,2:3])
-griseus            <- as.data.frame(species[27:nrow(species),2:3])
-row.names(immer)   <- c(1:16)         # Modify row names 
-row.names(griseus) <- c(1:25)
-new                <- c("West", "West", "West", "West", "West", "West", "West", "West", "West", "West",
-                        "West", "West", "East", "East", "East", "East", "East", "East", "East", "East",
-                        "East", "East", "East", "East", "East")
-griseus['coast']   <-(new)
+# lat/lon of species 
 
 # explanatory variables
 # Extracted environmental data for specific lat/lon via arcgis, input as tif
@@ -121,6 +112,7 @@ grisEV_westfall90s <- grisEV_westfall90s %>%
   add_column(Season = "Fall",
              Decade = "90s",
              .after = "y")
+colnames(grisEV_westfall90s) <- c("x","y","Season","Decade","EV")
 
 grisEV_westwinter00s <- raster("Extract_EVgriseus_westwinter00s.tif")
 grisEV_westwinter00s <- as.data.frame(grisEV_westwinter00s, xy = TRUE)
@@ -128,6 +120,7 @@ grisEV_westwinter00s <- grisEV_westwinter00s %>%
   add_column(Season = "Winter",
              Decade = "00s",
              .after = "y")
+colnames(grisEV_westwinter00s) <- c("x","y","Season","Decade","EV")
 
 grisEV_westspring90s <- raster("Extract_EVgriseus_westspring90s.tif")
 grisEV_westspring90s <- as.data.frame(grisEV_westspring90s, xy = TRUE)
@@ -135,103 +128,81 @@ grisEV_westspring90s <- grisEV_westspring90s %>%
   add_column(Season = "Spring",
              Decade = "90s",
              .after = "y")
+colnames(grisEV_westspring90s) <- c("x","y","Season","Decade","EV")
 
 grisEV_westsummer90s <- raster("Extract_EVgriseus_westsummer90s.tif")
 grisEV_westsummer90s <- as.data.frame(grisEV_westsummer90s, xy = TRUE)
 grisEV_westsummer90s <- grisEV_westsummer90s %>%
-  add_column(Season = "Winter",
-             Decade = "00s",
+  add_column(Season = "Summer",
+             Decade = "90s",
              .after = "y")
+colnames(grisEV_westsummer90s) <- c("x","y","Season","Decade","EV")
 
 grisEV_westsummer00s <- raster("Extract_EVgriseus_westsummer00s.tif")
 grisEV_westsummer00s <- as.data.frame(grisEV_westsummer00s, xy = TRUE)
-x <- grisEV_westsummer00s%>%
-  filter(Extract_EVgriseus_westsummer00s >-20)
-av <- mean(x$Extract_EVgriseus_westsummer00s) 
-av
-mx <- max(x$Extract_EVgriseus_westsummer00s)
-mx
-mn <- min(x$Extract_EVgriseus_westsummer00s)
-mn
+grisEV_westsummer00s <- grisEV_westsummer00s %>%
+  add_column(Season = "Summer",
+             Decade = "00s",
+             .after = "y")
+colnames(grisEV_westsummer00s) <- c("x","y","Season","Decade","EV")
 
 grisEV_westsummer10s <- raster("Extract_EVgriseus_westsummer10s.tif")
 grisEV_westsummer10s <- as.data.frame(grisEV_westsummer10s, xy = TRUE)
-x <- grisEV_westsummer10s%>%
-  filter(Extract_EVgriseus_westsummer10s >-20)
-av <- mean(x$Extract_EVgriseus_westsummer10s) 
-av
-mx <- max(x$Extract_EVgriseus_westsummer10s)
-mx
-mn <- min(x$Extract_EVgriseus_westsummer10s)
-mn
+grisEV_westsummer10s <- grisEV_westsummer10s %>%
+  add_column(Season = "Summer",
+             Decade = "10s",
+             .after = "y")
+colnames(grisEV_westsummer10s) <- c("x","y","Season","Decade","EV")
 
 # Eastern current velocity nigripes ----
 
-grisEV_westfall90s <- raster("Extract_EVgriseus_westfall90s.tif")
-grisEV_westfall90s <- as.data.frame(grisEV_westfall90s, xy = TRUE)
-x <- grisEV_westfall90s%>%
-  filter(Extract_EVgriseus_westfall90s >-20)
-av <- mean(x$Extract_EVgriseus_westfall90s) 
-av
-mx <- max(x$Extract_EVgriseus_westfall90s)
-mx
-mn <- min(x$Extract_EVgriseus_westfall90s)
-mn
+nigEV_fall90s <- raster("Extract_EVnigripes_fall90s.tif")
+nigEV_fall90s <- as.data.frame(nigEV_fall90s, xy = TRUE)
+nigEV_fall90s <- nigEV_fall90s %>%
+  add_column(Season = "Fall",
+             Decade = "90s",
+             .after = "y")
+colnames(nigEV_fall90s) <- c("x","y","Season","Decade","EV")
 
 nigEV_fall10s <- raster("Extract_EVnigripes_fall10s.tif")
 nigEV_fall10s <- as.data.frame(nigEV_fall10s, xy = TRUE)
-x <- nigEV_fall10s%>%
-  filter(Extract_EVnigipes_fall10s >-20)
-av <- mean(x$Extract_EVnigripes_fall0s) 
-av
-mx <- max(x$Extract_EVnigripes_fall10s)
-mx
-mn <- min(x$Extract_EVnigripes_fall10s)
-mn
+nigEV_fall10s <- nigEV_fall10s %>%
+  add_column(Season = "Fall",
+             Decade = "10s",
+             .after = "y")
+colnames(nigEV_fall10s) <- c("x","y","Season","Decade","EV")
 
 nigEV_spring90s <- raster("Extract_EVnigripes_spring90s.tif")
 nigEV_spring90s <- as.data.frame(nigEV_spring90s, xy = TRUE)
-x <- nigEV_spring90s%>%
-  filter(Extract_EVnigripes_spring90s >-20)
-av <- mean(x$Extract_EVnigripes_spring90s) 
-av
-mx <- max(x$Extract_EVnigripes_spring90s)
-mx
-mn <- min(x$Extract_EVnigripes_spring90s)
-mn
+nigEV_spring90s <- nigEV_spring90s %>%
+  add_column(Season = "Spring",
+             Decade = "90s",
+             .after = "y")
+colnames(nigEV_spring90s) <- c("x","y","Season","Decade","EV")
 
 nigEV_summer90s <- raster("Extract_EVnigripes_summer90s.tif")
 nigEV_summer90s <- as.data.frame(nigEV_summer90s, xy = TRUE)
-x <- nigEV_summer90s%>%
-  filter(Extract_EVnigripes_summer90s >-20)
-av <- mean(x$Extract_EVnigripes_summer90s) 
-av
-mx <- max(x$Extract_EVnigripes_summer90s)
-mx
-mn <- min(x$Extract_EVnigripes_summer90s)
-mn
+nigEV_summer90s <- nigEV_summer90s %>%
+  add_column(Season = "Summer",
+             Decade = "90s",
+             .after = "y")
+colnames(nigEV_summer90s) <- c("x","y","Season","Decade","EV")
 
 nigEV_summer00s <- raster("Extract_EVnigripes_summer00s.tif")
 nigEV_summer00s <- as.data.frame(nigEV_summer00s, xy = TRUE)
-x <- nigEV_summer00s %>%
-  filter(Extract_EVnigripes_summer00s >-20)
-av <- mean(x$Extract_EVnigripes_summer00s) 
-av
-mx <- max(x$Extract_EVnigripes_summer00s)
-mx
-mn <- min(x$Extract_EVnigripes_summer00s)
-mn
+nigEV_summer00s <- nigEV_summer00s %>%
+  add_column(Season = "Summer",
+             Decade = "00s",
+             .after = "y")
+colnames(nigEV_summer00s) <- c("x","y","Season","Decade","EV")
 
 nigEV_summer10s <- raster("Extract_EVnigripes_summer10s.tif")
 nigEV_summer10s <- as.data.frame(nigEV_summer10s, xy = TRUE)
-x <- nigEV_summer10s%>%
-  filter(Extract_EVnigripes_summer10s >-20)
-av <- mean(x$Extract_EVnigripes_summer10s) 
-av
-mx <- max(x$Extract_EVnigripes_summer10s)
-mx
-mn <- min(x$Extract_EVnigripes_summer10s)
-mn
+nigEV_summer10s <- nigEV_summer10s %>%
+  add_column(Season = "Summer",
+             Decade = "10s",
+             .after = "y")
+colnames(nigEV_summer10s) <- c("x","y","Season","Decade","EV")
 
 # Eastern current velocity immer-----
 
@@ -241,6 +212,7 @@ imEV_fall90s <- imEV_fall90s %>%
   add_column(Season = "Fall",
              Decade = "90s",
              .after = "y")
+colnames(imEV_fall90s) <- c("x","y","Season","Decade","EV")
 
 imEV_fall00s <- raster("Extract_EVimmer_fall00s.tif")
 imEV_fall00s <- as.data.frame(imEV_fall00s, xy = TRUE)
@@ -248,6 +220,7 @@ imEV_fall00s <- imEV_fall00s %>%
   add_column(Season = "Fall",
              Decade = "00s",
              .after = "y")
+colnames(imEV_fall00s) <- c("x","y","Season","Decade","EV")
 
 imEV_fall10s <- raster("Extract_EVimmer_fall10s.tif")
 imEV_fall10s <- as.data.frame(imEV_fall10s, xy = TRUE)
@@ -255,6 +228,7 @@ imEV_fall10s <- imEV_fall10s %>%
   add_column(Season = "Fall",
              Decade = "10s",
              .after = "y")
+colnames(imEV_fall10s) <- c("x","y","Season","Decade","EV")
 
 imEV_winter90s <- raster("Extract_EVimmer_winter90s.tif")
 imEV_winter90s <- as.data.frame(imEV_winter90s, xy = TRUE)
@@ -262,6 +236,7 @@ imEV_winter90s <- imEV_winter90s %>%
   add_column(Season = "Winter",
              Decade = "90s",
              .after = "y")
+colnames(imEV_winter90s) <- c("x","y","Season","Decade","EV")
 
 imEV_winter00s <- raster("Extract_EVimmer_winter00s.tif")
 imEV_winter00s <- as.data.frame(imEV_winter00s, xy = TRUE)
@@ -269,6 +244,7 @@ imEV_winter00s <- imEV_winter00s %>%
   add_column(Season = "Winter",
              Decade = "00s",
              .after = "y")
+colnames(imEV_winter00s) <- c("x","y","Season","Decade","EV")
 
 imEV_winter10s <- raster("Extract_EVimmer_winter10s.tif")
 imEV_winter10s <- as.data.frame(imEV_winter10s, xy = TRUE)
@@ -276,6 +252,7 @@ imEV_winter10s <- imEV_winter10s %>%
   add_column(Season = "Winter",
              Decade = "10s",
              .after = "y")
+colnames(imEV_winter10s) <- c("x","y","Season","Decade","EV")
 
 imEV_spring90s <- raster("Extract_EVimmer_spring90s.tif")
 imEV_spring90s <- as.data.frame(imEV_spring90s, xy = TRUE)
@@ -283,6 +260,7 @@ imEV_spring90s <- imEV_spring90s %>%
   add_column(Season = "Spring",
              Decade = "90s",
              .after = "y")
+colnames(imEV_spring90s) <- c("x","y","Season","Decade","EV")
 
 imEV_spring00s <- raster("Extract_EVimmer_spring00s.tif")
 imEV_spring00s <- as.data.frame(imEV_spring00s, xy = TRUE)
@@ -290,6 +268,7 @@ imEV_spring00s <- imEV_spring00s %>%
   add_column(Season = "Spring",
              Decade = "00s",
              .after = "y")
+colnames(imEV_spring00s) <- c("x","y","Season","Decade","EV")
 
 imEV_spring10s <- raster("Extract_EVimmer_spring10s.tif")
 imEV_spring10s <- as.data.frame(imEV_spring10s, xy = TRUE)
@@ -297,6 +276,7 @@ imEV_spring10s <- imEV_spring10s %>%
   add_column(Season = "Spring",
              Decade = "10s",
              .after = "y")
+colnames(imEV_spring10s) <- c("x","y","Season","Decade","EV")
 
 imEV_summer00s <- raster("Extract_EVimmer_summer00s.tif")
 imEV_summer00s <- as.data.frame(imEV_summer00s, xy = TRUE)
@@ -304,6 +284,7 @@ imEV_summer00s <- imEV_summer00s %>%
   add_column(Season = "Summer",
              Decade = "00s",
              .after = "y")
+colnames(imEV_summer00s) <- c("x","y","Season","Decade","EV")
 
 imEV_summer10s <- raster("Extract_EVimmer_summer10s.tif")
 imEV_summer10s <- as.data.frame(imEV_summer10s, xy = TRUE)
@@ -311,6 +292,7 @@ imEV_summer10s <- imEV_summer10s %>%
   add_column(Season = "Summer",
              Decade = "10s",
              .after = "y")
+colnames(imEV_summer10s) <- c("x","y","Season","Decade","EV")
 
 # Mixed layer depth P. griseus east----------------------
 grisML_eastfall90s <- raster("Extract_MLgriseus_eastfall90s.tif")
@@ -397,69 +379,51 @@ colnames(grisML_eastsummer10s) <- c("x","y","Season","Decade","ML")
 
 grisML_westfall90s <- raster("Extract_MLgriseus_westfall90s.tif")
 grisML_westfall90s <- as.data.frame(grisML_westfall90s, xy = TRUE)
-x <- grisML_westfall90s%>%
-  filter(Extract_MLgriseus_westfall90s >-20)
-av <- mean(x$Extract_MLgriseus_westfall90s) 
-av
-mx <- max(x$Extract_MLgriseus_westfall90s)
-mx
-mn <- min(x$Extract_MLgriseus_westfall90s)
-mn
+grisML_westfall90s <- grisML_westfall90s %>%
+  add_column(Season = "Fall",
+             Decade = "90s",
+             .after = "y")
+colnames(grisML_westfall90s) <- c("x","y","Season","Decade","ML")
 
 grisML_westwinter00s <- raster("Extract_MLgriseus_westwinter00s.tif")
 grisML_westwinter00s <- as.data.frame(grisML_westwinter00s, xy = TRUE)
-x <- grisML_westwinter00s%>%
-  filter(Extract_MLgriseus_westwinter00s >-20)
-av <- mean(x$Extract_MLgriseus_westwinter00s) 
-av
-mx <- max(x$Extract_MLgriseus_westwinter00s)
-mx
-mn <- min(x$Extract_MLgriseus_westwinter00s)
-mn
+grisML_westwinter00s <- grisML_westwinter00s %>%
+  add_column(Season = "Winter",
+             Decade = "00s",
+             .after = "y")
+colnames(grisML_westwinter00s) <- c("x","y","Season","Decade","ML")
 
 grisML_westspring90s <- raster("Extract_MLgriseus_westspring90s.tif")
 grisML_westspring90s <- as.data.frame(grisML_westspring90s, xy = TRUE)
-x <- grisML_westspring90s%>%
-  filter(Extract_MLgriseus_westspring90s >-20)
-av <- mean(x$Extract_MLgriseus_westspring90s) 
-av
-mx <- max(x$Extract_MLgriseus_westspring90s)
-mx
-mn <- min(x$Extract_MLgriseus_westspring90s)
-mn
+grisML_westspring90s <- grisML_westspring90s %>%
+  add_column(Season = "Spring",
+             Decade = "90s",
+             .after = "y")
+colnames(grisML_westspring90s) <- c("x","y","Season","Decade","ML")
 
 grisML_westsummer90s <- raster("Extract_MLgriseus_westsummer90s.tif")
 grisML_westsummer90s <- as.data.frame(grisML_westsummer90s, xy = TRUE)
-x <- grisML_westsummer90s%>%
-  filter(Extract_MLgriseus_westsummer90s >-20)
-av <- mean(x$Extract_MLgriseus_westsummer90s) 
-av
-mx <- max(x$Extract_MLgriseus_westsummer90s)
-mx
-mn <- min(x$Extract_MLgriseus_westsummer90s)
-mn
+grisML_westsummer90s <- grisML_westsummer90s %>%
+  add_column(Season = "Summer",
+             Decade = "90s",
+             .after = "y")
+colnames(grisML_westsummer90s) <- c("x","y","Season","Decade","ML")
 
 grisML_westsummer00s <- raster("Extract_MLgriseus_westsummer00s.tif")
 grisML_westsummer00s <- as.data.frame(grisML_westsummer00s, xy = TRUE)
-x <- grisML_westsummer00s%>%
-  filter(Extract_MLgriseus_westsummer00s >-20)
-av <- mean(x$Extract_MLgriseus_westsummer00s) 
-av
-mx <- max(x$Extract_MLgriseus_westsummer00s)
-mx
-mn <- min(x$Extract_MLgriseus_westsummer00s)
-mn
+grisML_westsummer00s <- grisML_westsummer00s %>%
+  add_column(Season = "Summer",
+             Decade = "00s",
+             .after = "y")
+colnames(grisML_westsummer00s) <- c("x","y","Season","Decade","ML")
 
 grisML_westsummer10s <- raster("Extract_MLgriseus_westsummer10s.tif")
 grisML_westsummer10s <- as.data.frame(grisML_westsummer10s, xy = TRUE)
-x <- grisML_westsummer10s%>%
-  filter(Extract_MLgriseus_westsummer10s >-20)
-av <- mean(x$Extract_MLgriseus_westsummer10s) 
-av
-mx <- max(x$Extract_MLgriseus_westsummer10s)
-mx
-mn <- min(x$Extract_MLgriseus_westsummer10s)
-mn
+grisML_westsummer10s <- grisML_westsummer10s %>%
+  add_column(Season = "Summer",
+             Decade = "10s",
+             .after = "y")
+colnames(grisML_westsummer10s) <- c("x","y","Season","Decade","ML")
 
 # Mixed layer depth nigripes -----
 
@@ -531,126 +495,53 @@ mn
 
 # Mixed layer depth immer ------
 
-imML_fall90s <- raster("Extract_MLimmer_fall90s.tif")
-imML_fall90s <- as.data.frame(imML_fall90s, xy = TRUE)
-x <- imML_fall90s%>%
-  filter(Extract_MLimmer_fall90s >=0)
-av <- mean(x$Extract_MLimmer_fall90s) #number of occurrence points
-av
-mx <- max(x$Extract_MLimmer_fall90s)
-mx
-mn <- min(x$Extract_MLimmer_fall90s)
-mn
+nigML_fall90s <- raster("Extract_MLnigripes_fall90s.tif")
+nigML_fall90s <- as.data.frame(nigML_fall90s, xy = TRUE)
+nigML_fall90s <- nigML_fall90s %>%
+  add_column(Season = "Fall",
+             Decade = "90s",
+             .after = "y")
+colnames(nigML_fall90s) <- c("x","y","Season","Decade","ML")
 
-imML_fall00s <- raster("Extract_MLimmer_fall00s.tif")
-imML_fall00s <- as.data.frame(imML_fall00s, xy = TRUE)
-x <- imML_fall00s%>%
-  filter(Extract_MLimmer_fall00s >=0)
-av <- mean(x$Extract_MLimmer_fall00s) #number of occurrence points
-av
-mx <- max(x$Extract_MLimmer_fall00s)
-mx
-mn <- min(x$Extract_MLimmer_fall00s)
-mn
+nigML_fall10s <- raster("Extract_MLnigripes_fall10s.tif")
+nigML_fall10s <- as.data.frame(nigML_fall10s, xy = TRUE)
+nigML_fall10s <- nigML_fall10s %>%
+  add_column(Season = "Fall",
+             Decade = "10s",
+             .after = "y")
+colnames(nigML_fall10s) <- c("x","y","Season","Decade","ML")
 
-imML_fall10s <- raster("Extract_MLimmer_fall10s.tif")
-imML_fall10s <- as.data.frame(imML_fall10s, xy = TRUE)
-x <- imML_fall10s%>%
-  filter(Extract_MLimmer_fall10s >=0)
-av <- mean(x$Extract_MLimmer_fall10s) #number of occurrence points
-av
-mx <- max(x$Extract_MLimmer_fall10s)
-mx
-mn <- min(x$Extract_MLimmer_fall10s)
-mn
+nigML_spring90s <- raster("Extract_MLnigripes_spring90s.tif")
+nigML_spring90s <- as.data.frame(nigML_spring90s, xy = TRUE)
+nigML_spring90s <- nigML_spring90s %>%
+  add_column(Season = "Spring",
+             Decade = "90s",
+             .after = "y")
+colnames(nigML_spring90s) <- c("x","y","Season","Decade","ML")
 
-imML_winter90s <- raster("Extract_MLimmer_winter90s.tif")
-imML_winter90s <- as.data.frame(imML_winter90s, xy = TRUE)
-x <- imML_winter90s%>%
-  filter(Extract_MLimmer_winter90s >=0)
-av <- mean(x$Extract_MLimmer_winter90s) #number of occurrence points
-av
-mx <- max(x$Extract_MLimmer_winter90s)
-mx
-mn <- min(x$Extract_MLimmer_winter90s)
-mn
+nigML_summer90s <- raster("Extract_MLnigripes_summer90s.tif")
+nigML_summer90s <- as.data.frame(nigML_summer90s, xy = TRUE)
+nigML_summer90s <- nigML_summer90s %>%
+  add_column(Season = "Summer",
+             Decade = "90s",
+             .after = "y")
+colnames(nigML_summer90s) <- c("x","y","Season","Decade","ML")
 
-imML_winter00s <- raster("Extract_MLimmer_winter00s.tif")
-imML_winter00s <- as.data.frame(imML_winter00s, xy = TRUE)
-x <- imML_winter00s%>%
-  filter(Extract_MLimmer_winter00s >=0)
-av <- mean(x$Extract_MLimmer_winter00s) #number of occurrence points
-av
-mx <- max(x$Extract_MLimmer_winter00s)
-mx
-mn <- min(x$Extract_MLimmer_winter00s)
-mn
+nigML_summer00s <- raster("Extract_MLnigripes_summer00s.tif")
+nigML_summer00s <- as.data.frame(nigML_summer00s, xy = TRUE)
+nigML_summer00s <- nigML_summer00s %>%
+  add_column(Season = "Summer",
+             Decade = "00s",
+             .after = "y")
+colnames(nigML_summer00s) <- c("x","y","Season","Decade","ML")
 
-imML_winter10s <- raster("Extract_MLimmer_winter10s.tif")
-imML_winter10s <- as.data.frame(imML_winter10s, xy = TRUE)
-x <- imML_winter10s%>%
-  filter(Extract_MLimmer_winter10s >=0)
-av <- mean(x$Extract_MLimmer_winter10s) #number of occurrence points
-av
-mx <- max(x$Extract_MLimmer_winter10s)
-mx
-mn <- min(x$Extract_MLimmer_winter10s)
-mn
-
-imML_spring90s <- raster("Extract_MLimmer_spring90s.tif")
-imML_spring90s <- as.data.frame(imML_spring90s, xy = TRUE)
-x <- imML_spring90s%>%
-  filter(Extract_MLimmer_spring90s >=0)
-av <- mean(x$Extract_MLimmer_spring90s) #number of occurrence points
-av
-mx <- max(x$Extract_MLimmer_spring90s)
-mx
-mn <- min(x$Extract_MLimmer_spring90s)
-mn
-
-imML_spring00s <- raster("Extract_MLimmer_spring00s.tif")
-imML_spring00s <- as.data.frame(imML_spring00s, xy = TRUE)
-x <- imML_spring00s%>%
-  filter(Extract_MLimmer_spring00s >=0)
-av <- mean(x$Extract_MLimmer_spring00s) #number of occurrence points
-av
-mx <- max(x$Extract_MLimmer_spring00s)
-mx
-mn <- min(x$Extract_MLimmer_spring00s)
-mn
-
-imML_spring10s <- raster("Extract_MLimmer_spring10s.tif")
-imML_spring10s <- as.data.frame(imML_spring10s, xy = TRUE)
-x <- imML_spring10s%>%
-  filter(Extract_MLimmer_spring10s >=0)
-av <- mean(x$Extract_MLimmer_spring10s) #number of occurrence points
-av
-mx <- max(x$Extract_MLimmer_spring10s)
-mx
-mn <- min(x$Extract_MLimmer_spring10s)
-mn
-
-imML_summer00s <- raster("Extract_MLimmer_summer00s.tif")
-imML_summer00s <- as.data.frame(imML_summer00s, xy = TRUE)
-x <- imML_summer00s%>%
-  filter(Extract_MLimmer_summer00s >=0)
-av <- mean(x$Extract_MLimmer_summer00s) #number of occurrence points
-av
-mx <- max(x$Extract_MLimmer_summer00s)
-mx
-mn <- min(x$Extract_MLimmer_summer00s)
-mn
-
-imML_summer10s <- raster("Extract_MLimmer_summer10s.tif")
-imML_summer10s <- as.data.frame(imML_summer10s, xy = TRUE)
-x <- imML_summer10s%>%
-  filter(Extract_MLimmer_summer10s >=0)
-av <- mean(x$Extract_MLimmer_summer10s) #number of occurrence points
-av
-mx <- max(x$Extract_MLimmer_summer10s)
-mx
-mn <- min(x$Extract_MLimmer_summer10s)
-mn
+nigML_summer10s <- raster("Extract_MLnigripes_summer10s.tif")
+nigML_summer10s <- as.data.frame(nigML_summer10s, xy = TRUE)
+nigML_summer10s <- nigML_summer10s %>%
+  add_column(Season = "Summer",
+             Decade = "10s",
+             .after = "y")
+colnames(nigML_summer10s) <- c("x","y","Season","Decade","ML")
 
 # Northern current velocity P. griseus east ----------------
 
@@ -738,260 +629,191 @@ colnames(grisNV_eastsummer10s) <- c("x","y","Season","Decade","NV")
 
 grisNV_westfall90s <- raster("Extract_NVgriseus_westfall90s.tif")
 grisNV_westfall90s <- as.data.frame(grisNV_westfall90s, xy = TRUE)
-x <- grisNV_westfall90s%>%
-  filter(Extract_NVgriseus_westfall90s >-20)
-av <- mean(x$Extract_NVgriseus_westfall90s) 
-av
-mx <- max(x$Extract_NVgriseus_westfall90s)
-mx
-mn <- min(x$Extract_NVgriseus_westfall90s)
-mn
+grisNV_westfall90s <- grisNV_westfall90s %>%
+  add_column(Season = "Fall",
+             Decade = "90s",
+             .after = "y")
+colnames(grisNV_westfall90s) <- c("x","y","Season","Decade","NV")
 
 grisNV_westwinter00s <- raster("Extract_NVgriseus_westwinter00s.tif")
 grisNV_westwinter00s <- as.data.frame(grisNV_westwinter00s, xy = TRUE)
-x <- grisNV_westwinter00s%>%
-  filter(Extract_NVgriseus_westwinter00s >-20)
-av <- mean(x$Extract_NVgriseus_westwinter00s) 
-av
-mx <- max(x$Extract_NVgriseus_westwinter00s)
-mx
-mn <- min(x$Extract_NVgriseus_westwinter00s)
-mn
+grisNV_westwinter00s <- grisNV_westwinter00s %>%
+  add_column(Season = "Winter",
+             Decade = "00s",
+             .after = "y")
+colnames(grisNV_westwinter00s) <- c("x","y","Season","Decade","NV")
 
 grisNV_westspring90s <- raster("Extract_NVgriseus_westspring90s.tif")
 grisNV_westspring90s <- as.data.frame(grisNV_westspring90s, xy = TRUE)
-x <- grisNV_westspring90s%>%
-  filter(Extract_NVgriseus_westspring90s >-20)
-av <- mean(x$Extract_NVgriseus_westspring90s) 
-av
-mx <- max(x$Extract_NVgriseus_westspring90s)
-mx
-mn <- min(x$Extract_NVgriseus_westspring90s)
-mn
+grisNV_westspring90s <- grisNV_westspring90s %>%
+  add_column(Season = "Spring",
+             Decade = "90s",
+             .after = "y")
+colnames(grisNV_westspring90s) <- c("x","y","Season","Decade","NV")
 
 grisNV_westsummer90s <- raster("Extract_NVgriseus_westsummer90s.tif")
 grisNV_westsummer90s <- as.data.frame(grisNV_westsummer90s, xy = TRUE)
-x <- grisNV_westsummer90s%>%
-  filter(Extract_NVgriseus_westsummer90s >-20)
-av <- mean(x$Extract_NVgriseus_westsummer90s) 
-av
-mx <- max(x$Extract_NVgriseus_westsummer90s)
-mx
-mn <- min(x$Extract_NVgriseus_westsummer90s)
-mn
+grisNV_westsummer90s <- grisNV_westsummer90s %>%
+  add_column(Season = "Summer",
+             Decade = "90s",
+             .after = "y")
+colnames(grisNV_westsummer90s) <- c("x","y","Season","Decade","NV")
 
 grisNV_westsummer00s <- raster("Extract_NVgriseus_westsummer00s.tif")
 grisNV_westsummer00s <- as.data.frame(grisNV_westsummer00s, xy = TRUE)
-x <- grisNV_westsummer00s%>%
-  filter(Extract_NVgriseus_westsummer00s >-20)
-av <- mean(x$Extract_NVgriseus_westsummer00s) 
-av
-mx <- max(x$Extract_NVgriseus_westsummer00s)
-mx
-mn <- min(x$Extract_NVgriseus_westsummer00s)
-mn
+grisNV_westsummer00s <- grisNV_westsummer00s %>%
+  add_column(Season = "Summer",
+             Decade = "00s",
+             .after = "y")
+colnames(grisNV_westsummer00s) <- c("x","y","Season","Decade","NV")
 
 grisNV_westsummer10s <- raster("Extract_NVgriseus_westsummer10s.tif")
 grisNV_westsummer10s <- as.data.frame(grisNV_westsummer10s, xy = TRUE)
-x <- grisNV_westsummer10s%>%
-  filter(Extract_NVgriseus_westsummer10s >-20)
-av <- mean(x$Extract_NVgriseus_westsummer10s) 
-av
-mx <- max(x$Extract_NVgriseus_westsummer10s)
-mx
-mn <- min(x$Extract_NVgriseus_westsummer10s)
-mn
+grisNV_westsummer10s <- grisNV_westsummer10s %>%
+  add_column(Season = "Summer",
+             Decade = "10s",
+             .after = "y")
+colnames(grisNV_westsummer10s) <- c("x","y","Season","Decade","NV")
 
 # Northern current velocity nigripes ----
 
 nigNV_fall90s <- raster("Extract_NVnigripes_fall90s.tif")
 nigNV_fall90s <- as.data.frame(nigNV_fall90s, xy = TRUE)
-x <- nigNV_fall90s%>%
-  filter(Extract_NVnigripes_fall90s >-20)
-av <- mean(x$Extract_NVnigripes_fall90s) 
-av
-mx <- max(x$Extract_NVnigripes_fall90s)
-mx
-mn <- min(x$Extract_NVnigripes_fall90s)
-mn
+nigNV_fall90s <- nigNV_fall90s %>%
+  add_column(Season = "Fall",
+             Decade = "90s",
+             .after = "y")
+colnames(nigNV_fall90s) <- c("x","y","Season","Decade","NV")
 
 nigNV_fall10s <- raster("Extract_NVnigripes_fall10s.tif")
 nigNV_fall10s <- as.data.frame(nigNV_fall10s, xy = TRUE)
-x <- nigNV_fall10s %>%
-  filter(Extract_NVnigripes_fall10s >-20)
-av <- mean(x$Extract_NVnigripes_fall10s) 
-av
-mx <- max(x$Extract_NVnigripes_fall10s)
-mx
-mn <- min(x$Extract_NVnigripes_fall10s)
-mn
+nigNV_fall10s <- nigNV_fall10s %>%
+  add_column(Season = "Fall",
+             Decade = "10s",
+             .after = "y")
+colnames(nigNV_fall10s) <- c("x","y","Season","Decade","NV")
 
 nigNV_spring90s <- raster("Extract_NVnigripes_spring90s.tif")
 nigNV_spring90s <- as.data.frame(nigNV_spring90s, xy = TRUE)
-x <- nigNV_spring90s%>%
-  filter(Extract_NVnigripes_spring90s >-20)
-av <- mean(x$Extract_NVnigripes_spring90s) 
-av
-mx <- max(x$Extract_NVnigripes_spring90s)
-mx
-mn <- min(x$Extract_NVnigripes_spring90s)
-mn
+nigNV_spring90s <- nigNV_spring90s %>%
+  add_column(Season = "Spring",
+             Decade = "90s",
+             .after = "y")
+colnames(nigNV_spring90s) <- c("x","y","Season","Decade","NV")
 
 nigNV_summer90s <- raster("Extract_NVnigripes_summer90s.tif")
 nigNV_summer90s <- as.data.frame(nigNV_summer90s, xy = TRUE)
-x <- nigNV_summer90s%>%
-  filter(Extract_NVnigripes_summer90s >-20)
-av <- mean(x$Extract_NVnigripes_summer90s) 
-av
-mx <- max(x$Extract_NVnigripes_summer90s)
-mx
-mn <- min(x$Extract_NVnigripes_summer90s)
-mn
+nigNV_summer90s <- nigNV_summer90s %>%
+  add_column(Season = "Summer",
+             Decade = "90s",
+             .after = "y")
+colnames(nigNV_summer90s) <- c("x","y","Season","Decade","NV")
 
 nigNV_summer00s <- raster("Extract_NVnigripes_summer00s.tif")
 nigNV_summer00s <- as.data.frame(nigNV_summer00s, xy = TRUE)
-x <- nigNV_summer00s %>%
-  filter(Extract_NVnigripes_summer00s >-20)
-av <- mean(x$Extract_NVnigripes_summer00s) 
-av
-mx <- max(x$Extract_NVnigripes_summer00s)
-mx
-mn <- min(x$Extract_NVnigripes_summer00s)
-mn
+nigNV_summer00s <- nigNV_summer00s %>%
+  add_column(Season = "Summer",
+             Decade = "00s",
+             .after = "y")
+colnames(nigNV_summer00s) <- c("x","y","Season","Decade","NV")
 
 nigNV_summer10s <- raster("Extract_NVnigripes_summer10s.tif")
 nigNV_summer10s <- as.data.frame(nigNV_summer10s, xy = TRUE)
-x <- nigNV_summer10s%>%
-  filter(Extract_NVnigripes_summer10s >-20)
-av <- mean(x$Extract_NVnigripes_summer10s) 
-av
-mx <- max(x$Extract_NVnigripes_summer10s)
-mx
-mn <- min(x$Extract_NVnigripes_summer10s)
-mn
+nigNV_summer10s <- nigNV_summer10s %>%
+  add_column(Season = "Summer",
+             Decade = "10s",
+             .after = "y")
+colnames(nigNV_summer10s) <- c("x","y","Season","Decade","NV")
 
 # Northern current velocity immer ----
 
 imNV_fall90s <- raster("Extract_NVimmer_fall90s.tif")
 imNV_fall90s <- as.data.frame(imNV_fall90s, xy = TRUE)
-x <- imNV_fall90s%>%
-  filter(Extract_NVimmer_fall90s >-20)
-av <- mean(x$Extract_NVimmer_fall90s) #number of occurrence points
-av
-mx <- max(x$Extract_NVimmer_fall90s)
-mx
-mn <- min(x$Extract_NVimmer_fall90s)
-mn
+imNV_fall90s <- imNV_fall90s %>%
+  add_column(Season = "Fall",
+             Decade = "90s",
+             .after = "y")
+colnames(imNV_fall90s) <- c("x","y","Season","Decade","NV")
 
 imNV_fall00s <- raster("Extract_NVimmer_fall00s.tif")
 imNV_fall00s <- as.data.frame(imNV_fall00s, xy = TRUE)
-x <- imNV_fall00s%>%
-  filter(Extract_NVimmer_fall00s >-20)
-av <- mean(x$Extract_NVimmer_fall00s) #number of occurrence points
-av
-mx <- max(x$Extract_NVimmer_fall00s)
-mx
-mn <- min(x$Extract_NVimmer_fall00s)
-mn
+imNV_fall00s <- imNV_fall00s %>%
+  add_column(Season = "Fall",
+             Decade = "00s",
+             .after = "y")
+colnames(imNV_fall00s) <- c("x","y","Season","Decade","NV")
 
 imNV_fall10s <- raster("Extract_NVimmer_fall10s.tif")
 imNV_fall10s <- as.data.frame(imNV_fall10s, xy = TRUE)
-x <- imNV_fall10s%>%
-  filter(Extract_NVimmer_fall10s >-20)
-av <- mean(x$Extract_NVimmer_fall10s) #number of occurrence points
-av
-mx <- max(x$Extract_NVimmer_fall10s)
-mx
-mn <- min(x$Extract_NVimmer_fall10s)
-mn
+imNV_fall10s <- imNV_fall10s %>%
+  add_column(Season = "Fall",
+             Decade = "10s",
+             .after = "y")
+colnames(imNV_fall10s) <- c("x","y","Season","Decade","NV")
 
 imNV_winter90s <- raster("Extract_NVimmer_winter90s.tif")
 imNV_winter90s <- as.data.frame(imNV_winter90s, xy = TRUE)
-x <- imNV_winter90s%>%
-  filter(Extract_NVimmer_winter90s >-20)
-av <- mean(x$Extract_NVimmer_winter90s) #number of occurrence points
-av
-mx <- max(x$Extract_NVimmer_winter90s)
-mx
-mn <- min(x$Extract_NVimmer_winter90s)
-mn
+imNV_winter90s <- imNV_winter90s %>%
+  add_column(Season = "Winter",
+             Decade = "90s",
+             .after = "y")
+colnames(imNV_winter90s) <- c("x","y","Season","Decade","NV")
 
 imNV_winter00s <- raster("Extract_NVimmer_winter00s.tif")
 imNV_winter00s <- as.data.frame(imNV_winter00s, xy = TRUE)
-x <- imNV_winter00s%>%
-  filter(Extract_NVimmer_winter00s >-20)
-av <- mean(x$Extract_NVimmer_winter00s) #number of occurrence points
-av
-mx <- max(x$Extract_NVimmer_winter00s)
-mx
-mn <- min(x$Extract_NVimmer_winter00s)
-mn
+imNV_winter00s <- imNV_winter00s %>%
+  add_column(Season = "Winter",
+             Decade = "00s",
+             .after = "y")
+colnames(imNV_winter00s) <- c("x","y","Season","Decade","NV")
 
 imNV_winter10s <- raster("Extract_NVimmer_winter10s.tif")
 imNV_winter10s <- as.data.frame(imNV_winter10s, xy = TRUE)
-x <- imNV_winter10s%>%
-  filter(Extract_NVimmer_winter10s >-20)
-av <- mean(x$Extract_NVimmer_winter10s) #number of occurrence points
-av
-mx <- max(x$Extract_NVimmer_winter10s)
-mx
-mn <- min(x$Extract_NVimmer_winter10s)
-mn
+imNV_winter10s <- imNV_winter10s %>%
+  add_column(Season = "Winter",
+             Decade = "10s",
+             .after = "y")
+colnames(imNV_winter10s) <- c("x","y","Season","Decade","NV")
 
 imNV_spring90s <- raster("Extract_NVimmer_spring90s.tif")
 imNV_spring90s <- as.data.frame(imNV_spring90s, xy = TRUE)
-x <- imNV_spring90s%>%
-  filter(Extract_NVimmer_spring90s >-20)
-av <- mean(x$Extract_NVimmer_spring90s) #number of occurrence points
-av
-mx <- max(x$Extract_NVimmer_spring90s)
-mx
-mn <- min(x$Extract_NVimmer_spring90s)
-mn
+imNV_spring90s <- imNV_spring90s %>%
+  add_column(Season = "Spring",
+             Decade = "90s",
+             .after = "y")
+colnames(imNV_spring90s) <- c("x","y","Season","Decade","NV")
 
 imNV_spring00s <- raster("Extract_NVimmer_spring00s.tif")
 imNV_spring00s <- as.data.frame(imNV_spring00s, xy = TRUE)
-x <- imNV_spring00s%>%
-  filter(Extract_NVimmer_spring00s >-20)
-av <- mean(x$Extract_NVimmer_spring00s) #number of occurrence points
-av
-mx <- max(x$Extract_NVimmer_spring00s)
-mx
-mn <- min(x$Extract_NVimmer_spring00s)
-mn
+imNV_spring00s <- imNV_spring00s %>%
+  add_column(Season = "Spring",
+             Decade = "90s",
+             .after = "y")
+colnames(imNV_spring00s) <- c("x","y","Season","Decade","NV")
 
 imNV_spring10s <- raster("Extract_NVimmer_spring10s.tif")
 imNV_spring10s <- as.data.frame(imNV_spring10s, xy = TRUE)
-x <- imNV_spring10s%>%
-  filter(Extract_NVimmer_spring10s >-20)
-av <- mean(x$Extract_NVimmer_spring10s) #number of occurrence points
-av
-mx <- max(x$Extract_NVimmer_spring10s)
-mx
-mn <- min(x$Extract_NVimmer_spring10s)
-mn
+imNV_spring10s <- imNV_spring10s %>%
+  add_column(Season = "Spring",
+             Decade = "10s",
+             .after = "y")
+colnames(imNV_spring10s) <- c("x","y","Season","Decade","NV")
 
 imNV_summer00s <- raster("Extract_NVimmer_summer00s.tif")
 imNV_summer00s <- as.data.frame(imNV_summer00s, xy = TRUE)
-x <- imNV_summer00s%>%
-  filter(Extract_NVimmer_summer00s >-20)
-av <- mean(x$Extract_NVimmer_summer00s) #number of occurrence points
-av
-mx <- max(x$Extract_NVimmer_summer00s)
-mx
-mn <- min(x$Extract_NVimmer_summer00s)
-mn
+imNV_summer00s <- imNV_summer00s %>%
+  add_column(Season = "Summer",
+             Decade = "00s",
+             .after = "y")
+colnames(imNV_summer00s) <- c("x","y","Season","Decade","NV")
 
 imNV_summer10s <- raster("Extract_NVimmer_summer10s.tif")
 imNV_summer10s <- as.data.frame(imNV_summer10s, xy = TRUE)
-x <- imNV_summer10s%>%
-  filter(Extract_NVimmer_summer10s >-20)
-av <- mean(x$Extract_NVimmer_summer10s) #number of occurrence points
-av
-mx <- max(x$Extract_NVimmer_summer10s)
-mx
-mn <- min(x$Extract_NVimmer_summer10s)
-mn
+imNV_summer10s <- imNV_summer10s %>%
+  add_column(Season = "Summer",
+             Decade = "10s",
+             .after = "y")
+colnames(imNV_summer10s) <- c("x","y","Season","Decade","NV")
 
 # Salinity P. griseus east ----------------
 grisSa_eastfall90s <- raster("Extract_Sagriseus_eastfall90s.tif")
@@ -1078,260 +900,191 @@ colnames(grisSa_eastsummer10s) <- c("x","y","Season","Decade","Sa")
 
 grisSa_westfall90s <- raster("Extract_Sagriseus_westfall90s.tif")
 grisSa_westfall90s <- as.data.frame(grisSa_westfall90s, xy = TRUE)
-x <- grisSa_westfall90s%>%
-  filter(Extract_Sagriseus_westfall90s >0)
-av <- mean(x$Extract_Sagriseus_westfall90s) 
-av
-mx <- max(x$Extract_Sagriseus_westfall90s)
-mx
-mn <- min(x$Extract_Sagriseus_westfall90s)
-mn
+grisSa_westfall90s <- grisSa_westfall90s %>%
+  add_column(Season = "Fall",
+             Decade = "90s",
+             .after = "y")
+colnames(grisSa_westfall90s) <- c("x","y","Season","Decade","Sa")
 
 grisSa_westwinter00s <- raster("Extract_Sagriseus_westwinter00s.tif")
 grisSa_westwinter00s <- as.data.frame(grisSa_westwinter00s, xy = TRUE)
-x <- grisSa_westwinter00s%>%
-  filter(Extract_Sagriseus_westwinter00s >0)
-av <- mean(x$Extract_Sagriseus_westwinter00s) 
-av
-mx <- max(x$Extract_Sagriseus_westwinter00s)
-mx
-mn <- min(x$Extract_Sagriseus_westwinter00s)
-mn
+grisSa_westwinter00s <- grisSa_westwinter00s %>%
+  add_column(Season = "Winter",
+             Decade = "00s",
+             .after = "y")
+colnames(grisSa_westwinter00s) <- c("x","y","Season","Decade","Sa")
 
 grisSa_westspring90s <- raster("Extract_Sagriseus_westspring90s.tif")
 grisSa_westspring90s <- as.data.frame(grisSa_westspring90s, xy = TRUE)
-x <- grisSa_westspring90s%>%
-  filter(Extract_Sagriseus_westspring90s >0)
-av <- mean(x$Extract_Sagriseus_westspring90s) 
-av
-mx <- max(x$Extract_Sagriseus_westspring90s)
-mx
-mn <- min(x$Extract_Sagriseus_westspring90s)
-mn
+grisSa_westspring90s <- grisSa_westspring90s %>%
+  add_column(Season = "Spring",
+             Decade = "90s",
+             .after = "y")
+colnames(grisSa_westspring90s) <- c("x","y","Season","Decade","Sa")
 
 grisSa_westsummer90s <- raster("Extract_Sagriseus_westsummer90s.tif")
 grisSa_westsummer90s <- as.data.frame(grisSa_westsummer90s, xy = TRUE)
-x <- grisSa_westsummer90s%>%
-  filter(Extract_Sagriseus_westsummer90s >0)
-av <- mean(x$Extract_Sagriseus_westsummer90s) 
-av
-mx <- max(x$Extract_Sagriseus_westsummer90s)
-mx
-mn <- min(x$Extract_Sagriseus_westsummer90s)
-mn
+grisSa_westsummer90s <- grisSa_westsummer90s %>%
+  add_column(Season = "Summer",
+             Decade = "90s",
+             .after = "y")
+colnames(grisSa_westsummer90s) <- c("x","y","Season","Decade","Sa")
 
 grisSa_westsummer00s <- raster("Extract_Sagriseus_westsummer00s.tif")
 grisSa_westsummer00s <- as.data.frame(grisSa_westsummer00s, xy = TRUE)
-x <- grisSa_westsummer00s%>%
-  filter(Extract_Sagriseus_westsummer00s >0)
-av <- mean(x$Extract_Sagriseus_westsummer00s) 
-av
-mx <- max(x$Extract_Sagriseus_westsummer00s)
-mx
-mn <- min(x$Extract_Sagriseus_westsummer00s)
-mn
+grisSa_westsummer00s <- grisSa_westsummer00s %>%
+  add_column(Season = "Summer",
+             Decade = "00s",
+             .after = "y")
+colnames(grisSa_westsummer00s) <- c("x","y","Season","Decade","Sa")
 
 grisSa_westsummer10s <- raster("Extract_Sagriseus_westsummer10s.tif")
 grisSa_westsummer10s <- as.data.frame(grisSa_westsummer10s, xy = TRUE)
-x <- grisSa_westsummer10s%>%
-  filter(Extract_Sagriseus_westsummer10s >0)
-av <- mean(x$Extract_Sagriseus_westsummer10s) 
-av
-mx <- max(x$Extract_Sagriseus_westsummer10s)
-mx
-mn <- min(x$Extract_Sagriseus_westsummer10s)
-mn
+grisSa_westsummer10s <- grisSa_westsummer10s %>%
+  add_column(Season = "Summer",
+             Decade = "10s",
+             .after = "y")
+colnames(grisSa_westsummer10s) <- c("x","y","Season","Decade","Sa")
 
 # Salinity nigripes -----
 
 nigSa_fall90s <- raster("Extract_Sanigripes_fall90s.tif")
 nigSa_fall90s <- as.data.frame(nigSa_fall90s, xy = TRUE)
-x <- nigSa_fall90s%>%
-  filter(Extract_Sanigripes_fall90s >0)
-av <- mean(x$Extract_Sanigripes_fall90s) 
-av
-mx <- max(x$Extract_Sanigripes_fall90s)
-mx
-mn <- min(x$Extract_Sanigripes_fall90s)
-mn
+nigSa_fall90s <- nigSa_fall90s %>%
+  add_column(Season = "Fall",
+             Decade = "90s",
+             .after = "y")
+colnames(nigSa_fall90s) <- c("x","y","Season","Decade","Sa")
 
 nigSa_fall10s <- raster("Extract_Sanigripes_fall10s.tif")
 nigSa_fall10s <- as.data.frame(nigSa_fall10s, xy = TRUE)
-x <- nigSa_fall10s %>%
-  filter(Extract_Sanigripes_fall10s >0)
-av <- mean(x$Extract_Sanigripes_fall10s) 
-av
-mx <- max(x$Extract_Sanigripes_fall10s)
-mx
-mn <- min(x$Extract_Sanigripes_fall10s)
-mn
+nigSa_fall10s <- nigSa_fall10s %>%
+  add_column(Season = "Fall",
+             Decade = "10s",
+             .after = "y")
+colnames(nigSa_fall10s) <- c("x","y","Season","Decade","Sa")
 
 nigSa_spring90s <- raster("Extract_Sanigripes_spring90s.tif")
 nigSa_spring90s <- as.data.frame(nigSa_spring90s, xy = TRUE)
-x <- nigSa_spring90s%>%
-  filter(Extract_Sanigripes_spring90s >0)
-av <- mean(x$Extract_Sanigripes_spring90s) 
-av
-mx <- max(x$Extract_Sanigripes_spring90s)
-mx
-mn <- min(x$Extract_Sanigripes_spring90s)
-mn
+nigSa_spring90s <- nigSa_spring90s %>%
+  add_column(Season = "Spring",
+             Decade = "90s",
+             .after = "y")
+colnames(nigSa_spring90s) <- c("x","y","Season","Decade","Sa")
 
 nigSa_summer90s <- raster("Extract_Sanigripes_summer90s.tif")
 nigSa_summer90s <- as.data.frame(nigSa_summer90s, xy = TRUE)
-x <- nigSa_summer90s%>%
-  filter(Extract_Sanigripes_summer90s >0)
-av <- mean(x$Extract_Sanigripes_summer90s) 
-av
-mx <- max(x$Extract_Sanigripes_summer90s)
-mx
-mn <- min(x$Extract_Sanigripes_summer90s)
-mn
+nigSa_summer90s <- nigSa_summer90s %>%
+  add_column(Season = "Summer",
+             Decade = "90s",
+             .after = "y")
+colnames(nigSa_summer90s) <- c("x","y","Season","Decade","Sa")
 
 nigSa_summer00s <- raster("Extract_Sanigripes_summer00s.tif")
 nigSa_summer00s <- as.data.frame(nigSa_summer00s, xy = TRUE)
-x <- nigSa_summer00s %>%
-  filter(Extract_Sanigripes_summer00s >0)
-av <- mean(x$Extract_Sanigripes_summer00s) 
-av
-mx <- max(x$Extract_Sanigripes_summer00s)
-mx
-mn <- min(x$Extract_Sanigripes_summer00s)
-mn
+nigSa_summer00s <- nigSa_summer00s %>%
+  add_column(Season = "Summer",
+             Decade = "00s",
+             .after = "y")
+colnames(nigSa_summer00s) <- c("x","y","Season","Decade","Sa")
 
 nigSa_summer10s <- raster("Extract_Sanigripes_summer10s.tif")
 nigSa_summer10s <- as.data.frame(nigSa_summer10s, xy = TRUE)
-x <- nigSa_summer10s%>%
-  filter(Extract_Sanigripes_summer10s >0)
-av <- mean(x$Extract_Sanigripes_summer10s) 
-av
-mx <- max(x$Extract_Sanigripes_summer10s)
-mx
-mn <- min(x$Extract_Sanigripes_summer10s)
-mn
+nigSa_summer10s <- nigSa_summer10s %>%
+  add_column(Season = "Summer",
+             Decade = "10s",
+             .after = "y")
+colnames(nigSa_summer10s) <- c("x","y","Season","Decade","Sa")
 
 # Salinity immer -----
 
 imSa_fall90s <- raster("Extract_Saimmer_fall90s.tif")
 imSa_fall90s <- as.data.frame(imSa_fall90s, xy = TRUE)
-x <- imSa_fall90s%>%
-  filter(Extract_Saimmer_fall90s >0)
-av <- mean(x$Extract_Saimmer_fall90s) #number of occurrence points
-av
-mx <- max(x$Extract_Saimmer_fall90s)
-mx
-mn <- min(x$Extract_Saimmer_fall90s)
-mn
+imSa_fall90s <- imSa_fall90s %>%
+  add_column(Season = "Fall",
+             Decade = "90s",
+             .after = "y")
+colnames(imSa_fall90s) <- c("x","y","Season","Decade","Sa")
 
 imSa_fall00s <- raster("Extract_Saimmer_fall00s.tif")
 imSa_fall00s <- as.data.frame(imSa_fall00s, xy = TRUE)
-x <- imSa_fall00s%>%
-  filter(Extract_Saimmer_fall00s >0)
-av <- mean(x$Extract_Saimmer_fall00s) #number of occurrence points
-av
-mx <- max(x$Extract_Saimmer_fall00s)
-mx
-mn <- min(x$Extract_Saimmer_fall00s)
-mn
+imSa_fall00s <- imSa_fall00s %>%
+  add_column(Season = "Fall",
+             Decade = "00s",
+             .after = "y")
+colnames(imSa_fall00s) <- c("x","y","Season","Decade","Sa")
 
 imSa_fall10s <- raster("Extract_Saimmer_fall10s.tif")
 imSa_fall10s <- as.data.frame(imSa_fall10s, xy = TRUE)
-x <- imSa_fall10s%>%
-  filter(Extract_Saimmer_fall10s >0)
-av <- mean(x$Extract_Saimmer_fall10s) #number of occurrence points
-av
-mx <- max(x$Extract_Saimmer_fall10s)
-mx
-mn <- min(x$Extract_Saimmer_fall10s)
-mn
+imSa_fall10s <- imSa_fall10s %>%
+  add_column(Season = "Fall",
+             Decade = "10s",
+             .after = "y")
+colnames(imSa_fall10s) <- c("x","y","Season","Decade","Sa")
 
 imSa_winter90s <- raster("Extract_Saimmer_winter90s.tif")
 imSa_winter90s <- as.data.frame(imSa_winter90s, xy = TRUE)
-x <- imSa_winter90s %>%
-   filter(Extract_Saimmer_winter90s >0)
-av <- mean(x$Extract_Saimmer_winter90s) #cannot have negative salinity, all 0s
-av
-mx <- max(x$Extract_Saimmer_winter90s)
-mx
-mn <- min(x$Extract_Saimmer_winter90s)
-mn
+imSa_winter90s <- imSa_winter90s %>%
+  add_column(Season = "Winter",
+             Decade = "90s",
+             .after = "y")
+colnames(imSa_winter90s) <- c("x","y","Season","Decade","Sa")
 
 imSa_winter00s <- raster("Extract_Saimmer_winter00s.tif")
 imSa_winter00s <- as.data.frame(imSa_winter00s, xy = TRUE)
-x <- imSa_winter00s %>%
-  filter(Extract_Saimmer_winter00s >0)
-av <- mean(x$Extract_Saimmer_winter00s) 
-av
-mx <- max(x$Extract_Saimmer_winter00s)
-mx
-mn <- min(x$Extract_Saimmer_winter00s)
-mn
+imSa_winter00s <- imSa_winter00s %>%
+  add_column(Season = "Winter",
+             Decade = "00s",
+             .after = "y")
+colnames(imSa_winter00s) <- c("x","y","Season","Decade","Sa")
 
 imSa_winter10s <- raster("Extract_Saimmer_winter10s.tif")
 imSa_winter10s <- as.data.frame(imSa_winter10s, xy = TRUE)
-x <- imSa_winter10s%>%
-  filter(Extract_Saimmer_winter10s >0)
-av <- mean(x$Extract_Saimmer_winter10s) 
-av
-mx <- max(x$Extract_Saimmer_winter10s)
-mx
-mn <- min(x$Extract_Saimmer_winter10s)
-mn
+imSa_winter10s <- imSa_winter10s %>%
+  add_column(Season = "Winter",
+             Decade = "10s",
+             .after = "y")
+colnames(imSa_winter10s) <- c("x","y","Season","Decade","Sa")
 
 imSa_spring90s <- raster("Extract_Saimmer_spring90s.tif")
 imSa_spring90s <- as.data.frame(imSa_spring90s, xy = TRUE)
-x <- imSa_spring90s %>%
-  filter(Extract_Saimmer_spring90s >0)
-av <- mean(x$Extract_Saimmer_spring90s) 
-av
-mx <- max(x$Extract_Saimmer_spring90s)
-mx
-mn <- min(x$Extract_Saimmer_spring90s)
-mn
+imSa_spring90s <- imSa_spring90s %>%
+  add_column(Season = "Spring",
+             Decade = "90s",
+             .after = "y")
+colnames(imSa_spring90s) <- c("x","y","Season","Decade","Sa")
 
 imSa_spring00s <- raster("Extract_Saimmer_spring00s.tif")
 imSa_spring00s <- as.data.frame(imSa_spring00s, xy = TRUE)
-x <- imSa_spring00s%>%
-  filter(Extract_Saimmer_spring00s >0)
-av <- mean(x$Extract_Saimmer_spring00s) #number of occurrence points
-av
-mx <- max(x$Extract_Saimmer_spring00s)
-mx
-mn <- min(x$Extract_Saimmer_spring00s)
-mn
+imSa_spring00s <- imSa_spring00s %>%
+  add_column(Season = "Spring",
+             Decade = "90s",
+             .after = "y")
+colnames(imSa_spring00s) <- c("x","y","Season","Decade","Sa")
 
 imSa_spring10s <- raster("Extract_Saimmer_spring10s.tif")
 imSa_spring10s <- as.data.frame(imSa_spring10s, xy = TRUE)
-x <- imSa_spring10s%>%
-  filter(Extract_Saimmer_spring10s >0)
-av <- mean(x$Extract_Saimmer_spring10s) #number of occurrence points
-av
-mx <- max(x$Extract_Saimmer_spring10s)
-mx
-mn <- min(x$Extract_Saimmer_spring10s)
-mn
+imSa_spring10s <- imSa_spring10s %>%
+  add_column(Season = "Spring",
+             Decade = "10s",
+             .after = "y")
+colnames(imSa_spring10s) <- c("x","y","Season","Decade","Sa")
 
 imSa_summer00s <- raster("Extract_Saimmer_summer00s.tif")
 imSa_summer00s <- as.data.frame(imSa_summer00s, xy = TRUE)
-x <- imSa_summer00s%>%
-  filter(Extract_Saimmer_summer00s >0)
-av <- mean(x$Extract_Saimmer_summer00s) #number of occurrence points
-av
-mx <- max(x$Extract_Saimmer_summer00s)
-mx
-mn <- min(x$Extract_Saimmer_summer00s)
-mn
+imSa_summer00s <- imSa_summer00s %>%
+  add_column(Season = "Summer",
+             Decade = "00s",
+             .after = "y")
+colnames(imSa_summer00s) <- c("x","y","Season","Decade","Sa")
 
 imSa_summer10s <- raster("Extract_Saimmer_summer10s.tif")
 imSa_summer10s <- as.data.frame(imSa_summer10s, xy = TRUE)
-x <- imSa_summer10s%>%
-  filter(Extract_Saimmer_summer10s >0)
-av <- mean(x$Extract_Saimmer_summer10s) #number of occurrence points
-av
-mx <- max(x$Extract_Saimmer_summer10s)
-mx
-mn <- min(x$Extract_Saimmer_summer10s)
-mn
+imSa_summer10s <- imSa_summer10s %>%
+  add_column(Season = "Summer",
+             Decade = "10s",
+             .after = "y")
+colnames(imSa_summer10s) <- c("x","y","Season","Decade","Sa")
 
 # Sea surface temperature P. griseus east ------
 grisSST_eastfall90s <- raster("Extract_SSTgriseus_eastfall90s.tif")
@@ -1418,262 +1171,194 @@ colnames(grisSST_eastsummer10s) <- c("x","y","Season","Decade","SST")
 
 grisSST_westfall90s <- raster("Extract_SSTgriseus_westfall90s.tif")
 grisSST_westfall90s <- as.data.frame(grisSST_westfall90s, xy = TRUE)
-x <- grisSST_westfall90s%>%
-  filter(Extract_SSTgriseus_westfall90s >0)
-av <- mean(x$Extract_SSTgriseus_westfall90s) 
-av
-mx <- max(x$Extract_SSTgriseus_westfall90s)
-mx
-mn <- min(x$Extract_SSTgriseus_westfall90s)
-mn
+grisSST_westfall90s <- grisSST_westfall90s %>%
+  add_column(Season = "Fall",
+             Decade = "90s",
+             .after = "y")
+colnames(grisSST_westfall90s) <- c("x","y","Season","Decade","SST")
 
 grisSST_westwinter00s <- raster("Extract_SSTgriseus_westwinter00s.tif")
 grisSST_westwinter00s <- as.data.frame(grisSST_westwinter00s, xy = TRUE)
-x <- grisSST_westwinter00s%>%
-  filter(Extract_SSTgriseus_westwinter00s >0)
-av <- mean(x$Extract_SSTgriseus_westwinter00s) 
-av
-mx <- max(x$Extract_SSTgriseus_westwinter00s)
-mx
-mn <- min(x$Extract_SSTgriseus_westwinter00s)
-mn
+grisSST_westwinter00s <- grisSST_westwinter00s %>%
+  add_column(Season = "Winter",
+             Decade = "00s",
+             .after = "y")
+colnames(grisSST_westwinter00s) <- c("x","y","Season","Decade","SST")
 
 grisSST_westspring90s <- raster("Extract_SSTgriseus_westspring90s.tif")
 grisSST_westspring90s <- as.data.frame(grisSST_westspring90s, xy = TRUE)
-x <- grisSST_westspring90s%>%
-  filter(Extract_SSTgriseus_westspring90s >0)
-av <- mean(x$Extract_SSTgriseus_westspring90s) 
-av
-mx <- max(x$Extract_SSTgriseus_westspring90s)
-mx
-mn <- min(x$Extract_SSTgriseus_westspring90s)
-mn
+grisSST_westspring90s <- grisSST_westspring90s %>%
+  add_column(Season = "Spring",
+             Decade = "90s",
+             .after = "y")
+colnames(grisSST_westspring90s) <- c("x","y","Season","Decade","SST")
 
 grisSST_westsummer90s <- raster("Extract_SSTgriseus_westsummer90s.tif")
 grisSST_westsummer90s <- as.data.frame(grisSST_westsummer90s, xy = TRUE)
-x <- grisSST_westsummer90s%>%
-  filter(Extract_SSTgriseus_westsummer90s >0)
-av <- mean(x$Extract_SSTgriseus_westsummer90s) 
-av
-mx <- max(x$Extract_SSTgriseus_westsummer90s)
-mx
-mn <- min(x$Extract_SSTgriseus_westsummer90s)
-mn
+grisSST_westsummer90s <- grisSST_westsummer90s %>%
+  add_column(Season = "Summer",
+             Decade = "90s",
+             .after = "y")
+colnames(grisSST_westsummer90s) <- c("x","y","Season","Decade","SST")
 
 grisSST_westsummer00s <- raster("Extract_SSTgriseus_westsummer00s.tif")
 grisSST_westsummer00s <- as.data.frame(grisSST_westsummer00s, xy = TRUE)
-x <- grisSST_westsummer00s%>%
-  filter(Extract_SSTgriseus_westsummer00s >0)
-av <- mean(x$Extract_SSTgriseus_westsummer00s) 
-av
-mx <- max(x$Extract_SSTgriseus_westsummer00s)
-mx
-mn <- min(x$Extract_SSTgriseus_westsummer00s)
-mn
+grisSST_westsummer00s <- grisSST_westsummer00s %>%
+  add_column(Season = "Summer",
+             Decade = "00s",
+             .after = "y")
+colnames(grisSST_westsummer00s) <- c("x","y","Season","Decade","SST")
 
 grisSST_westsummer10s <- raster("Extract_SSTgriseus_westsummer10s.tif")
 grisSST_westsummer10s <- as.data.frame(grisSST_westsummer10s, xy = TRUE)
-x <- grisSST_westsummer10s%>%
-  filter(Extract_SSTgriseus_westsummer10s >0)
-av <- mean(x$Extract_SSTgriseus_westsummer10s) 
-av
-mx <- max(x$Extract_SSTgriseus_westsummer10s)
-mx
-mn <- min(x$Extract_SSTgriseus_westsummer10s)
-mn
+grisSST_westsummer10s <- grisSST_westsummer10s %>%
+  add_column(Season = "Summer",
+             Decade = "10s",
+             .after = "y")
+colnames(grisSST_westsummer10s) <- c("x","y","Season","Decade","SST")
 
 # Sea surface temperature nigripes----
 
 nigSST_fall90s <- raster("Extract_SSTnigripes_fall90s.tif")
 nigSST_fall90s <- as.data.frame(nigSST_fall90s, xy = TRUE)
-x <- nigSST_fall90s%>%
-  filter(Extract_SSTnigripes_fall90s >0)
-av <- mean(x$Extract_SSTnigripes_fall90s) 
-av
-mx <- max(x$Extract_SSTnigripes_fall90s)
-mx
-mn <- min(x$Extract_SSTnigripes_fall90s)
-mn
+nigSST_fall90s <- nigSST_fall90s %>%
+  add_column(Season = "Fall",
+             Decade = "90s",
+             .after = "y")
+colnames(nigSST_fall90s) <- c("x","y","Season","Decade","SST")
 
 nigSST_fall10s <- raster("Extract_SSTnigripes_fall10s.tif")
 nigSST_fall10s <- as.data.frame(nigSST_fall10s, xy = TRUE)
-x <- nigSST_fall10s %>%
-  filter(Extract_SSTnigripes_fall10s >0)
-av <- mean(x$Extract_SSTnigripes_fall10s) 
-av
-mx <- max(x$Extract_SSTnigripes_fall10s)
-mx
-mn <- min(x$Extract_SSTnigripes_fall10s)
-mn
+nigSST_fall10s <- nigSST_fall10s %>%
+  add_column(Season = "Fall",
+             Decade = "10s",
+             .after = "y")
+colnames(nigSST_fall10s) <- c("x","y","Season","Decade","SST")
 
 nigSST_spring90s <- raster("Extract_SSTnigripes_spring90s.tif")
 nigSST_spring90s <- as.data.frame(nigSST_spring90s, xy = TRUE)
-x <- nigSST_spring90s%>%
-  filter(Extract_SSTnigripes_spring90s >0)
-av <- mean(x$Extract_SSTnigripes_spring90s) 
-av
-mx <- max(x$Extract_SSTnigripes_spring90s)
-mx
-mn <- min(x$Extract_SSTnigripes_spring90s)
-mn
+nigSST_spring90s <- nigSST_spring90s %>%
+  add_column(Season = "Spring",
+             Decade = "90s",
+             .after = "y")
+colnames(nigSST_spring90s) <- c("x","y","Season","Decade","SST")
 
 nigSST_summer90s <- raster("Extract_SSTnigripes_summer90s.tif")
 nigSST_summer90s <- as.data.frame(nigSST_summer90s, xy = TRUE)
-x <- nigSST_summer90s%>%
-  filter(Extract_SSTnigripes_summer90s >0)
-av <- mean(x$Extract_SSTnigripes_summer90s) 
-av
-mx <- max(x$Extract_SSTnigripes_summer90s)
-mx
-mn <- min(x$Extract_SSTnigripes_summer90s)
-mn
+nigSST_summer90s <- nigSST_summer90s %>%
+  add_column(Season = "Summer",
+             Decade = "90s",
+             .after = "y")
+colnames(nigSST_summer90s) <- c("x","y","Season","Decade","SST")
 
 nigSST_summer00s <- raster("Extract_SSTnigripes_summer00s.tif")
 nigSST_summer00s <- as.data.frame(nigSST_summer00s, xy = TRUE)
-x <- nigSST_summer00s %>%
-  filter(Extract_SSTnigripes_summer00s >0)
-av <- mean(x$Extract_SSTnigripes_summer00s) 
-av
-mx <- max(x$Extract_SSTnigripes_summer00s)
-mx
-mn <- min(x$Extract_SSTnigripes_summer00s)
-mn
+nigSST_summer00s <- nigSST_summer00s %>%
+  add_column(Season = "Summer",
+             Decade = "00s",
+             .after = "y")
+colnames(nigSST_summer00s) <- c("x","y","Season","Decade","SST")
 
 nigSST_summer10s <- raster("Extract_SSTnigripes_summer10s.tif")
 nigSST_summer10s <- as.data.frame(nigSST_summer10s, xy = TRUE)
-x <- nigSST_summer10s%>%
-  filter(Extract_SSTnigripes_summer10s >0)
-av <- mean(x$Extract_SSTnigripes_summer10s) 
-av
-mx <- max(x$Extract_SSTnigripes_summer10s)
-mx
-mn <- min(x$Extract_SSTnigripes_summer10s)
-mn
+nigSST_summer10s <- nigSST_summer10s %>%
+  add_column(Season = "Summer",
+             Decade = "10s",
+             .after = "y")
+colnames(nigSST_summer10s) <- c("x","y","Season","Decade","SST")
 
 # Sea surface temperature immer ----
 
 imSST_fall90s <- raster("Extract_SSTimmer_fall90s.tif")
 imSST_fall90s <- as.data.frame(imSST_fall90s, xy = TRUE)
-x <- imSST_fall90s%>%
-  filter(Extract_SSTimmer_fall90s >0)
-av <- mean(x$Extract_SSTimmer_fall90s) #number of occurrence points
-av
-mx <- max(x$Extract_SSTimmer_fall90s)
-mx
-mn <- min(x$Extract_SSTimmer_fall90s)
-mn
+imSST_fall90s <- imSST_fall90s %>%
+  add_column(Season = "Fall",
+             Decade = "90s",
+             .after = "y")
+colnames(imSST_fall90s) <- c("x","y","Season","Decade","SST")
 
 imSST_fall00s <- raster("Extract_SSTimmer_fall00s.tif")
 imSST_fall00s <- as.data.frame(imSST_fall00s, xy = TRUE)
-x <- imSST_fall00s%>%
-  filter(Extract_SSTimmer_fall00s >0)
-av <- mean(x$Extract_SSTimmer_fall00s) #number of occurrence points
-av
-mx <- max(x$Extract_SSTimmer_fall00s)
-mx
-mn <- min(x$Extract_SSTimmer_fall00s)
-mn
+imSST_fall00s <- imSST_fall00s %>%
+  add_column(Season = "Fall",
+             Decade = "00s",
+             .after = "y")
+colnames(imSST_fall00s) <- c("x","y","Season","Decade","SST")
 
 imSST_fall10s <- raster("Extract_SSTimmer_fall10s.tif")
 imSST_fall10s <- as.data.frame(imSST_fall10s, xy = TRUE)
-x <- imSST_fall10s%>%
-  filter(Extract_SSTimmer_fall10s >0)
-av <- mean(x$Extract_SSTimmer_fall10s) #number of occurrence points
-av
-mx <- max(x$Extract_SSTimmer_fall10s)
-mx
-mn <- min(x$Extract_SSTimmer_fall10s)
-mn
+imSST_fall10s <- imSST_fall10s %>%
+  add_column(Season = "Fall",
+             Decade = "10s",
+             .after = "y")
+colnames(imSST_fall10s) <- c("x","y","Season","Decade","SST")
 
 imSST_winter90s <- raster("Extract_SSTimmer_winter90s.tif")
 imSST_winter90s <- as.data.frame(imSST_winter90s, xy = TRUE)
-x <- imSST_winter90s%>%
-  filter(Extract_SSTimmer_winter90s >0)
-av <- mean(x$Extract_SSTimmer_winter90s) #number of occurrence points
-av
-mx <- max(x$Extract_SSTimmer_winter90s)
-mx
-mn <- min(x$Extract_SSTimmer_winter90s)
-mn
+imSST_winter90s <- imSST_winter90s %>%
+  add_column(Season = "Winter",
+             Decade = "90s",
+             .after = "y")
+colnames(imSST_winter90s) <- c("x","y","Season","Decade","SST")
 
 imSST_winter00s <- raster("Extract_SSTimmer_winter00s.tif")
 imSST_winter00s <- as.data.frame(imSST_winter00s, xy = TRUE)
-x <- imSST_winter00s%>%
-  filter(Extract_SSTimmer_winter00s >0)
-av <- mean(x$Extract_SSTimmer_winter00s) #number of occurrence points
-av
-mx <- max(x$Extract_SSTimmer_winter00s)
-mx
-mn <- min(x$Extract_SSTimmer_winter00s)
-mn
+imSST_winter00s <- imSST_winter00s %>%
+  add_column(Season = "Winter",
+             Decade = "00s",
+             .after = "y")
+colnames(imSST_winter00s) <- c("x","y","Season","Decade","SST")
 
 imSST_winter10s <- raster("Extract_SSTimmer_winter10.tif")
 imSST_winter10s <- as.data.frame(imSST_winter10s, xy = TRUE)
-x <- imSST_winter10s%>%
-  filter(Extract_SSTimmer_winter10 >0)
-av <- mean(x$Extract_SSTimmer_winter10) #number of occurrence points
-av
-mx <- max(x$Extract_SSTimmer_winter10)
-mx
-mn <- min(x$Extract_SSTimmer_winter10)
-mn
+imSST_winter10s <- imSST_winter10s %>%
+  add_column(Season = "Winter",
+             Decade = "10s",
+             .after = "y")
+colnames(imSST_winter10s) <- c("x","y","Season","Decade","SST")
 
 imSST_spring90s <- raster("Extract_SSTimmer_spring90s.tif")
 imSST_spring90s <- as.data.frame(imSST_spring90s, xy = TRUE)
-x <- imSST_spring90s%>%
-  filter(Extract_SSTimmer_spring90s >0)
-av <- mean(x$Extract_SSTimmer_spring90s) #number of occurrence points
-av
-mx <- max(x$Extract_SSTimmer_spring90s)
-mx
-mn <- min(x$Extract_SSTimmer_spring90s)
-mn
+imSST_spring90s <- imSST_spring90s %>%
+  add_column(Season = "Spring",
+             Decade = "90s",
+             .after = "y")
+colnames(imSST_spring90s) <- c("x","y","Season","Decade","SST")
 
 imSST_spring00s <- raster("Extract_SSTimmer_spring00.tif")
 imSST_spring00s <- as.data.frame(imSST_spring00s, xy = TRUE)
-x <- imSST_spring00s%>%
-  filter(Extract_SSTimmer_spring00 >0)
-av <- mean(x$Extract_SSTimmer_spring00) #number of occurrence points
-av
-mx <- max(x$Extract_SSTimmer_spring00)
-mx
-mn <- min(x$Extract_SSTimmer_spring00)
-mn
+imSST_spring00s <- imSST_spring00s %>%
+  add_column(Season = "Spring",
+             Decade = "90s",
+             .after = "y")
+colnames(imSST_spring00s) <- c("x","y","Season","Decade","SST")
 
 imSST_spring10s <- raster("Extract_SSTimmer_spring10.tif")
 imSST_spring10s <- as.data.frame(imSST_spring10s, xy = TRUE)
-x <- imSST_spring10s%>%
-  filter(Extract_SSTimmer_spring10 >0)
-av <- mean(x$Extract_SSTimmer_spring10) #number of occurrence points
-av
-mx <- max(x$Extract_SSTimmer_spring10)
-mx
-mn <- min(x$Extract_SSTimmer_spring10)
-mn
+imSST_spring10s <- imSST_spring10s %>%
+  add_column(Season = "Spring",
+             Decade = "10s",
+             .after = "y")
+colnames(imSST_spring10s) <- c("x","y","Season","Decade","SST")
 
 imSST_summer00s <- raster("Extract_SSTimmer_summer00.tif")
 imSST_summer00s <- as.data.frame(imSST_summer00s, xy = TRUE)
-x <- imSST_summer00s%>%
-  filter(Extract_SSTimmer_summer00 >0)
-av <- mean(x$Extract_SSTimmer_summer00) #number of occurrence points
-av
-mx <- max(x$Extract_SSTimmer_summer00)
-mx
-mn <- min(x$Extract_SSTimmer_summer00)
-mn
+imSST_summer00s <- imSST_summer00s %>%
+  add_column(Season = "Summer",
+             Decade = "00s",
+             .after = "y")
+colnames(imSST_summer00s) <- c("x","y","Season","Decade","SST")
 
 imSST_summer10s <- raster("Extract_SSTimmer_summer10.tif")
 imSST_summer10s <- as.data.frame(imSST_summer10s, xy = TRUE)
-x <- imSST_summer10s%>%
-  filter(Extract_SSTimmer_summer10 >0)
-av <- mean(x$Extract_SSTimmer_summer10) #number of occurrence points
-av
-mx <- max(x$Extract_SSTimmer_summer10)
-mx
-mn <- min(x$Extract_SSTimmer_summer10)
-mn
+imSST_summer10s <- imSST_summer10s %>%
+  add_column(Season = "Summer",
+             Decade = "10s",
+             .after = "y")
+colnames(imSST_summer10s) <- c("x","y","Season","Decade","SST")
 
 # Sea surface height P. griseus east ----
+
 grisSSH_eastfall90s <- raster("Extract_SSHgriseus_eastfall90s.tif")
 grisSSH_eastfall90s <- as.data.frame(grisSSH_eastfall90s, xy = TRUE)
 grisSSH_eastfall90s <- grisSSH_eastfall90s %>%
@@ -1758,363 +1443,626 @@ colnames(grisSSH_eastsummer10s) <- c("x","y","Season","Decade","SSH")
 
 grisSSH_westfall90s <- raster("Extract_SSHgriseus_westfall90s.tif")
 grisSSH_westfall90s <- as.data.frame(grisSSH_westfall90s, xy = TRUE)
-x <- grisSSH_westfall90s%>%
-  filter(Extract_SSHgriseus_westfall90s >-10)
-av <- mean(x$Extract_SSHgriseus_westfall90s) 
-av
-mx <- max(x$Extract_SSHgriseus_westfall90s)
-mx
-mn <- min(x$Extract_SSHgriseus_westfall90s)
-mn
+grisSSH_westfall90s <- grisSSH_westfall90s %>%
+  add_column(Season = "Fall",
+             Decade = "90s",
+             .after = "y")
+colnames(grisSSH_westfall90s) <- c("x","y","Season","Decade","SSH")
 
 grisSSH_westwinter00s <- raster("Extract_SSHgriseus_westwinter00s.tif")
 grisSSH_westwinter00s <- as.data.frame(grisSSH_westwinter00s, xy = TRUE)
-x <- grisSSH_westwinter00s%>%
-  filter(Extract_SSHgriseus_westwinter00s >-10)
-av <- mean(x$Extract_SSHgriseus_westwinter00s) 
-av
-mx <- max(x$Extract_SSHgriseus_westwinter00s)
-mx
-mn <- min(x$Extract_SSHgriseus_westwinter00s)
-mn
+grisSSH_westwinter00s <- grisSSH_westwinter00s %>%
+  add_column(Season = "Winter",
+             Decade = "00s",
+             .after = "y")
+colnames(grisSSH_westwinter00s) <- c("x","y","Season","Decade","SSH")
 
 grisSSH_westspring90s <- raster("Extract_SSHgriseus_westspring90s.tif")
 grisSSH_westspring90s <- as.data.frame(grisSSH_westspring90s, xy = TRUE)
-x <- grisSSH_westspring90s%>%
-  filter(Extract_SSHgriseus_westspring90s >-10)
-av <- mean(x$Extract_SSHgriseus_westspring90s) 
-av
-mx <- max(x$Extract_SSHgriseus_westspring90s)
-mx
-mn <- min(x$Extract_SSHgriseus_westspring90s)
-mn
+grisSSH_westspring90s <- grisSSH_westspring90s %>%
+  add_column(Season = "Spring",
+             Decade = "90s",
+             .after = "y")
+colnames(grisSSH_westspring90s) <- c("x","y","Season","Decade","SSH")
 
 grisSSH_westsummer90s <- raster("Extract_SSHgriseus_westsummer90s.tif")
 grisSSH_westsummer90s <- as.data.frame(grisSSH_westsummer90s, xy = TRUE)
-x <- grisSSH_westsummer90s%>%
-  filter(Extract_SSHgriseus_westsummer90s >-10)
-av <- mean(x$Extract_SSHgriseus_westsummer90s) 
-av
-mx <- max(x$Extract_SSHgriseus_westsummer90s)
-mx
-mn <- min(x$Extract_SSHgriseus_westsummer90s)
-mn
+grisSSH_westsummer90s <- grisSSH_westsummer90s %>%
+  add_column(Season = "Summer",
+             Decade = "90s",
+             .after = "y")
+colnames(grisSSH_westsummer90s) <- c("x","y","Season","Decade","SSH")
 
 grisSSH_westsummer00s <- raster("Extract_SSHgriseus_westsummer00s.tif")
 grisSSH_westsummer00s <- as.data.frame(grisSSH_westsummer00s, xy = TRUE)
-x <- grisSSH_westsummer00s%>%
-  filter(Extract_SSHgriseus_westsummer00s >-10)
-av <- mean(x$Extract_SSHgriseus_westsummer00s) 
-av
-mx <- max(x$Extract_SSHgriseus_westsummer00s)
-mx
-mn <- min(x$Extract_SSHgriseus_westsummer00s)
-mn
+grisSSH_westsummer00s <- grisSSH_westsummer00s %>%
+  add_column(Season = "Summer",
+             Decade = "00s",
+             .after = "y")
+colnames(grisSSH_westsummer00s) <- c("x","y","Season","Decade","SSH")
 
 grisSSH_westsummer10s <- raster("Extract_SSHgriseus_westsummer10s.tif")
 grisSSH_westsummer10s <- as.data.frame(grisSSH_westsummer10s, xy = TRUE)
-x <- grisSSH_westsummer10s%>%
-  filter(Extract_SSHgriseus_westsummer10s >-10)
-av <- mean(x$Extract_SSHgriseus_westsummer10s) 
-av
-mx <- max(x$Extract_SSHgriseus_westsummer10s)
-mx
-mn <- min(x$Extract_SSHgriseus_westsummer10s)
-mn
+grisSSH_westsummer10s <- grisSSH_westsummer10s %>%
+  add_column(Season = "Summer",
+             Decade = "10s",
+             .after = "y")
+colnames(grisSSH_westsummer10s) <- c("x","y","Season","Decade","SSH")
+
 # Sea surface height nigripes ----
 
 nigSSH_fall90s <- raster("Extract_SSHnigripes_fall90s.tif")
 nigSSH_fall90s <- as.data.frame(nigSSH_fall90s, xy = TRUE)
-x <- nigSSH_fall90s%>%
-  filter(Extract_SSHnigripes_fall90s >-10)
-av <- mean(x$Extract_SSHnigripes_fall90s) 
-av
-mx <- max(x$Extract_SSHnigripes_fall90s)
-mx
-mn <- min(x$Extract_SSHnigripes_fall90s)
-mn
+nigSSH_fall90s <- nigSSH_fall90s %>%
+  add_column(Season = "Fall",
+             Decade = "90s",
+             .after = "y")
+colnames(nigSSH_fall90s) <- c("x","y","Season","Decade","SSH")
 
 nigSSH_fall10s <- raster("Extract_SSHnigripes_fall10s.tif")
 nigSSH_fall10s <- as.data.frame(nigSSH_fall10s, xy = TRUE)
-x <- nigSSH_fall10s %>%
-  filter(Extract_SSHnigripes_fall10s >-10)
-av <- mean(x$Extract_SSHnigripes_fall10s) 
-av
-mx <- max(x$Extract_SSHnigripes_fall10s)
-mx
-mn <- min(x$Extract_SSHnigripes_fall10s)
-mn
+nigSSH_fall10s <- nigSSH_fall10s %>%
+  add_column(Season = "Fall",
+             Decade = "10s",
+             .after = "y")
+colnames(nigSSH_fall10s) <- c("x","y","Season","Decade","SSH")
 
 nigSSH_spring90s <- raster("Extract_SSHnigripes_spring90s.tif")
 nigSSH_spring90s <- as.data.frame(nigSSH_spring90s, xy = TRUE)
-x <- nigSSH_spring90s%>%
-  filter(Extract_SSHnigripes_spring90s >-10)
-av <- mean(x$Extract_SSHnigripes_spring90s) 
-av
-mx <- max(x$Extract_SSHnigripes_spring90s)
-mx
-mn <- min(x$Extract_SSHnigripes_spring90s)
-mn
+nigSSH_spring90s <- nigSSH_spring90s %>%
+  add_column(Season = "Spring",
+             Decade = "90s",
+             .after = "y")
+colnames(nigSSH_spring90s) <- c("x","y","Season","Decade","SSH")
 
 nigSSH_summer90s <- raster("Extract_SSHnigripes_summer90s.tif")
 nigSSH_summer90s <- as.data.frame(nigSSH_summer90s, xy = TRUE)
-x <- nigSSH_summer90s%>%
-  filter(Extract_SSHnigripes_summer90s >-10)
-av <- mean(x$Extract_SSHnigripes_summer90s) 
-av
-mx <- max(x$Extract_SSHnigripes_summer90s)
-mx
-mn <- min(x$Extract_SSHnigripes_summer90s)
-mn
+nigSSH_summer90s <- nigSSH_summer90s %>%
+  add_column(Season = "Summer",
+             Decade = "90s",
+             .after = "y")
+colnames(nigSSH_summer90s) <- c("x","y","Season","Decade","SSH")
 
 nigSSH_summer00s <- raster("Extract_SSHnigripes_summer00s.tif")
 nigSSH_summer00s <- as.data.frame(nigSSH_summer00s, xy = TRUE)
-x <- nigSSH_summer00s %>%
-  filter(Extract_SSHnigripes_summer00s >-10)
-av <- mean(x$Extract_SSHnigripes_summer00s) 
-av
-mx <- max(x$Extract_SSHnigripes_summer00s)
-mx
-mn <- min(x$Extract_SSHnigripes_summer00s)
-mn
+nigSSH_summer00s <- nigSSH_summer00s %>%
+  add_column(Season = "Summer",
+             Decade = "00s",
+             .after = "y")
+colnames(nigSSH_summer00s) <- c("x","y","Season","Decade","SSH")
 
 nigSSH_summer10s <- raster("Extract_SSHnigripes_summer10s.tif")
 nigSSH_summer10s <- as.data.frame(nigSSH_summer10s, xy = TRUE)
-x <- nigSSH_summer10s%>%
-  filter(Extract_SSHnigripes_summer10s >-10)
-av <- mean(x$Extract_SSHnigripes_summer10s) 
-av
-mx <- max(x$Extract_SSHnigripes_summer10s)
-mx
-mn <- min(x$Extract_SSHnigripes_summer10s)
-mn
+nigSSH_summer10s <- nigSSH_summer10s %>%
+  add_column(Season = "Summer",
+             Decade = "10s",
+             .after = "y")
+colnames(nigSSH_summer10s) <- c("x","y","Season","Decade","SSH")
+
 # Sea surface height immer ----
 
 imSSH_fall90s <- raster("Extract_SSHimmer_fall90s.tif")
 imSSH_fall90s <- as.data.frame(imSSH_fall90s, xy = TRUE)
-x <- imSSH_fall90s%>%
-  filter(Extract_SSHimmer_fall90s >-10)
-av <- mean(x$Extract_SSHimmer_fall90s) #number of occurrence points
-av
-mx <- max(x$Extract_SSHimmer_fall90s)
-mx
-mn <- min(x$Extract_SSHimmer_fall90s)
-mn
+imSSH_fall90s <- imSSH_fall90s %>%
+  add_column(Season = "Fall",
+             Decade = "90s",
+             .after = "y")
+colnames(imSSH_fall90s) <- c("x","y","Season","Decade","SSH")
 
 imSSH_fall00s <- raster("Extract_SSHimmer_fall00s.tif")
 imSSH_fall00s <- as.data.frame(imSSH_fall00s, xy = TRUE)
-x <- imSSH_fall00s%>%
-  filter(Extract_SSHimmer_fall00s >-10)
-av <- mean(x$Extract_SSHimmer_fall00s) #number of occurrence points
-av
-mx <- max(x$Extract_SSHimmer_fall00s)
-mx
-mn <- min(x$Extract_SSHimmer_fall00s)
-mn
+imSSH_fall00s <- imSSH_fall00s %>%
+  add_column(Season = "Fall",
+             Decade = "00s",
+             .after = "y")
+colnames(imSSH_fall00s) <- c("x","y","Season","Decade","SSH")
 
 imSSH_fall10s <- raster("Extract_SSHimmer_fall10s.tif")
 imSSH_fall10s <- as.data.frame(imSSH_fall10s, xy = TRUE)
-x <- imSSH_fall10s%>%
-  filter(Extract_SSHimmer_fall10s >-10)
-av <- mean(x$Extract_SSHimmer_fall10s) #number of occurrence points
-av
-mx <- max(x$Extract_SSHimmer_fall10s)
-mx
-mn <- min(x$Extract_SSHimmer_fall10s)
-mn
+imSSH_fall10s <- imSSH_fall10s %>%
+  add_column(Season = "Fall",
+             Decade = "10s",
+             .after = "y")
+colnames(imSSH_fall10s) <- c("x","y","Season","Decade","SSH")
 
 imSSH_winter90s <- raster("Extract_SSHimmer_winter90s.tif")
 imSSH_winter90s <- as.data.frame(imSSH_winter90s, xy = TRUE)
-x <- imSSH_winter90s%>%
-  filter(Extract_SSHimmer_winter90s >-10)
-av <- mean(x$Extract_SSHimmer_winter90s) #number of occurrence points
-av
-mx <- max(x$Extract_SSHimmer_winter90s)
-mx
-mn <- min(x$Extract_SSHimmer_winter90s)
-mn
+imSSH_winter90s <- imSSH_winter90s %>%
+  add_column(Season = "Winter",
+             Decade = "90s",
+             .after = "y")
+colnames(imSSH_winter90s) <- c("x","y","Season","Decade","SSH")
 
 imSSH_winter00s <- raster("Extract_SSHimmer_winter00s.tif")
 imSSH_winter00s <- as.data.frame(imSSH_winter00s, xy = TRUE)
-x <- imSSH_winter00s%>%
-  filter(Extract_SSHimmer_winter00s >-10)
-av <- mean(x$Extract_SSHimmer_winter00s) #number of occurrence points
-av
-mx <- max(x$Extract_SSHimmer_winter00s)
-mx
-mn <- min(x$Extract_SSHimmer_winter00s)
-mn
+imSSH_winter00s <- imSSH_winter00s %>%
+  add_column(Season = "Winter",
+             Decade = "00s",
+             .after = "y")
+colnames(imSSH_winter00s) <- c("x","y","Season","Decade","SSH")
 
 imSSH_winter10s <- raster("Extract_SSHimmer_winter10.tif")
 imSSH_winter10s <- as.data.frame(imSSH_winter10s, xy = TRUE)
-x <- imSSH_winter10s%>%
-  filter(Extract_SSHimmer_winter10 >-10)
-av <- mean(x$Extract_SSHimmer_winter10) #number of occurrence points
-av
-mx <- max(x$Extract_SSHimmer_winter10)
-mx
-mn <- min(x$Extract_SSHimmer_winter10)
-mn
+imSSH_winter10s <- imSSH_winter10s %>%
+  add_column(Season = "Winter",
+             Decade = "10s",
+             .after = "y")
+colnames(imSSH_winter10s) <- c("x","y","Season","Decade","SSH")
 
-imSSH_spring90s <- raster("Extract_SSHimmer_spring90s.tif")
+imSSH_spring90s <- raster("Extract_SSHimmer_spring90.tif")
 imSSH_spring90s <- as.data.frame(imSSH_spring90s, xy = TRUE)
-x <- imSSH_spring90s%>%
-  filter(Extract_SSHimmer_spring90s >-10)
-av <- mean(x$Extract_SSHimmer_spring90s) #number of occurrence points
-av
-mx <- max(x$Extract_SSHimmer_spring90s)
-mx
-mn <- min(x$Extract_SSHimmer_spring90s)
-mn
+imSSH_spring90s <- imSSH_spring90s %>%
+  add_column(Season = "Spring",
+             Decade = "90s",
+             .after = "y")
+colnames(imSSH_spring90s) <- c("x","y","Season","Decade","SSH")
 
 imSSH_spring00s <- raster("Extract_SSHimmer_spring00.tif")
 imSSH_spring00s <- as.data.frame(imSSH_spring00s, xy = TRUE)
-x <- imSSH_spring00s%>%
-  filter(Extract_SSHimmer_spring00 >-10)
-av <- mean(x$Extract_SSHimmer_spring00) #number of occurrence points
-av
-mx <- max(x$Extract_SSHimmer_spring00)
-mx
-mn <- min(x$Extract_SSHimmer_spring00)
-mn
+imSSH_spring00s <- imSSH_spring00s %>%
+  add_column(Season = "Spring",
+             Decade = "90s",
+             .after = "y")
+colnames(imSSH_spring00s) <- c("x","y","Season","Decade","SSH")
 
 imSSH_spring10s <- raster("Extract_SSHimmer_spring10.tif")
 imSSH_spring10s <- as.data.frame(imSSH_spring10s, xy = TRUE)
-x <- imSSH_spring10s%>%
-  filter(Extract_SSHimmer_spring10 >-10)
-av <- mean(x$Extract_SSHimmer_spring10) #number of occurrence points
-av
-mx <- max(x$Extract_SSHimmer_spring10)
-mx
-mn <- min(x$Extract_SSHimmer_spring10)
-mn
+imSSH_spring10s <- imSSH_spring10s %>%
+  add_column(Season = "Spring",
+             Decade = "10s",
+             .after = "y")
+colnames(imSSH_spring10s) <- c("x","y","Season","Decade","SSH")
 
 imSSH_summer00s <- raster("Extract_SSHimmer_summer00.tif")
 imSSH_summer00s <- as.data.frame(imSSH_summer00s, xy = TRUE)
-x <- imSSH_summer00s%>%
-  filter(Extract_SSHimmer_summer00 >-10)
-av <- mean(x$Extract_SSHimmer_summer00) #number of occurrence points
-av
-mx <- max(x$Extract_SSHimmer_summer00)
-mx
-mn <- min(x$Extract_SSHimmer_summer00)
-mn
+imSSH_summer00s <- imSSH_summer00s %>%
+  add_column(Season = "Summer",
+             Decade = "00s",
+             .after = "y")
+colnames(imSSH_summer00s) <- c("x","y","Season","Decade","SSH")
 
 imSSH_summer10s <- raster("Extract_SSHimmer_summer10.tif")
 imSSH_summer10s <- as.data.frame(imSSH_summer10s, xy = TRUE)
-x <- imSSH_summer10s%>%
-  filter(Extract_SSHimmer_summer10 >-10)
-av <- mean(x$Extract_SSHimmer_summer10) #number of occurrence points
-av
-mx <- max(x$Extract_SSHimmer_summer10)
-mx
-mn <- min(x$Extract_SSHimmer_summer10)
-mn
+imSSH_summer10s <- imSSH_summer10s %>%
+  add_column(Season = "Summer",
+             Decade = "10s",
+             .after = "y")
+colnames(imSSH_summer10s) <- c("x","y","Season","Decade","SSH")
 
-# import summary data
-immerSummary    <- read.csv("C:/Users/savan/Documents/github/AvesOBIS/immerSummary.csv")
-immerSummary    <- immerSummary %>% 
-  column_to_rownames(var="X")
-nigSummary      <- read.csv("C:/Users/savan/Documents/github/AvesOBIS/nigSummary.csv")
-nigSummary      <- nigSummary %>% 
-  column_to_rownames(var="X")
-grisWestSummary <- read.csv("C:/Users/savan/Documents/github/AvesOBIS/grisWestSummary.csv")
-grisWestSummary    <- grisWestSummary %>% 
-  column_to_rownames(var="X")
-grisEastSummary <- read.csv("C:/Users/savan/Documents/github/AvesOBIS/grisEastSummary.csv")
-grisEastSummary    <- grisEastSummary %>% 
-  column_to_rownames(var="X")
-
-# Parse out the lat/lon and env characteristics and place them in data frames:
-grisWestEnv     <- grisWestSummary[,3:ncol(grisWestSummary)]    # Enviro variables
-grisWestLatLon  <- grisWestSummary[,1:2]                        # Lat/long variables
-grisEastEnv     <- grisEastSummary[,3:ncol(grisEastSummary)]
-grisEastLatLon  <- grisEastSummary[,1:2]
-nigEnv          <- nigSummary[,3:ncol(nigSummary)]
-nigLatLon       <- nigSummary[,1:2]
-immerEnv        <- immerSummary[,3:ncol(immerSummary)]
-immerLatLon     <- immerSummary[,1:2]
+# Import summary data THHAT I THINK IS NOW IRRELEVANT------
+# immerSummary    <- read.csv("C:/Users/savan/Documents/github/AvesOBIS/immerSummary.csv")
+# immerSummary    <- immerSummary %>% 
+#   column_to_rownames(var="X")
+# nigSummary      <- read.csv("C:/Users/savan/Documents/github/AvesOBIS/nigSummary.csv")
+# nigSummary      <- nigSummary %>% 
+#   column_to_rownames(var="X")
+# grisWestSummary <- read.csv("C:/Users/savan/Documents/github/AvesOBIS/grisWestSummary.csv")
+# grisWestSummary    <- grisWestSummary %>% 
+#   column_to_rownames(var="X")
+# grisEastSummary <- read.csv("C:/Users/savan/Documents/github/AvesOBIS/grisEastSummary.csv")
+# grisEastSummary    <- grisEastSummary %>% 
+#   column_to_rownames(var="X")
+# 
+# # Parse out the lat/lon and env characteristics and place them in data frames:
+# grisWestEnv     <- grisWestSummary[,3:ncol(grisWestSummary)]    # Enviro variables
+# grisWestLatLon  <- grisWestSummary[,1:2]                        # Lat/long variables
+# grisEastEnv     <- grisEastSummary[,3:ncol(grisEastSummary)]
+# grisEastLatLon  <- grisEastSummary[,1:2]
+# nigEnv          <- nigSummary[,3:ncol(nigSummary)]
+# nigLatLon       <- nigSummary[,1:2]
+# immerEnv        <- immerSummary[,3:ncol(immerSummary)]
+# immerLatLon     <- immerSummary[,1:2]
 
 # Visually investigate the data standardization.
-# grisWest ----
+# nigripes ------------------------------------------------------------------
 
-# Using the 'par' function in conjunction with the 'mfrow' parameter, you can 
-# set the graphical window to default to a two rows with two figures in each:
-par(mfrow = c(2,2))
+#bind_rows together all data frames
 
-# Plot the RAW data in the first row:
-boxplot(grisWestEnv)
-title(main = 'Environmental P. griseus West Data',
-      x    = 'Predictor Var.',
-      y    = 'Measured Value')
+nigEV <- bind_rows(nigEV_fall90s,nigEV_fall10s)%>%
+  bind_rows(nigEV_spring90s)%>%
+  bind_rows(nigEV_summer90s)%>%
+  bind_rows(nigEV_summer00s)%>%
+  bind_rows(nigEV_summer10s)
 
-boxplot(grisWestLatLon)
-title(main = 'Occurrence Data',
-      x    = 'Response Var.',
-      y    = 'Measured Value')
+nigNV <- bind_rows(nigNV_fall90s,nigNV_fall10s)%>%
+  bind_rows(nigNV_spring90s)%>%
+  bind_rows(nigNV_summer90s)%>%
+  bind_rows(nigNV_summer00s)%>%
+  bind_rows(nigNV_summer10s)
 
-# Plot the Z-Scored data in the second row (same order as 1st row):
+nigML <- bind_rows(nigML_fall90s,nigML_fall10s)%>%
+  bind_rows(nigML_spring90s)%>%
+  bind_rows(nigML_summer90s)%>%
+  bind_rows(nigML_summer00s)%>%
+  bind_rows(nigML_summer10s)
 
-boxplot(scale(grisWestEnv))
-title(main = 'Z-Score Environmental P. griseus West Data',
-      x    = 'Predictor Var.',
-      y    = 'Measured Value')
+nigSa <- bind_rows(nigSa_fall90s,nigSa_fall10s)%>%
+  bind_rows(nigSa_spring90s)%>%
+  bind_rows(nigSa_summer90s)%>%
+  bind_rows(nigSa_summer00s)%>%
+  bind_rows(nigSa_summer10s)
 
-# no need to do this for lat/lon values
+nigSST <- bind_rows(nigSST_fall90s,nigSST_fall10s)%>%
+  bind_rows(nigSST_spring90s)%>%
+  bind_rows(nigSST_summer90s)%>%
+  bind_rows(nigSST_summer00s)%>%
+  bind_rows(nigSST_summer10s)
 
-# Reset the plotting window:
-par(mfrow=c(1,1))
+nigSSH <- bind_rows(nigSSH_fall90s,nigSSH_fall10s)%>%
+  bind_rows(nigSSH_spring90s)%>%
+  bind_rows(nigSSH_summer90s)%>%
+  bind_rows(nigSSH_summer00s)%>%
+  bind_rows(nigSSH_summer10s)
 
-# Env dataset made up of continuous variables with different units of measure, 
-# the best approach is to standardize the data using Z-Scores standardization
-# !!!!RDA algorithm automatically performs this action for the PREDICTOR data!!!!
+nig <- left_join(nigSa,nigML)%>%
+  left_join(nigSSH)%>%
+  left_join(nigSST)%>%
+  left_join(nigEV)%>%
+  left_join(nigNV)
+nig[is.na(nig)] <- 0
 
-# Use an AIC-based stepwise variable selection procedure with a distance-based
-# RDA (db-RDA) approach to build an optimal (most parsimonious) model depicting 
-# the relationship between the fish community and the set of associated 
-# environmental variables.
+nig <- nig %>%
+  filter(Sa > 0)
 
-# Create a euclidean dissimilarity matrix:
-disY      <- vegdist(grisWestLatLon, method = 'euclidean')  # <-- No data transformation applied
+nigLatLon <- nig[,1:2]
+nigEnv    <- nig[,5:ncol(nig)]
+
+# Use an AIC-based stepwise variable selection procedure with a RDA approach
+# to build an optimal (most parsimonious) model depicting the relationship
+# between the fish community and the set of associated environmental variables.
 
 # Create the "null" and "full" models described above:
-null      <- rda(disY ~ 1, grisWestEnv)
-full      <- rda(disY ~ ., grisWestEnv)
+null      <- rda(nigLatLon ~ 1, nigEnv)
+full      <- rda(nigLatLon ~ ., nigEnv)
 
 # Now perform the AIC stepwise selection process:
-optGrisWest       <- step(object = null, scope = formula(full)) #optimal model selected by AIC selection
+optNig  <- step(object = null, scope = formula(full)) #optimal model selected by AIC selection
+
+# Perform RDA and plot ------------------------------------------------------------
+
+permutest(x = optNig, permutations = 9999) 
+# very significant P value (Pr(>F))
+# model is F ratio 304.21 (304x more variability explained than by random chance)
 
 # Perform RDA:
-rdagrisWest        <- rda(X = grisWestLatLon, Y = grisWestEnv)
+rdaNig        <- rda(X = nigLatLon, Y = nigEnv)
 
 # Produce and display the summary results:
-rdagrisWest_sum    <- summary(rdagrisWest)
-rdagrisWest_sum
-
-# Perform the permutation test for the RDA test statistic:
-
-permutest(x = rdagrisWest, permutations = 9999)
-
-# Classical RDA is the most appropriate statistical test for this multivariate 
-# analysis because all of the variables under consideration are CONTINUOUS 
-# variables that are not subject to issues such as the "double-zero" effect. True?
-
-# The R^2 value indicates that over half (53.8%) of the total variability in
-# occurrence within a population can be accounted for (explained) by the 
-# environmental data. Therefore, the environmental characteristics can
-# be said to partially affect the location of P. griseus on the west coast over the
-# past 3 decades.
+optNig_sum    <- summary(rdaNig)
+optNig_sum
 
 # Create the ordination diagram.
 
 # Extract the percent of the variability explained by each axis:
-pct_explGrisWest  <- 100 * rdagrisWest_sum$cont$importance[2,]
+pct_explNig  <- 100 * optNig_sum$cont$importance[2,]
 
-# Plot the data
-plot(x    = rdagrisWest, scaling = "sites", const = c(1,3),
-     main = "Redundancy Analysis",
-     xlab = paste("RDA Axis-I (",  round(pct_explGrisWest[1],2),"%)" ,sep = ""),
-     ylab = paste("RDA Axis-II (", round(pct_explGrisWest[2],2),"%)" ,sep = ""))
+scores_Nig <- scores(optNig)
+dat <- cbind(nig, scores_Nig$sites)
+
+ggplot()+
+  geom_point(data = dat, aes(x = RDA1,
+                             y = RDA2,
+                             color = Decade,
+                             shape = Season)) +
+  labs(title = "Redundancy Analysis for P. nigripes",
+       x = paste("RDA1 (variance explained: ",
+                 round(pct_explNig[1], digits = 1),
+                 "%)",
+                 sep =""),
+       y = paste("RDA2 (variance explained: ",
+                 round(pct_explNig[2], digits = 1),
+                 "%)",
+                 sep =""))+
+  geom_text(data = as.data.frame(scores(rdaNig)$species),
+            aes(x = RDA1/optNig_sum$cont$importance[1,1], 
+                y = RDA2/optNig_sum$cont$importance[1,2],
+                label = c("Long","Lat")))+
+  stat_ellipse(data = dat, aes(x = RDA1,
+                               y = RDA2,
+                               color = Decade),
+               size = 1,
+               level = 0.90,
+               alpha = 0.65,
+               show.legend = FALSE)+
+  geom_segment(data = as.data.frame(optNig_sum$biplot),
+               aes(x = 0,
+                   y = 0, 
+                   xend = RDA1,
+                   yend = RDA2),
+               arrow = arrow(length=unit(0.3, "cm")),
+               color = "gray30")+
+  geom_label(data = as.data.frame(optNig_sum$biplot),
+             aes(x = RDA1,
+                 y = RDA2,
+                 label = rownames(optNig_sum$biplot)))
+
+# immer ---------------
+
+#bind_rows together all data frames
+
+immerEV <- bind_rows(imEV_fall90s,imEV_fall00s)%>%
+  bind_rows(imEV_fall10s)%>%
+  bind_rows(imEV_winter90s)%>%
+  bind_rows(imEV_winter00s)%>%
+  bind_rows(imEV_winter10s)%>%
+  bind_rows(imEV_spring90s)%>%
+  bind_rows(imEV_spring00s)%>%
+  bind_rows(imEV_spring10s)%>%
+  bind_rows(imEV_summer00s)%>%
+  bind_rows(imEV_summer10s)
+
+immerNV <- bind_rows(imNV_fall90s,imNV_fall00s)%>%
+  bind_rows(imNV_fall10s)%>%
+  bind_rows(imNV_winter90s)%>%
+  bind_rows(imNV_winter00s)%>%
+  bind_rows(imNV_winter10s)%>%
+  bind_rows(imNV_spring90s)%>%
+  bind_rows(imNV_spring00s)%>%
+  bind_rows(imNV_spring10s)%>%
+  bind_rows(imNV_summer00s)%>%
+  bind_rows(imNV_summer10s)
+
+immerML <- bind_rows(imML_fall90s,imML_fall00s)%>%
+  bind_rows(imML_fall10s)%>%
+  bind_rows(imML_winter90s)%>%
+  bind_rows(imML_winter00s)%>%
+  bind_rows(imML_winter10s)%>%
+  bind_rows(imML_spring90s)%>%
+  bind_rows(imML_spring00s)%>%
+  bind_rows(imML_spring10s)%>%
+  bind_rows(imML_summer00s)%>%
+  bind_rows(imML_summer10s)
+
+immerSa <- bind_rows(imSa_fall90s,imSa_fall00s)%>%
+  bind_rows(imSa_fall10s)%>%
+  bind_rows(imSa_winter90s)%>%
+  bind_rows(imSa_winter00s)%>%
+  bind_rows(imSa_winter10s)%>%
+  bind_rows(imSa_spring90s)%>%
+  bind_rows(imSa_spring00s)%>%
+  bind_rows(imSa_spring10s)%>%
+  bind_rows(imSa_summer00s)%>%
+  bind_rows(imSa_summer10s)
+
+immerSST <- bind_rows(imSST_fall90s,imSST_fall00s)%>%
+  bind_rows(imSST_fall10s)%>%
+  bind_rows(imSST_winter90s)%>%
+  bind_rows(imSST_winter00s)%>%
+  bind_rows(imSST_winter10s)%>%
+  bind_rows(imSST_spring90s)%>%
+  bind_rows(imSST_spring00s)%>%
+  bind_rows(imSST_spring10s)%>%
+  bind_rows(imSST_summer00s)%>%
+  bind_rows(imSST_summer10s)
+
+immerSSH <- bind_rows(imSSH_fall90s,imSSH_fall00s)%>%
+  bind_rows(imSSH_fall10s)%>%
+  bind_rows(imSSH_winter90s)%>%
+  bind_rows(imSSH_winter00s)%>%
+  bind_rows(imSSH_winter10s)%>%
+  bind_rows(imSSH_spring90s)%>%
+  bind_rows(imSSH_spring00s)%>%
+  bind_rows(imSSH_spring10s)%>%
+  bind_rows(imSSH_summer00s)%>%
+  bind_rows(imSSH_summer10s)
+
+immer <- left_join(immerSa,immerML)%>%
+  left_join(immerSSH)%>%
+  left_join(immerSST)%>%
+  left_join(immerEV)%>%
+  left_join(immerNV)
+immer[is.na(immer)] <- 0
+
+immer <- immer %>%
+  filter(Sa > 0)
+
+immerLatLon <- immer[,1:2]
+immerEnv    <- immer[,5:ncol(immer)]
+
+# Use an AIC-based stepwise variable selection procedure with a RDA approach
+# to build an optimal (most parsimonious) model depicting the relationship
+# between the fish community and the set of associated environmental variables.
+
+# Create the "null" and "full" models described above:
+null      <- rda(immerLatLon ~ 1, immerEnv)
+full      <- rda(immerLatLon ~ ., immerEnv)
+
+# Now perform the AIC stepwise selection process:
+optImmer  <- step(object = null, scope = formula(full)) #optimal model selected by AIC selection
+
+# Perform RDA and plot ------------------------------------------------------------
+
+permutest(x = optImmer, permutations = 9999) 
+# very significant P value (Pr(>F))
+# model is F ratio 753.25 (753x more variability explained than by random chance)
+
+# Perform RDA:
+rdaImmer        <- rda(X = immerLatLon, Y = immerEnv)
+
+# Produce and display the summary results:
+optImmer_sum    <- summary(rdaImmer)
+optImmer_sum
+
+# Create the ordination diagram.
+
+# Extract the percent of the variability explained by each axis:
+pct_explImmer  <- 100 * optImmer_sum$cont$importance[2,]
+
+scores_Immer <- scores(optImmer)
+dat <- cbind(immer, scores_Immer$sites)
+
+ggplot()+
+  geom_point(data = dat, aes(x = RDA1,
+                             y = RDA2,
+                             color = Decade,
+                             shape = Season)) +
+  labs(title = "Redundancy Analysis for G. immer",
+       x = paste("RDA1 (variance explained: ",
+                 round(pct_explImmer[1], digits = 1),
+                 "%)",
+                 sep =""),
+       y = paste("RDA2 (variance explained: ",
+                 round(pct_explImmer[2], digits = 1),
+                 "%)",
+                 sep =""))+
+  geom_text(data = as.data.frame(scores(rdaImmer)$species),
+            aes(x = RDA1/optImmer_sum$cont$importance[1,1], 
+                y = RDA2/optImmer_sum$cont$importance[1,2],
+                label = c("Long","Lat")))+
+  stat_ellipse(data = dat, aes(x = RDA1,
+                               y = RDA2,
+                               color = Decade),
+               size = 1,
+               level = 0.90,
+               alpha = 0.65,
+               show.legend = FALSE)+
+  geom_segment(data = as.data.frame(optImmer_sum$biplot),
+               aes(x = 0,
+                   y = 0, 
+                   xend = RDA1,
+                   yend = RDA2),
+               arrow = arrow(length=unit(0.3, "cm")),
+               color = "gray30")+
+  geom_label(data = as.data.frame(optImmer_sum$biplot),
+             aes(x = RDA1,
+                 y = RDA2,
+                 label = rownames(optImmer_sum$biplot)))
+
+# grisWest ----
+
+#bind_rows together all data frames
+
+grisWestEV <- bind_rows(grisEV_westfall90s,grisEV_westwinter00s)%>%
+  bind_rows(grisEV_westspring90s)%>%
+  bind_rows(grisEV_westsummer00s)%>%
+  bind_rows(grisEV_westsummer10s)%>%
+  bind_rows(grisEV_westsummer90s)
+
+grisWestNV <- bind_rows(grisNV_westfall90s,grisNV_westwinter00s)%>%
+  bind_rows(grisNV_westspring90s)%>%
+  bind_rows(grisNV_westsummer00s)%>%
+  bind_rows(grisNV_westsummer10s)%>%
+  bind_rows(grisNV_westsummer90s)
+
+grisWestML <- bind_rows(grisML_westfall90s,grisML_westwinter00s)%>%
+  bind_rows(grisML_westspring90s)%>%
+  bind_rows(grisML_westsummer00s)%>%
+  bind_rows(grisML_westsummer10s)%>%
+  bind_rows(grisML_westsummer90s)
+
+
+grisWestSa <- bind_rows(grisSa_westfall90s,grisSa_westwinter00s)%>%
+  bind_rows(grisSa_westspring90s)%>%
+  bind_rows(grisSa_westsummer00s)%>%
+  bind_rows(grisSa_westsummer10s)%>%
+  bind_rows(grisSa_westsummer90s)
+
+grisWestSST <- bind_rows(grisSST_westfall90s,grisSST_westwinter00s)%>%
+  bind_rows(grisSST_westspring90s)%>%
+  bind_rows(grisSST_westsummer00s)%>%
+  bind_rows(grisSST_westsummer10s)%>%
+  bind_rows(grisSST_westsummer90s)
+
+grisWestSSH <- bind_rows(grisSSH_westfall90s,grisSSH_westwinter00s)%>%
+  bind_rows(grisSSH_westspring90s)%>%
+  bind_rows(grisSSH_westsummer00s)%>%
+  bind_rows(grisSSH_westsummer10s)%>%
+  bind_rows(grisSSH_westsummer90s)
+
+grisWest <- left_join(grisWestSa,grisWestML)%>%
+  left_join(grisWestSSH)%>%
+  left_join(grisWestSST)%>%
+  left_join(grisWestEV)%>%
+  left_join(grisWestNV)
+grisWest[is.na(grisWest)] <- 0
+
+grisWest <- grisWest %>%
+  filter(Sa > 0)
+
+grisWestLatLon <- grisWest[,1:2]
+grisWestEnv    <- grisWest[,5:ncol(grisWest)]
+
+# Use an AIC-based stepwise variable selection procedure with a RDA approach
+# to build an optimal (most parsimonious) model depicting the relationship
+# between the fish community and the set of associated environmental variables.
+
+# Create the "null" and "full" models described above:
+null      <- rda(grisWestLatLon ~ 1, grisWestEnv)
+full      <- rda(grisWestLatLon ~ ., grisWestEnv)
+
+# Now perform the AIC stepwise selection process:
+optGrisWest       <- step(object = null, scope = formula(full)) #optimal model selected by AIC selection
+
+# All variables gives model with lowest AIC 
+# Step:  AIC=-321.24
+# grisWestLatLon ~ Sa + SSH + NV + ML + EV + SST
+# 
+# Df     AIC
+# <none>    -321.24
+# - SST   1 -314.15
+# - EV    1 -308.30
+# - ML    1 -308.09
+# - SSH   1 -225.82
+# - NV    1 -213.61
+# - Sa    1  356.99
+
+# Perform RDA and plot ------------------------------------------------------------
+
+permutest(x = optGrisWest, permutations = 9999) 
+# very significant P value (Pr(>F))
+# model is F ratio 2838 (2838x more variability explained than by random chance)
+
+# Perform RDA:
+rdaGrisWest        <- rda(X = grisWestLatLon, Y = grisWestEnv)
+
+# Produce and display the summary results:
+optGrisWest_sum    <- summary(rdaGrisWest)
+optGrisWest_sum
+
+# Create the ordination diagram.
+
+# Extract the percent of the variability explained by each axis:
+pct_explGrisWest  <- 100 * optGrisWest_sum$cont$importance[2,]
+
+scores_GrisWest <- scores(optGrisWest)
+dat <- cbind(grisWest, scores_GrisWest$sites)
+
+ggplot()+
+  geom_point(data = dat, aes(x = RDA1,
+                             y = RDA2,
+                             color = Decade,
+                             shape = Season)) +
+  labs(title = "Redundancy Analysis for P. griseus (West)",
+       x = paste("RDA1 (variance explained: ",
+                 round(pct_explGrisWest[1], digits = 1),
+                 "%)",
+                 sep =""),
+       y = paste("RDA2 (variance explained: ",
+                 round(pct_explGrisWest[2], digits = 1),
+                 "%)",
+                 sep =""))+
+  geom_text(data = as.data.frame(scores(rdagrisWest)$species),
+            aes(x = RDA1/optGrisWest_sum$cont$importance[1,1], 
+                y = RDA2/optGrisWest_sum$cont$importance[1,2],
+                label = c("Long","Lat")))+
+  stat_ellipse(data = dat, aes(x = RDA1,
+                               y = RDA2,
+                               color = Decade),
+               size = 1,
+               level = 0.90,
+               alpha = 0.65,
+               show.legend = FALSE)+
+  geom_segment(data = as.data.frame(optGrisWest_sum$biplot),
+               aes(x = 0,
+                   y = 0, 
+                   xend = RDA1,
+                   yend = RDA2),
+               arrow = arrow(length=unit(0.3, "cm")),
+               color = "gray30")+
+  geom_label(data = as.data.frame(optGrisWest_sum$biplot),
+             aes(x = RDA1,
+                 y = RDA2,
+                 label = rownames(optGrisWest_sum$biplot)))
 
 # grisEast ----
 
@@ -2127,7 +2075,7 @@ grisEastEV <- bind_rows(grisEV_eastfall90s, grisEV_eastfall00s)%>%
   bind_rows(grisEV_eastspring90s)%>%
   bind_rows(grisEV_eastsummer00s)%>%
   bind_rows(grisEV_eastsummer10s)%>%
-  bind_rows(grisEV_eastsummer90s)%>%
+  bind_rows(grisEV_eastsummer90s)
   
 grisEastNV <- bind_rows(grisNV_eastfall90s,grisNV_eastfall00s)%>%
   bind_rows(grisNV_eastfall10s)%>%
@@ -2179,18 +2127,18 @@ grisEastSSH <- bind_rows(grisSSH_eastfall90s, grisSSH_eastfall00s)%>%
   bind_rows(grisSSH_eastsummer10s)%>%
   bind_rows(grisSSH_eastsummer90s)
   
-dat <- left_join(grisEastSa,grisEastML)%>%
+grisEast <- left_join(grisEastSa,grisEastML)%>%
   left_join(grisEastSSH)%>%
   left_join(grisEastSST)%>%
   left_join(grisEastEV)%>%
   left_join(grisEastNV)
-dat[is.na(dat)] <- 0
+grisEast[is.na(grisEast)] <- 0
 
-dat <- dat %>%
-  filter(Sa > 0,ML >= 0)
+grisEast <- grisEast %>%
+  filter(Sa > 0)
 
-grisEastLatLon <- dat[,1:2]
-grisEastEnv    <- dat[,5:ncol(dat)]
+grisEastLatLon <- grisEast[,1:2]
+grisEastEnv    <- dat[,5:ncol(grisEast)]
 
 # Use an AIC-based stepwise variable selection procedure with a RDA approach
 # to build an optimal (most parsimonious) model depicting the relationship
@@ -2198,27 +2146,31 @@ grisEastEnv    <- dat[,5:ncol(dat)]
 
 # Create the "null" and "full" models described above:
 null      <- rda(grisEastLatLon ~ 1, grisEastEnv)
-full      <- rda(grisEastLatLon ~ ., grisEastEnv)
+full      <- rda(grisEastLatLon ~ ., grisEastEnv) 
+#Error in qr.fitted(Q, Y) : 'qr' and 'y' must have the same number of rows <- WHAT?
 
 # Now perform the AIC stepwise selection process:
 optGrisEast       <- step(object = null, scope = formula(full)) #optimal model selected by AIC selection
 
-# Perform RDA -------------------------------------------------------------
+# Perform RDA and plot -------------------------------------------------------------
 permutest(x = optGrisEast, permutations = 9999) 
 # very significant P value (Pr(>F))
 # model is F ratio 148 (148x more variability explained than by random chance)
 
+# Perform RDA:
+rdaGrisEast        <- rda(X = grisEastLatLon, Y = grisEastEnv)
+
 # Produce and display the summary results:
-optGrisEast_sum    <- summary(optGrisEast)
+optGrisEast_sum    <- summary(rdaGrisEast)
 optGrisEast_sum
 
 # Create the ordination diagram.
-# permutation significant 
+
 # Extract the percent of the variability explained by each axis:
 pct_explGrisEast  <- 100 * optgrisEast_sum$cont$importance[2,]
 
 scores_GrisEast <- scores(optGrisEast)
-dat <- cbind(dat, scores_GrisEast$sites)
+dat <- cbind(grisEast, scores_GrisEast$sites)
 
 ggplot()+
      geom_point(data = dat, aes(x = RDA1,
