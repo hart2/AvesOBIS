@@ -10,10 +10,9 @@
 
 library(vegan)
 library(tidyverse)
-library(ncdat4) # package for netcdat manipulation
 library(raster) # package for raster manipulation
+library(SpatialEpi)
 # library(rgdal) # package for geospatial analysis
-# library(ggplot2) # package for plotting
 
 # response variables
 # lat/lon of species 
@@ -495,53 +494,93 @@ mn
 
 # Mixed layer depth immer ------
 
-nigML_fall90s <- raster("Extract_MLnigripes_fall90s.tif")
-nigML_fall90s <- as.data.frame(nigML_fall90s, xy = TRUE)
-nigML_fall90s <- nigML_fall90s %>%
+imML_fall90s <- raster("Extract_MLimmer_fall90s.tif")
+imML_fall90s <- as.data.frame(imML_fall90s, xy = TRUE)
+imML_fall90s <- imML_fall90s %>%
   add_column(Season = "Fall",
              Decade = "90s",
              .after = "y")
-colnames(nigML_fall90s) <- c("x","y","Season","Decade","ML")
+colnames(imML_fall90s) <- c("x","y","Season","Decade","ML")
 
-nigML_fall10s <- raster("Extract_MLnigripes_fall10s.tif")
-nigML_fall10s <- as.data.frame(nigML_fall10s, xy = TRUE)
-nigML_fall10s <- nigML_fall10s %>%
+imML_fall00s <- raster("Extract_MLimmer_fall00s.tif")
+imML_fall00s <- as.data.frame(imML_fall00s, xy = TRUE)
+imML_fall00s <- imML_fall00s %>%
+  add_column(Season = "Fall",
+             Decade = "00s",
+             .after = "y")
+colnames(imML_fall00s) <- c("x","y","Season","Decade","ML")
+
+imML_fall10s <- raster("Extract_MLimmer_fall10s.tif")
+imML_fall10s <- as.data.frame(imML_fall10s, xy = TRUE)
+imML_fall10s <- imML_fall10s %>%
   add_column(Season = "Fall",
              Decade = "10s",
              .after = "y")
-colnames(nigML_fall10s) <- c("x","y","Season","Decade","ML")
+colnames(imML_fall10s) <- c("x","y","Season","Decade","ML")
 
-nigML_spring90s <- raster("Extract_MLnigripes_spring90s.tif")
-nigML_spring90s <- as.data.frame(nigML_spring90s, xy = TRUE)
-nigML_spring90s <- nigML_spring90s %>%
+imML_winter90s <- raster("Extract_MLimmer_winter90s.tif")
+imML_winter90s <- as.data.frame(imML_winter90s, xy = TRUE)
+imML_winter90s <- imML_winter90s %>%
+  add_column(Season = "Winter",
+             Decade = "90s",
+             .after = "y")
+colnames(imML_winter90s) <- c("x","y","Season","Decade","ML")
+
+imML_winter00s <- raster("Extract_MLimmer_winter00s.tif")
+imML_winter00s <- as.data.frame(imML_winter00s, xy = TRUE)
+imML_winter00s <- imML_winter00s %>%
+  add_column(Season = "Winter",
+             Decade = "00s",
+             .after = "y")
+colnames(imML_winter00s) <- c("x","y","Season","Decade","ML")
+
+imML_winter10s <- raster("Extract_MLimmer_winter10s.tif")
+imML_winter10s <- as.data.frame(imML_winter10s, xy = TRUE)
+imML_winter10s <- imML_winter10s %>%
+  add_column(Season = "Winter",
+             Decade = "10s",
+             .after = "y")
+colnames(imML_winter10s) <- c("x","y","Season","Decade","ML")
+
+imML_spring90s <- raster("Extract_MLimmer_spring90s.tif")
+imML_spring90s <- as.data.frame(imML_spring90s, xy = TRUE)
+imML_spring90s <- imML_spring90s %>%
   add_column(Season = "Spring",
              Decade = "90s",
              .after = "y")
-colnames(nigML_spring90s) <- c("x","y","Season","Decade","ML")
+colnames(imML_spring90s) <- c("x","y","Season","Decade","ML")
 
-nigML_summer90s <- raster("Extract_MLnigripes_summer90s.tif")
-nigML_summer90s <- as.data.frame(nigML_summer90s, xy = TRUE)
-nigML_summer90s <- nigML_summer90s %>%
-  add_column(Season = "Summer",
-             Decade = "90s",
+imML_spring00s <- raster("Extract_MLimmer_spring00s.tif")
+imML_spring00s <- as.data.frame(imML_spring00s, xy = TRUE)
+imML_spring00s <- imML_spring00s %>%
+  add_column(Season = "Spring",
+             Decade = "00s",
              .after = "y")
-colnames(nigML_summer90s) <- c("x","y","Season","Decade","ML")
+colnames(imML_spring00s) <- c("x","y","Season","Decade","ML")
 
-nigML_summer00s <- raster("Extract_MLnigripes_summer00s.tif")
-nigML_summer00s <- as.data.frame(nigML_summer00s, xy = TRUE)
-nigML_summer00s <- nigML_summer00s %>%
+imML_spring10s <- raster("Extract_MLimmer_spring10s.tif")
+imML_spring10s <- as.data.frame(imML_spring10s, xy = TRUE)
+imML_spring10s <- imML_spring10s %>%
+  add_column(Season = "Spring",
+             Decade = "10s",
+             .after = "y")
+colnames(imML_spring10s) <- c("x","y","Season","Decade","ML")
+
+imML_summer00s <- raster("Extract_MLimmer_summer00s.tif")
+imML_summer00s <- as.data.frame(imML_summer00s, xy = TRUE)
+imML_summer00s <- imML_summer00s %>%
   add_column(Season = "Summer",
              Decade = "00s",
              .after = "y")
-colnames(nigML_summer00s) <- c("x","y","Season","Decade","ML")
+colnames(imML_summer00s) <- c("x","y","Season","Decade","ML")
 
-nigML_summer10s <- raster("Extract_MLnigripes_summer10s.tif")
-nigML_summer10s <- as.data.frame(nigML_summer10s, xy = TRUE)
-nigML_summer10s <- nigML_summer10s %>%
+imML_summer10s <- raster("Extract_MLimmer_summer10s.tif")
+imML_summer10s <- as.data.frame(imML_summer10s, xy = TRUE)
+imML_summer10s <- imML_summer10s %>%
   add_column(Season = "Summer",
              Decade = "10s",
              .after = "y")
-colnames(nigML_summer10s) <- c("x","y","Season","Decade","ML")
+colnames(imML_summer10s) <- c("x","y","Season","Decade","ML")
 
 # Northern current velocity P. griseus east ----------------
 
@@ -1629,31 +1668,6 @@ imSSH_summer10s <- imSSH_summer10s %>%
              .after = "y")
 colnames(imSSH_summer10s) <- c("x","y","Season","Decade","SSH")
 
-# Import summary data THHAT I THINK IS NOW IRRELEVANT------
-# immerSummary    <- read.csv("C:/Users/savan/Documents/github/AvesOBIS/immerSummary.csv")
-# immerSummary    <- immerSummary %>% 
-#   column_to_rownames(var="X")
-# nigSummary      <- read.csv("C:/Users/savan/Documents/github/AvesOBIS/nigSummary.csv")
-# nigSummary      <- nigSummary %>% 
-#   column_to_rownames(var="X")
-# grisWestSummary <- read.csv("C:/Users/savan/Documents/github/AvesOBIS/grisWestSummary.csv")
-# grisWestSummary    <- grisWestSummary %>% 
-#   column_to_rownames(var="X")
-# grisEastSummary <- read.csv("C:/Users/savan/Documents/github/AvesOBIS/grisEastSummary.csv")
-# grisEastSummary    <- grisEastSummary %>% 
-#   column_to_rownames(var="X")
-# 
-# # Parse out the lat/lon and env characteristics and place them in data frames:
-# grisWestEnv     <- grisWestSummary[,3:ncol(grisWestSummary)]    # Enviro variables
-# grisWestLatLon  <- grisWestSummary[,1:2]                        # Lat/long variables
-# grisEastEnv     <- grisEastSummary[,3:ncol(grisEastSummary)]
-# grisEastLatLon  <- grisEastSummary[,1:2]
-# nigEnv          <- nigSummary[,3:ncol(nigSummary)]
-# nigLatLon       <- nigSummary[,1:2]
-# immerEnv        <- immerSummary[,3:ncol(immerSummary)]
-# immerLatLon     <- immerSummary[,1:2]
-
-# Visually investigate the data standardization.
 # nigripes ------------------------------------------------------------------
 
 #bind_rows together all data frames
@@ -1705,6 +1719,7 @@ nig <- nig %>%
   filter(Sa > 0)
 
 nigLatLon <- nig[,1:2]
+# nigLatLon <- latlong2grid(nigLatLon) --> muddies interpretation, possibly gratuitous?
 nigEnv    <- nig[,5:ncol(nig)]
 
 # Use an AIC-based stepwise variable selection procedure with a RDA approach
@@ -1738,11 +1753,14 @@ pct_explNig  <- 100 * optNig_sum$cont$importance[2,]
 
 scores_Nig <- scores(optNig)
 dat <- cbind(nig, scores_Nig$sites)
+dat$Decade <- factor(dat$Decade, level = c("90s","00s","10s"))
+dat$Season <- factor(dat$Season, level = c("Winter","Spring","Summer","Fall"))
 
 ggplot()+
   geom_point(data = dat, aes(x = RDA1,
                              y = RDA2,
                              color = Decade,
+                             fill  = Decade,
                              shape = Season)) +
   labs(title = "Redundancy Analysis for P. nigripes",
        x = paste("RDA1 (variance explained: ",
@@ -1774,7 +1792,8 @@ ggplot()+
   geom_label(data = as.data.frame(optNig_sum$biplot),
              aes(x = RDA1,
                  y = RDA2,
-                 label = rownames(optNig_sum$biplot)))
+                 label = rownames(optNig_sum$biplot)))+
+  scale_shape_manual(values = c(24, 22, 25))
 
 # immer ---------------
 
@@ -1857,6 +1876,7 @@ immer <- immer %>%
   filter(Sa > 0)
 
 immerLatLon <- immer[,1:2]
+# immerLatLon <- latlong2grid(immerLatLon)
 immerEnv    <- immer[,5:ncol(immer)]
 
 # Use an AIC-based stepwise variable selection procedure with a RDA approach
@@ -1890,11 +1910,14 @@ pct_explImmer  <- 100 * optImmer_sum$cont$importance[2,]
 
 scores_Immer <- scores(optImmer)
 dat <- cbind(immer, scores_Immer$sites)
+dat$Decade <- factor(dat$Decade, level = c("90s","00s","10s"))
+dat$Season <- factor(dat$Season, level = c("Winter","Spring","Summer","Fall"))
 
 ggplot()+
   geom_point(data = dat, aes(x = RDA1,
                              y = RDA2,
                              color = Decade,
+                             fill  = Decade,
                              shape = Season)) +
   labs(title = "Redundancy Analysis for G. immer",
        x = paste("RDA1 (variance explained: ",
@@ -1926,7 +1949,8 @@ ggplot()+
   geom_label(data = as.data.frame(optImmer_sum$biplot),
              aes(x = RDA1,
                  y = RDA2,
-                 label = rownames(optImmer_sum$biplot)))
+                 label = rownames(optImmer_sum$biplot)))+
+  scale_shape_manual(values = c(21, 24, 22, 25))
 
 # grisWest ----
 
@@ -1980,6 +2004,7 @@ grisWest <- grisWest %>%
   filter(Sa > 0)
 
 grisWestLatLon <- grisWest[,1:2]
+# grisWestLatLon <- latlong2grid(grisWestLatLon)
 grisWestEnv    <- grisWest[,5:ncol(grisWest)]
 
 # Use an AIC-based stepwise variable selection procedure with a RDA approach
@@ -2026,11 +2051,14 @@ pct_explGrisWest  <- 100 * optGrisWest_sum$cont$importance[2,]
 
 scores_GrisWest <- scores(optGrisWest)
 dat <- cbind(grisWest, scores_GrisWest$sites)
+dat$Decade <- factor(dat$Decade, level = c("90s","00s","10s"))
+dat$Season <- factor(dat$Season, level = c("Winter","Spring","Summer","Fall"))
 
 ggplot()+
   geom_point(data = dat, aes(x = RDA1,
                              y = RDA2,
                              color = Decade,
+                             fill  = Decade,
                              shape = Season)) +
   labs(title = "Redundancy Analysis for P. griseus (West)",
        x = paste("RDA1 (variance explained: ",
@@ -2041,7 +2069,7 @@ ggplot()+
                  round(pct_explGrisWest[2], digits = 1),
                  "%)",
                  sep =""))+
-  geom_text(data = as.data.frame(scores(rdagrisWest)$species),
+  geom_text(data = as.data.frame(scores(rdaGrisWest)$species),
             aes(x = RDA1/optGrisWest_sum$cont$importance[1,1], 
                 y = RDA2/optGrisWest_sum$cont$importance[1,2],
                 label = c("Long","Lat")))+
@@ -2062,7 +2090,11 @@ ggplot()+
   geom_label(data = as.data.frame(optGrisWest_sum$biplot),
              aes(x = RDA1,
                  y = RDA2,
-                 label = rownames(optGrisWest_sum$biplot)))
+                 label = rownames(optGrisWest_sum$biplot)))+
+  scale_shape_manual(values = c(21, 24, 22, 25))+
+  guides(color = guide_legend(order = 2), 
+         fill  = guide_legend(order = 2),
+         shape = guide_legend(order = 1))
 
 # grisEast ----
 
@@ -2132,13 +2164,15 @@ grisEast <- left_join(grisEastSa,grisEastML)%>%
   left_join(grisEastSST)%>%
   left_join(grisEastEV)%>%
   left_join(grisEastNV)
-grisEast[is.na(grisEast)] <- 0
+
 
 grisEast <- grisEast %>%
   filter(Sa > 0)
+grisEast[is.na(grisEast)] <- 0
 
 grisEastLatLon <- grisEast[,1:2]
-grisEastEnv    <- dat[,5:ncol(grisEast)]
+#grisEastLatLon <- latlong2grid(grisEastLatLon)
+grisEastEnv    <- grisEast[,5:ncol(grisEast)]
 
 # Use an AIC-based stepwise variable selection procedure with a RDA approach
 # to build an optimal (most parsimonious) model depicting the relationship
@@ -2167,15 +2201,18 @@ optGrisEast_sum
 # Create the ordination diagram.
 
 # Extract the percent of the variability explained by each axis:
-pct_explGrisEast  <- 100 * optgrisEast_sum$cont$importance[2,]
+pct_explGrisEast  <- 100 * optGrisEast_sum$cont$importance[2,]
 
 scores_GrisEast <- scores(optGrisEast)
 dat <- cbind(grisEast, scores_GrisEast$sites)
+dat$Decade <- factor(dat$Decade, level = c("90s","00s","10s"))
+dat$Season <- factor(dat$Season, level = c("Winter","Spring","Summer","Fall"))
 
 ggplot()+
      geom_point(data = dat, aes(x = RDA1,
                                 y = RDA2,
                                 color = Decade,
+                                fill  = Decade,
                                 shape = Season)) +
       labs(title = "Redundancy Analysis for P. griseus (East)",
            x = paste("RDA1 (variance explained: ",
@@ -2186,7 +2223,7 @@ ggplot()+
                  round(pct_explGrisEast[2], digits = 1),
                  "%)",
                  sep =""))+
-      geom_text(data = as.data.frame(scores(rdagrisEast)$species),
+      geom_text(data = as.data.frame(scores(rdaGrisEast)$species),
              aes(x = RDA1/optGrisEast_sum$cont$importance[1,1], 
                  y = RDA2/optGrisEast_sum$cont$importance[1,2],
                  label = c("Long","Lat")))+
@@ -2197,14 +2234,15 @@ ggplot()+
                 level = 0.90,
                 alpha = 0.65,
                 show.legend = FALSE)+
-      geom_segment(data = as.data.frame(opt_sum$biplot),
+      geom_segment(data = as.data.frame(optGrisEast_sum$biplot),
                aes(x = 0,
                    y = 0, 
-                   xend = dbRDA1,
-                   yend = dbRDA2),
+                   xend = RDA1,
+                   yend = RDA2),
                arrow = arrow(length=unit(0.3, "cm")),
                color = "gray30")+
-      geom_label(data = as.data.frame(opt_sum$biplot),
-             aes(x = dbRDA1,
-                 y = dbRDA2,
-                 label = rownames(opt_sum$biplot)))
+      geom_label(data = as.data.frame(optGrisEast_sum$biplot),
+             aes(x = RDA1,
+                 y = RDA2,
+                 label = rownames(optGrisEast_sum$biplot)))+
+  scale_shape_manual(values = c(21, 24, 22, 25))
